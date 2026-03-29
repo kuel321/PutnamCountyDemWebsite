@@ -40,10 +40,8 @@ const nextConfig: NextConfig = {
     return webpackConfig
   },
   reactStrictMode: true,
-  redirects,
-  turbopack: {
-    root: path.resolve(dirname),
-  },
+  redirects
+ 
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
