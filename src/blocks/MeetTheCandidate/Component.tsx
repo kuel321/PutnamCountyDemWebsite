@@ -23,10 +23,7 @@ export const MeetTheCandidateBlock: React.FC<MeetTheCandidateBlockProps> = (prop
     <section className="mtc-root">
       <div className={`mtc-inner ${safePosition === 'right' ? 'image-right' : ''}`}>
 
-        {/* Offset border box — sits behind image and content */}
-        <div className="mtc-border-box" />
-
-        {/* Image — bleeds outside the border box */}
+        {/* Image pane */}
         <div className="mtc-image-pane">
           {imageUrl && (
             <Image
@@ -37,26 +34,30 @@ export const MeetTheCandidateBlock: React.FC<MeetTheCandidateBlockProps> = (prop
               priority
             />
           )}
+          {/* Red overlay strip on inner edge */}
+          <div className="mtc-image-strip" />
         </div>
 
         {/* Content */}
         <div className="mtc-content">
-          <div className="mtc-heading-group">
-            <div className="mtc-eyebrow-row">
-              <span className="mtc-eyebrow-badge">
-                <span className="mtc-eyebrow-text">{safeEyebrow}</span>
-              </span>
-              <span className="mtc-eyebrow-line" />
-            </div>
-            <h2 className="mtc-name">{name}</h2>
+
+          {/* Eyebrow */}
+          <div className="mtc-eyebrow-row">
+            <span className="mtc-star" aria-hidden="true">★</span>
+            <span className="mtc-eyebrow">{safeEyebrow}</span>
+            <span className="mtc-star" aria-hidden="true">★</span>
           </div>
 
-          <div className="mtc-divider" />
+          {/* Name */}
+          <h2 className="mtc-name">{name}</h2>
+          <div className="mtc-rule" />
 
+          {/* Bio */}
           <div className="mtc-bio">
             <RichText data={bio} enableGutter={false} />
           </div>
 
+          {/* Links */}
           {safeLinks.length > 0 && (
             <div className="mtc-links">
               {safeLinks.map((item, i) => {
@@ -72,17 +73,15 @@ export const MeetTheCandidateBlock: React.FC<MeetTheCandidateBlockProps> = (prop
                     : (link.url ?? '#')
 
                 return (
-                  <React.Fragment key={i}>
-                    {i > 0 && <span className="mtc-link-sep" />}
-                    <Link
-                      href={href}
-                      className="mtc-link"
-                      target={link.newTab ? '_blank' : undefined}
-                      rel={link.newTab ? 'noopener noreferrer' : undefined}
-                    >
-                      {link.label}
-                    </Link>
-                  </React.Fragment>
+                  <Link
+                    key={i}
+                    href={href}
+                    className="mtc-link"
+                    target={link.newTab ? '_blank' : undefined}
+                    rel={link.newTab ? 'noopener noreferrer' : undefined}
+                  >
+                    {link.label}
+                  </Link>
                 )
               })}
             </div>

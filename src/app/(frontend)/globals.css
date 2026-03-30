@@ -172,7 +172,30 @@
 }
 
 body {
-    background: #053656 !important; 
+    background: #0b2d4a !important;
+}
+
+/* Shared decorative star layer — fixed so it persists across all blocks */
+body::before,
+body::after {
+    content: '★';
+    position: fixed;
+    font-size: 480px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.03);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+}
+
+body::before {
+    top: -120px;
+    left: -100px;
+}
+
+body::after {
+    bottom: -120px;
+    right: -100px;
 }
 @theme inline {
   --color-background: var(--background);

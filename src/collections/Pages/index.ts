@@ -13,6 +13,7 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { MeetTheCandidate } from '../../blocks/MeetTheCandidate/config'
+import { FightingFor } from '../../blocks/FightingFor/config'
 
 import {
   MetaDescriptionField,
@@ -73,7 +74,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MeetTheCandidate],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MeetTheCandidate, FightingFor],
               required: true,
               admin: {
                 initCollapsed: true,

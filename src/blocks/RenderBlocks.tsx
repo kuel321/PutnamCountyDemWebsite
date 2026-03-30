@@ -8,6 +8,7 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MeetTheCandidateBlock } from '@/blocks/MeetTheCandidate/Component'
+import { FightingForBlock } from '@/blocks/FightingFor/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -16,6 +17,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   meetTheCandidate: MeetTheCandidateBlock, // 👈 slug must match exactly what's in MeetTheCandidate.ts
+  fightingFor: FightingForBlock,
 }
 
 export const RenderBlocks: React.FC<{

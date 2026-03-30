@@ -201,7 +201,15 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | MeetTheCandidateBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | MeetTheCandidateBlock
+    | FightingForBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -829,6 +837,45 @@ export interface MeetTheCandidateBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FightingForBlock".
+ */
+export interface FightingForBlock {
+  /**
+   * Small label above the heading
+   */
+  eyebrow?: string | null;
+  heading: string;
+  issues?:
+    | {
+        /**
+         * Paste a single emoji or symbol, e.g. 💧 🏥 ⚒️
+         */
+        icon?: string | null;
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'fightingFor';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1136,6 +1183,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         meetTheCandidate?: T | MeetTheCandidateBlockSelect<T>;
+        fightingFor?: T | FightingForBlockSelect<T>;
       };
   meta?:
     | T
@@ -1259,6 +1307,24 @@ export interface MeetTheCandidateBlockSelect<T extends boolean = true> {
         id?: T;
       };
   imagePosition?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FightingForBlock_select".
+ */
+export interface FightingForBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  issues?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
