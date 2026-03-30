@@ -162,7 +162,18 @@
   --warning: oklch(35% 0.08 70deg);
   --error: oklch(45% 0.1 25deg);
 }
+.header-one {
+    height:247px;
+}
 
+.edwards-logo {
+    position:relative;
+    bottom:16px;
+}
+
+body {
+    background: #053656 !important; 
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

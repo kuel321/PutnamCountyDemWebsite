@@ -16,14 +16,14 @@ export const Logo = (props: Props) => {
   return (
     /* eslint-disable @next/next/no-img-element */
     <img
-      alt="Payload Logo"
+      alt="Edwards For Putnam Logo"
       width={400}
       
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="./edwards-logo.jpg"
+      className={clsx('edwards-logo', className)}
+      src="./edwards-logo.png"
     />
   )
 }
