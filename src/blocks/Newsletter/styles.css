@@ -1,0 +1,197 @@
+/* ============================================================
+   Newsletter Block — Campaign style
+   ============================================================ */
+
+.nl-root {
+  position: relative;
+  width: 100%;
+  padding: 96px 0 104px;
+  background-color: #0a0f1e;
+  border-top: 1px solid rgba(200, 168, 75, 0.15);
+  border-bottom: 1px solid rgba(200, 168, 75, 0.15);
+  overflow: hidden;
+}
+
+/* Subtle background star watermark */
+.nl-bg-star {
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 420px;
+  line-height: 1;
+  color: rgba(200, 168, 75, 0.04);
+  pointer-events: none;
+  user-select: none;
+  font-family: serif;
+}
+
+.nl-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 40px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Eyebrow ---- */
+.nl-eyebrow-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.nl-star {
+  color: #d32f2f;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.nl-eyebrow {
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #d32f2f;
+}
+
+/* ---- Heading ---- */
+.nl-heading {
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.nl-heading-rule {
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: #d32f2f;
+  margin: 0 auto 28px;
+}
+
+/* ---- Subtext ---- */
+.nl-subtext {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 40px;
+}
+
+/* ---- Form ---- */
+.nl-form {
+  display: flex;
+  gap: 0;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.nl-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-right: none;
+  color: #ffffff;
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  padding: 14px 20px;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  min-width: 0;
+}
+
+.nl-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.nl-input:focus {
+  border-color: #c8a84b;
+  background: rgba(200, 168, 75, 0.06);
+}
+
+.nl-button {
+  background: #d32f2f;
+  border: 1.5px solid #d32f2f;
+  color: #ffffff;
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 14px 24px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.nl-button:hover:not(:disabled) {
+  background: #b71c1c;
+  border-color: #b71c1c;
+}
+
+.nl-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---- States ---- */
+.nl-success {
+  font-family: 'Arial Narrow', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c8a84b;
+  margin-top: 8px;
+}
+
+.nl-error {
+  font-family: 'Arial', sans-serif;
+  font-size: 13px;
+  color: #ef5350;
+  margin-top: 12px;
+}
+
+.nl-privacy {
+  font-family: 'Arial', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.25);
+  margin-top: 16px;
+  letter-spacing: 0.03em;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 600px) {
+  .nl-root {
+    padding: 64px 0 72px;
+  }
+
+  .nl-inner {
+    padding: 0 24px;
+  }
+
+  .nl-form {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .nl-input {
+    border-right: 1.5px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .nl-input:focus {
+    border-color: #c8a84b;
+  }
+}

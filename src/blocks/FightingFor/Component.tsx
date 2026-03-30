@@ -1,4 +1,6 @@
+'use client'
 import React from 'react'
+import { motion } from 'framer-motion'
 import RichText from '@/components/RichText'
 import type { FightingForBlock as FightingForBlockProps } from '@/payload-types'
 import './styles.css'
@@ -12,7 +14,13 @@ export const FightingForBlock: React.FC<FightingForBlockProps> = (props) => {
     <section className="ff-root">
       <div className="ff-inner">
         {/* Header */}
-        <div className="ff-header">
+        <motion.div
+          className="ff-header"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+          transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
+        >
           {eyebrow && (
             <div className="ff-eyebrow-row">
               <span className="ff-star" aria-hidden="true">★</span>
@@ -22,13 +30,35 @@ export const FightingForBlock: React.FC<FightingForBlockProps> = (props) => {
           )}
           <h2 className="ff-heading">{heading}</h2>
           <div className="ff-heading-rule" />
-        </div>
+        </motion.div>
 
-        {/* Issue Cards Grid */}
+        {/* Issue Cards Grid — staggered */}
         {safeIssues.length > 0 && (
-          <div className="ff-grid" data-count={safeIssues.length}>
+          <motion.div
+            className="ff-grid"
+            data-count={safeIssues.length}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '0px 0px -60px 0px' }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } },
+            }}
+          >
             {safeIssues.map((issue, i) => (
-              <article className="ff-card" key={i}>
+              <motion.article
+                className="ff-card"
+                key={i}
+                variants={{
+                  hidden: { opacity: 0, y: 28, scale: 0.97 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] },
+                  },
+                }}
+              >
                 <div className="ff-card-accent" />
                 {issue.icon && (
                   <div className="ff-card-icon" aria-hidden="true">
@@ -41,9 +71,9 @@ export const FightingForBlock: React.FC<FightingForBlockProps> = (props) => {
                     <RichText data={issue.description} enableGutter={false} />
                   </div>
                 )}
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

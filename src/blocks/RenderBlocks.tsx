@@ -9,6 +9,8 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { MeetTheCandidateBlock } from '@/blocks/MeetTheCandidate/Component'
 import { FightingForBlock } from '@/blocks/FightingFor/Component'
+import { NewsletterBlock } from '@/blocks/Newsletter/Component'
+import { SocialMediaBlock } from '@/blocks/SocialMedia/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -16,8 +18,10 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
-  meetTheCandidate: MeetTheCandidateBlock, // 👈 slug must match exactly what's in MeetTheCandidate.ts
+  meetTheCandidate: MeetTheCandidateBlock,
   fightingFor: FightingForBlock,
+  newsletter: NewsletterBlock,
+  socialMedia: SocialMediaBlock,
 }
 
 export const RenderBlocks: React.FC<{

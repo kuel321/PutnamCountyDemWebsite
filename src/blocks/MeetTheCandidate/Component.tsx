@@ -1,6 +1,8 @@
+'use client'
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 import RichText from '@/components/RichText'
 
 import type { MeetTheCandidateBlock as MeetTheCandidateBlockProps } from '@/payload-types'
@@ -18,13 +20,20 @@ export const MeetTheCandidateBlock: React.FC<MeetTheCandidateBlockProps> = (prop
 
   const imageUrl = image.url ?? ''
   const imageAlt = image.alt || name
+  const imageOnLeft = safePosition !== 'right'
 
   return (
     <section className="mtc-root">
       <div className={`mtc-inner ${safePosition === 'right' ? 'image-right' : ''}`}>
 
         {/* Image pane */}
-        <div className="mtc-image-pane">
+        <motion.div
+          className="mtc-image-pane"
+          initial={{ opacity: 0, x: imageOnLeft ? -40 : 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '0px 0px -80px 0px' }}
+          transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+        >
           {imageUrl && (
             <Image
               src={imageUrl}
@@ -34,32 +43,62 @@ export const MeetTheCandidateBlock: React.FC<MeetTheCandidateBlockProps> = (prop
               priority
             />
           )}
-          {/* Red overlay strip on inner edge */}
           <div className="mtc-image-strip" />
-        </div>
+        </motion.div>
 
         {/* Content */}
-        <div className="mtc-content">
-
+        <motion.div
+          className="mtc-content"
+          initial={{ opacity: 0, x: imageOnLeft ? 40 : -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: '0px 0px -80px 0px' }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+        >
           {/* Eyebrow */}
-          <div className="mtc-eyebrow-row">
+          <motion.div
+            className="mtc-eyebrow-row"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <span className="mtc-star" aria-hidden="true">★</span>
             <span className="mtc-eyebrow">{safeEyebrow}</span>
             <span className="mtc-star" aria-hidden="true">★</span>
-          </div>
+          </motion.div>
 
           {/* Name */}
-          <h2 className="mtc-name">{name}</h2>
+          <motion.h2
+            className="mtc-name"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45, delay: 0.38, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            {name}
+          </motion.h2>
           <div className="mtc-rule" />
 
           {/* Bio */}
-          <div className="mtc-bio">
+          <motion.div
+            className="mtc-bio"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.45, ease: [0.25, 0.1, 0.25, 1] }}
+          >
             <RichText data={bio} enableGutter={false} />
-          </div>
+          </motion.div>
 
           {/* Links */}
           {safeLinks.length > 0 && (
-            <div className="mtc-links">
+            <motion.div
+              className="mtc-links"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
+            >
               {safeLinks.map((item, i) => {
                 const link = item.link
                 const ref = link.reference as
@@ -84,9 +123,9 @@ export const MeetTheCandidateBlock: React.FC<MeetTheCandidateBlockProps> = (prop
                   </Link>
                 )
               })}
-            </div>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
 
       </div>
     </section>

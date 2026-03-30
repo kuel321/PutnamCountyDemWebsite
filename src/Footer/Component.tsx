@@ -1,4 +1,6 @@
 import { getCachedGlobal } from '@/utilities/getGlobals'
+import configPromise from '@payload-config'
+import { getPayload } from 'payload'
 import Link from 'next/link'
 import React from 'react'
 
@@ -230,6 +232,17 @@ export async function Footer() {
   const navItems = footerData?.navItems || []
   const currentYear = new Date().getFullYear()
 
+  const payload = await getPayload({ config: configPromise })
+  const pagesResult = await payload.find({
+    collection: 'pages',
+    draft: false,
+    limit: 20,
+    overrideAccess: false,
+    where: { slug: { not_equals: 'home' } },
+    select: { title: true, slug: true },
+  })
+  const publishedPages = pagesResult.docs
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: footerStyles }} />
@@ -251,13 +264,20 @@ export async function Footer() {
             </div>
 
             {/* Right: Nav */}
-            {navItems.length > 0 && (
+            {(navItems.length > 0 || publishedPages.length > 0) && (
               <div className="footer-nav-section">
                 <p className="footer-nav-label">Quick Links</p>
                 <nav>
                   <ul className="footer-nav">
+                    {publishedPages.map((page) => (
+                      <li key={page.id}>
+                        <Link className="footer-nav-link" href={`/${page.slug}`}>
+                          {page.title}
+                        </Link>
+                      </li>
+                    ))}
                     {navItems.map(({ link }, i) => (
-                      <li key={i}>
+                      <li key={`nav-${i}`}>
                         <CMSLink className="footer-nav-link" {...link} />
                       </li>
                     ))}

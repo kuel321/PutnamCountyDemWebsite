@@ -209,6 +209,8 @@ export interface Page {
     | FormBlock
     | MeetTheCandidateBlock
     | FightingForBlock
+    | NewsletterBlock
+    | SocialMediaBlock
   )[];
   meta?: {
     title?: string | null;
@@ -551,6 +553,7 @@ export interface ContentBlock {
  */
 export interface MediaBlock {
   media: number | Media;
+  maxWidth?: ('full' | 'xl' | 'lg' | 'md' | 'sm') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
@@ -876,6 +879,47 @@ export interface FightingForBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsletterBlock".
+ */
+export interface NewsletterBlock {
+  eyebrow?: string | null;
+  heading: string;
+  subtext?: string | null;
+  placeholder?: string | null;
+  buttonLabel?: string | null;
+  successMessage?: string | null;
+  /**
+   * Create a form in the Forms admin with a single Email field, then link it here. Submissions will appear under Form Submissions.
+   */
+  form: number | Form;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsletter';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SocialMediaBlock".
+ */
+export interface SocialMediaBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  accounts?:
+    | {
+        platform: 'facebook' | 'twitter' | 'instagram' | 'youtube' | 'tiktok' | 'linkedin' | 'website';
+        /**
+         * Overrides the default platform name, e.g. "@EdwardsForPutnam"
+         */
+        label?: string | null;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'socialMedia';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1184,6 +1228,8 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         meetTheCandidate?: T | MeetTheCandidateBlockSelect<T>;
         fightingFor?: T | FightingForBlockSelect<T>;
+        newsletter?: T | NewsletterBlockSelect<T>;
+        socialMedia?: T | SocialMediaBlockSelect<T>;
       };
   meta?:
     | T
@@ -1255,6 +1301,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
  */
 export interface MediaBlockSelect<T extends boolean = true> {
   media?: T;
+  maxWidth?: T;
   id?: T;
   blockName?: T;
 }
@@ -1323,6 +1370,39 @@ export interface FightingForBlockSelect<T extends boolean = true> {
         icon?: T;
         title?: T;
         description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsletterBlock_select".
+ */
+export interface NewsletterBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subtext?: T;
+  placeholder?: T;
+  buttonLabel?: T;
+  successMessage?: T;
+  form?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SocialMediaBlock_select".
+ */
+export interface SocialMediaBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  accounts?:
+    | T
+    | {
+        platform?: T;
+        label?: T;
+        url?: T;
         id?: T;
       };
   id?: T;

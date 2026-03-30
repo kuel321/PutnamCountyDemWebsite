@@ -1,5 +1,5 @@
 import type { StaticImageData } from 'next/image'
-
+import { AnimateIn } from '@/components/AnimateIn'
 import { cn } from '@/utilities/ui'
 import React from 'react'
 import RichText from '@/components/RichText'
@@ -27,7 +27,18 @@ export const MediaBlock: React.FC<Props> = (props) => {
     media,
     staticImage,
     disableInnerContainer,
+    maxWidth,
   } = props
+
+  const maxWidthStyle: React.CSSProperties =
+    maxWidth && maxWidth !== 'full'
+      ? {
+          maxWidth: { xl: '1200px', lg: '900px', md: '600px', sm: '400px' }[maxWidth],
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: '100%',
+        }
+      : {}
 
   let caption
   if (media && typeof media === 'object') caption = media.caption
@@ -43,11 +54,15 @@ export const MediaBlock: React.FC<Props> = (props) => {
       )}
     >
       {(media || staticImage) && (
-        <Media
-          imgClassName={cn('border border-border rounded-[0.8rem]', imgClassName)}
-          resource={media}
-          src={staticImage}
-        />
+        <AnimateIn>
+        <div style={maxWidthStyle}>
+          <Media
+            imgClassName={cn('', imgClassName)}
+            resource={media}
+            src={staticImage}
+          />
+        </div>
+        </AnimateIn>
       )}
       {caption && (
         <div
