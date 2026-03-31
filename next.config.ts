@@ -12,6 +12,13 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   : process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
 const nextConfig: NextConfig = {
+  // ✅ Add this
+  allowedDevOrigins: [
+    'davidedwardsforputnam.chasingachance.com',
+    'localhost',
+    '192.168.7.237',
+  ],
+
   images: {
     localPatterns: [
       {
@@ -20,7 +27,7 @@ const nextConfig: NextConfig = {
     ],
     qualities: [100],
     remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
+      ...[NEXT_PUBLIC_SERVER_URL].map((item) => {
         const url = new URL(item)
 
         return {
@@ -30,6 +37,7 @@ const nextConfig: NextConfig = {
       }),
     ],
   },
+
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
@@ -39,9 +47,9 @@ const nextConfig: NextConfig = {
 
     return webpackConfig
   },
+
   reactStrictMode: true,
-  redirects
- 
+  redirects,
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })
