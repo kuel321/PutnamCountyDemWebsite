@@ -3,6 +3,8 @@
 node_modules
 .DS_Store
 .env
+build
+.next
 
 next-env.d.ts
 .vercel
