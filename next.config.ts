@@ -48,6 +48,10 @@ const nextConfig: NextConfig = {
     return webpackConfig
   },
 
+  sassOptions: {
+    includePaths: [path.join(dirname, 'node_modules/@payloadcms/ui/dist/scss')],
+  },
+
   reactStrictMode: true,
   redirects,
 }

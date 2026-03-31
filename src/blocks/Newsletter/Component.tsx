@@ -118,7 +118,7 @@ export const NewsletterBlock: React.FC<Props> = (props) => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={placeholder}
+                placeholder={placeholder ?? undefined}
                 aria-label="Email address"
               />
               <button className="nl-button" type="submit" disabled={loading}>
