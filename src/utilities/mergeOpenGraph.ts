@@ -9,8 +9,8 @@ const defaultOpenGraph: Metadata['openGraph'] = {
       url: `${getServerSideURL()}/website-template-OG.webp`,
     },
   ],
-  siteName: 'Edwards For Putnam',
-  title: 'Edwards For Putnam',
+  siteName: 'Putnam County Democratic Party',
+  title: 'Putnam County Democratic Party',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {

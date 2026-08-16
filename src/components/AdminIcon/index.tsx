@@ -3,8 +3,8 @@ import React from 'react'
 export default function AdminIcon() {
   return (
     <img
-      src="/media/chance-logo-no-letters-png.png"
-      alt="Edwards For Putnam"
+      src="/media/putnam-county-dem-logo.svg"
+      alt="Putnam County Democratic Party"
       style={{ width: '40px', height: '40px', objectFit: 'contain' }}
     />
   )

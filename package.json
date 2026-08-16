@@ -1,7 +1,7 @@
 {
-  "name": "edwardsforputnam",
+  "name": "putnam-county-dem-club",
   "version": "1.0.0",
-  "description": "Website template for Payload",
+  "description": "Putnam County Democratic Party website (Payload CMS)",
   "license": "MIT",
   "type": "module",
   "scripts": {

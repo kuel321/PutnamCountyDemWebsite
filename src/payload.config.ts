@@ -19,7 +19,7 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     meta: {
-      icons: [{ url: '/media/chance-logo-no-letters-png.png' }],
+      icons: [{ url: '/media/putnam-county-dem-logo.svg' }],
     },
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.

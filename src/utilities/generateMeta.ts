@@ -27,8 +27,8 @@ export const generateMeta = async (args: {
   const ogImage = getImageURL(doc?.meta?.image)
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Edwards For Putnam'
-    : 'Edwards For Putnam'
+    ? doc?.meta?.title + ' | Putnam County Democratic Party'
+    : 'Putnam County Democratic Party'
 
   return {
     description: doc?.meta?.description,
