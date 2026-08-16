@@ -6,6 +6,13 @@ node_modules
 build
 .next
 
+# Local Claude Code settings
+.claude/
+
+# SQLite database files (local dev data, never commit)
+*.db
+*.db-journal
+
 next-env.d.ts
 .vercel
 

@@ -1,21 +1,19 @@
 import type { CollectionConfig } from 'payload'
 
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  HorizontalRuleFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
+
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
-import { Archive } from '../../blocks/ArchiveBlock/config'
-import { CallToAction } from '../../blocks/CallToAction/config'
-import { Content } from '../../blocks/Content/config'
-import { FormBlock } from '../../blocks/Form/config'
-import { MediaBlock } from '../../blocks/MediaBlock/config'
-import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
-import { MeetTheCandidate } from '../../blocks/MeetTheCandidate/config'
-import { FightingFor } from '../../blocks/FightingFor/config'
-import { Newsletter } from '../../blocks/Newsletter/config'
-import { SocialMedia } from '../../blocks/SocialMedia/config'
 
 import {
   MetaDescriptionField,
@@ -68,19 +66,22 @@ export const Pages: CollectionConfig<'pages'> = {
       type: 'tabs',
       tabs: [
         {
-          fields: [hero],
-          label: 'Hero',
-        },
-        {
           fields: [
             {
-              name: 'layout',
-              type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, MeetTheCandidate, FightingFor, Newsletter, SocialMedia],
-              required: true,
-              admin: {
-                initCollapsed: true,
-              },
+              name: 'content',
+              type: 'richText',
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => {
+                  return [
+                    ...rootFeatures,
+                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    FixedToolbarFeature(),
+                    InlineToolbarFeature(),
+                    HorizontalRuleFeature(),
+                  ]
+                },
+              }),
+              label: false,
             },
           ],
           label: 'Content',
