@@ -20,7 +20,7 @@
 
       .cls-4, .cls-5 {
         fill: #0e2d52;
-        font-family: Impact, Impact;
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
       }
 
       .cls-5 {
