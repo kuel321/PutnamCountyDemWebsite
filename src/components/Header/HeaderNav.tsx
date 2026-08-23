@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import type { Header as HeaderType } from '@/payload-types'
 import { resolveHref } from './resolveHref'
 
@@ -122,65 +123,82 @@ export function HeaderNav({
       </button>
 
       {/* Mobile menu panel */}
-      {mobileOpen && (
-        <nav className="absolute left-0 right-0 top-full z-20 flex flex-col border-t border-gray-200 bg-white shadow-lg 2xl:hidden">
-          {navItems?.map((item) => {
-            const { navItem, id } = item
-            const hasDropdown = navItem.type === 'dropdown' && (navItem.subLinks?.length ?? 0) > 0
-            const isOpen = openDropdownId === id
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.nav
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="absolute left-0 right-0 top-full z-20 flex flex-col overflow-hidden border-t border-gray-200 bg-white shadow-lg 2xl:hidden"
+          >
+            {navItems?.map((item) => {
+              const { navItem, id } = item
+              const hasDropdown = navItem.type === 'dropdown' && (navItem.subLinks?.length ?? 0) > 0
+              const isOpen = openDropdownId === id
 
-            if (hasDropdown) {
-              return (
-                <div key={id} className="border-b border-gray-100">
-                  <button
-                    type="button"
-                    className="flex w-full items-center justify-between px-6 py-3 text-left font-semibold text-brand-navy"
-                    aria-expanded={isOpen}
-                    onClick={() => setOpenDropdownId(isOpen ? null : (id ?? null))}
-                  >
-                    {navItem.label}
-                    <ChevronIcon className={`h-3 w-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  {isOpen && (
-                    <div className="flex flex-col bg-gray-50 pb-2">
-                      {navItem.subLinks?.map((subLink) => (
-                        <a
-                          key={subLink.id}
-                          href={resolveHref(subLink.link)}
-                          target={subLink.link.newTab ? '_blank' : undefined}
-                          rel={subLink.link.newTab ? 'noopener noreferrer' : undefined}
-                          className="px-8 py-2 text-sm font-medium text-brand-navy"
-                          onClick={() => setMobileOpen(false)}
+              if (hasDropdown) {
+                return (
+                  <div key={id} className="border-b border-gray-100">
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-between px-6 py-3 text-left font-semibold text-brand-navy"
+                      aria-expanded={isOpen}
+                      onClick={() => setOpenDropdownId(isOpen ? null : (id ?? null))}
+                    >
+                      {navItem.label}
+                      <ChevronIcon className={`h-3 w-3 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2, ease: 'easeInOut' }}
+                          className="flex flex-col overflow-hidden bg-gray-50"
                         >
-                          {subLink.link.label}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                          {navItem.subLinks?.map((subLink) => (
+                            <a
+                              key={subLink.id}
+                              href={resolveHref(subLink.link)}
+                              target={subLink.link.newTab ? '_blank' : undefined}
+                              rel={subLink.link.newTab ? 'noopener noreferrer' : undefined}
+                              className="px-8 py-2 text-sm font-medium text-brand-navy"
+                              onClick={() => setMobileOpen(false)}
+                            >
+                              {subLink.link.label}
+                            </a>
+                          ))}
+                          <div className="pb-2" />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )
+              }
+
+              return (
+                <a
+                  key={id}
+                  href={resolveHref(navItem.link)}
+                  target={navItem.link?.newTab ? '_blank' : undefined}
+                  rel={navItem.link?.newTab ? 'noopener noreferrer' : undefined}
+                  className="border-b border-gray-100 px-6 py-3 font-semibold text-brand-navy"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {navItem.label}
+                </a>
               )
-            }
+            })}
 
-            return (
-              <a
-                key={id}
-                href={resolveHref(navItem.link)}
-                target={navItem.link?.newTab ? '_blank' : undefined}
-                rel={navItem.link?.newTab ? 'noopener noreferrer' : undefined}
-                className="border-b border-gray-100 px-6 py-3 font-semibold text-brand-navy"
-                onClick={() => setMobileOpen(false)}
-              >
-                {navItem.label}
-              </a>
-            )
-          })}
-
-          <DonateLink
-            donateButton={donateButton}
-            className="m-4 rounded bg-brand-red px-5 py-3 text-center font-semibold text-white"
-          />
-        </nav>
-      )}
+            <DonateLink
+              donateButton={donateButton}
+              className="m-4 rounded bg-brand-red px-5 py-3 text-center font-semibold text-white"
+            />
+          </motion.nav>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

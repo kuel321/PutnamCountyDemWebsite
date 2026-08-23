@@ -9,7 +9,7 @@ export default async function HomePage() {
   return (
     <>
       <section
-        className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-brand-navy bg-cover bg-fixed px-6 text-center text-white"
+        className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-brand-navy bg-cover bg-scroll px-6 text-center text-white lg:bg-fixed"
         style={{
           backgroundImage:
             'url(/_next/image?url=%2Fmedia%2Fputnam-county-park.jpg&w=1920&q=100)',
