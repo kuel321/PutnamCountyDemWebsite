@@ -36,7 +36,6 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // ✅ FIXED: cross-platform safe path
     staticDir: path.join(process.cwd(), 'public/media'),
 
     adminThumbnail: 'thumbnail',

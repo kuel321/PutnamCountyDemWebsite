@@ -2,7 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
-import { linkGroup } from '@/fields/linkGroup'
+import { navItem } from '@/fields/navItem'
 
 export const Header: GlobalConfig = {
   slug: 'header',
@@ -11,11 +11,18 @@ export const Header: GlobalConfig = {
     update: authenticated,
   },
   fields: [
-    linkGroup(),
     {
       name: 'logo',
       type: 'upload',
       relationTo: 'media',
+    },
+    {
+      name: 'navItems',
+      type: 'array',
+      fields: [navItem()],
+      admin: {
+        initCollapsed: true,
+      },
     },
     {
       name: 'donateButton',

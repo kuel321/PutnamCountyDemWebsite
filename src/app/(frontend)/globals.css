@@ -1,1 +1,9 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --color-brand-navy: #1b3a6b;
+  --color-brand-navy-dark: #12274a;
+  --color-brand-red: #c0182a;
+  --color-brand-red-dark: #9c1321;
+}
