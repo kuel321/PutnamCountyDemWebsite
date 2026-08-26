@@ -1,4 +1,5 @@
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import sharp from 'sharp'
 import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
@@ -71,6 +72,17 @@ export default buildConfig({
   db: sqliteAdapter({
     client: {
       url: process.env.DATABASE_URL || '',
+    },
+  }),
+  email: nodemailerAdapter({
+    defaultFromAddress: process.env.GMAIL_USER || '',
+    defaultFromName: 'Putnam County Democratic Party',
+    transportOptions: {
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
     },
   }),
   collections: [Pages, Posts, Media, Categories, Meetings, MeetingMinutes, Users],
