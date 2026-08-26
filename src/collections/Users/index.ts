@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
+import { sendNewUserEmails } from './hooks/sendNewUserEmails'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -23,5 +24,8 @@ export const Users: CollectionConfig = {
       type: 'text',
     },
   ],
+  hooks: {
+    afterChange: [sendNewUserEmails],
+  },
   timestamps: true,
 }
