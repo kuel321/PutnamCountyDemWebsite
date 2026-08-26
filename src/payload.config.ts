@@ -87,6 +87,7 @@ export default buildConfig({
   }),
   collections: [Pages, Posts, Media, Categories, Meetings, MeetingMinutes, Users],
   cors: [getServerSideURL()].filter(Boolean),
+  serverURL: getServerSideURL(),
   globals: [Footer, Header],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
