@@ -5,6 +5,9 @@ import { authenticated } from '../../access/authenticated'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
+  admin: {
+    group: 'Site-wide',
+  },
   access: {
     // Anyone can read the footer — the public site needs it to render.
     read: anyone,

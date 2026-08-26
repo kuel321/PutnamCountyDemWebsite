@@ -2,7 +2,7 @@ import config from '@payload-config'
 import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
 
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
 
 type PageProps = {
   params: Promise<{ slug: string }>
@@ -33,18 +33,7 @@ export default async function Page({ params }: PageProps) {
         </div>
       </section>
 
-      <section className="px-6 py-12 sm:py-16">
-        <div className="mx-auto max-w-4xl">
-          {page.content ? (
-            <RichText
-              data={page.content}
-              className="prose prose-lg max-w-none prose-headings:text-brand-navy prose-a:text-brand-red prose-a:no-underline hover:prose-a:underline"
-            />
-          ) : (
-            <p className="text-gray-500">Content coming soon.</p>
-          )}
-        </div>
-      </section>
+      <RenderBlocks blocks={page.layout} />
     </>
   )
 }

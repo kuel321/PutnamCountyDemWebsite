@@ -22,6 +22,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    theme: 'light',
     meta: {
       icons: [{ url: '/media/putnam-county-dem-logo.svg' }],
     },

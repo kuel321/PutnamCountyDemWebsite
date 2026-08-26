@@ -13,6 +13,9 @@ import { authenticated } from '../access/authenticated'
 export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
+  admin: {
+    group: 'Content',
+  },
   access: {
     create: authenticated,
     delete: authenticated,

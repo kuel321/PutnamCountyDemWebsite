@@ -6,6 +6,9 @@ import { navItem } from '@/fields/navItem'
 
 export const Header: GlobalConfig = {
   slug: 'header',
+  admin: {
+    group: 'Site-wide',
+  },
   access: {
     read: anyone,
     update: authenticated,

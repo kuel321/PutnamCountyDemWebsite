@@ -5,7 +5,7 @@ export default function AdminIcon() {
     <img
       src="/media/putnam-county-dem-logo.svg"
       alt="Putnam County Democratic Party"
-      style={{ width: '40px', height: '40px', objectFit: 'contain' }}
+      style={{ width: '100%', height: '100%', objectFit: 'contain' }}
     />
   )
 }

@@ -12,6 +12,7 @@ export const Meetings: CollectionConfig = {
     update: authenticated,
   },
   admin: {
+    group: 'Meetings',
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'time', 'location'],
   },

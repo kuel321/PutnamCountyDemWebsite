@@ -16,6 +16,7 @@ build
 next-env.d.ts
 .vercel
 tsconfig.tsbuildinfo
+*.log
 
 # Payload default media upload directory
 
