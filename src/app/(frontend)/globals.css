@@ -7,3 +7,7 @@
   --color-brand-red: #c0182a;
   --color-brand-red-dark: #9c1321;
 }
+
+header {
+  border-bottom: none !important;
+}

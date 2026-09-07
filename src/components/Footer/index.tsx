@@ -48,8 +48,26 @@ export function Footer({ data, logo }: { data: FooterType; logo: HeaderType['log
         )}
       </div>
 
-      <div className="border-t border-white/10 px-6 py-4 text-center text-xs text-white/50">
-        &copy; {year} Putnam County Democratic Party. Paid for by the Putnam County Democratic Party.
+      <div className="border-t border-white/10 px-6 py-4">
+        <div className="mx-auto flex max-w-[1800px] flex-col items-center gap-3 sm:flex-row sm:justify-between">
+          <p className="text-center text-xs text-white/50 sm:text-left">
+            &copy; {year} Putnam County Democratic Party. Paid for by the Putnam County Democratic
+            Party.
+          </p>
+          <a
+            href={data.chasingAChanceUrl || 'https://chasingachance.com'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs text-white/40 transition-colors hover:text-white/70"
+          >
+            <img
+              src="/media/chasingachancenolettersnokeyhole.png"
+              alt="Chasing a Chance"
+              className="h-5 w-auto"
+            />
+            Site by Chasing a Chance
+          </a>
+        </div>
       </div>
     </footer>
   )

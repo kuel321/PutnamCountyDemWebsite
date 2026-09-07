@@ -65,5 +65,13 @@ export const MeetingMinutes: CollectionConfig = {
         },
       }),
     },
+    {
+      name: 'file',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'The original PDF or Word document, if one was submitted.',
+      },
+    },
   ],
 }

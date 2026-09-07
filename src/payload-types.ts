@@ -64,6 +64,7 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
+    'club-members': ClubMemberAuthOperations;
   };
   blocks: {};
   collections: {
@@ -73,7 +74,12 @@ export interface Config {
     categories: Category;
     meetings: Meeting;
     'meeting-minutes': MeetingMinute;
+    candidates: Candidate;
+    districts: District;
+    highlights: Highlight;
+    'minutes-submissions': MinutesSubmission;
     users: User;
+    'club-members': ClubMember;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -97,7 +103,12 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     meetings: MeetingsSelect<false> | MeetingsSelect<true>;
     'meeting-minutes': MeetingMinutesSelect<false> | MeetingMinutesSelect<true>;
+    candidates: CandidatesSelect<false> | CandidatesSelect<true>;
+    districts: DistrictsSelect<false> | DistrictsSelect<true>;
+    highlights: HighlightsSelect<false> | HighlightsSelect<true>;
+    'minutes-submissions': MinutesSubmissionsSelect<false> | MinutesSubmissionsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'club-members': ClubMembersSelect<false> | ClubMembersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -125,7 +136,7 @@ export interface Config {
   widgets: {
     collections: CollectionsWidget;
   };
-  user: User;
+  user: User | ClubMember;
   jobs: {
     tasks: {
       schedulePublish: TaskSchedulePublish;
@@ -138,6 +149,24 @@ export interface Config {
   };
 }
 export interface UserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface ClubMemberAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -477,8 +506,198 @@ export interface MeetingMinute {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * The original PDF or Word document, if one was submitted.
+   */
+  file?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "candidates".
+ */
+export interface Candidate {
+  id: number;
+  title: string;
+  type: 'federal-state' | 'putnam-county';
+  /**
+   * Putnam Co. voting district this candidate is running in.
+   */
+  district?: (number | null) | District;
+  headshot?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Website / Facebook page links.
+   */
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: number | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: number | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Candidate ad images, used for the home page ads spotlight carousel.
+   */
+  gallery?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "districts".
+ */
+export interface District {
+  id: number;
+  /**
+   * Display name, e.g. "District 3".
+   */
+  title: string;
+  /**
+   * Used for sorting districts numerically.
+   */
+  number?: number | null;
+  /**
+   * Placeholder for GeoJSON boundary data once real district shapes are available.
+   */
+  boundary?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "highlights".
+ */
+export interface Highlight {
+  id: number;
+  title: string;
+  /**
+   * Lower numbers appear first in the home page news reel.
+   */
+  order?: number | null;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Draft meeting minutes submitted by club members, pending staff approval.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "minutes-submissions".
+ */
+export interface MinutesSubmission {
+  id: number;
+  title: string;
+  date: string;
+  /**
+   * Optionally link these minutes to the meeting they summarize.
+   */
+  meeting?: (number | null) | Meeting;
+  /**
+   * Upload the meeting minutes as a PDF or Word document.
+   */
+  file: number | Media;
+  submittedBy?: (number | null) | ClubMember;
+  status?: ('pending' | 'approved' | 'rejected') | null;
+  /**
+   * Visible to staff only — notes for the submitter, e.g. why it was rejected.
+   */
+  reviewNotes?: string | null;
+  /**
+   * Set automatically when this submission is approved.
+   */
+  publishedMinutes?: (number | null) | MeetingMinute;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "club-members".
+ */
+export interface ClubMember {
+  id: number;
+  name: string;
+  /**
+   * Uncheck to block this member from logging into the members-only area without deleting their account.
+   */
+  enabled?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'club-members';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -869,8 +1088,28 @@ export interface PayloadLockedDocument {
         value: number | MeetingMinute;
       } | null)
     | ({
+        relationTo: 'candidates';
+        value: number | Candidate;
+      } | null)
+    | ({
+        relationTo: 'districts';
+        value: number | District;
+      } | null)
+    | ({
+        relationTo: 'highlights';
+        value: number | Highlight;
+      } | null)
+    | ({
+        relationTo: 'minutes-submissions';
+        value: number | MinutesSubmission;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'club-members';
+        value: number | ClubMember;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -893,10 +1132,15 @@ export interface PayloadLockedDocument {
         value: number | FolderInterface;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'club-members';
+        value: number | ClubMember;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -906,10 +1150,15 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: number;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'club-members';
+        value: number | ClubMember;
+      };
   key?: string | null;
   value?:
     | {
@@ -1144,6 +1393,79 @@ export interface MeetingMinutesSelect<T extends boolean = true> {
   date?: T;
   meeting?: T;
   content?: T;
+  file?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "candidates_select".
+ */
+export interface CandidatesSelect<T extends boolean = true> {
+  title?: T;
+  type?: T;
+  district?: T;
+  headshot?: T;
+  content?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  gallery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "districts_select".
+ */
+export interface DistrictsSelect<T extends boolean = true> {
+  title?: T;
+  number?: T;
+  boundary?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "highlights_select".
+ */
+export interface HighlightsSelect<T extends boolean = true> {
+  title?: T;
+  order?: T;
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "minutes-submissions_select".
+ */
+export interface MinutesSubmissionsSelect<T extends boolean = true> {
+  title?: T;
+  date?: T;
+  meeting?: T;
+  file?: T;
+  submittedBy?: T;
+  status?: T;
+  reviewNotes?: T;
+  publishedMinutes?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1153,6 +1475,30 @@ export interface MeetingMinutesSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "club-members_select".
+ */
+export interface ClubMembersSelect<T extends boolean = true> {
+  name?: T;
+  enabled?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1452,6 +1798,10 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Footer {
   id: number;
   contactEmail?: string | null;
+  /**
+   * Where the "Site by Chasing a Chance" credit in the footer corner links to.
+   */
+  chasingAChanceUrl?: string | null;
   socialLinks?:
     | {
         platform: 'facebook' | 'instagram' | 'twitter';
@@ -1525,6 +1875,7 @@ export interface Header {
  */
 export interface FooterSelect<T extends boolean = true> {
   contactEmail?: T;
+  chasingAChanceUrl?: T;
   socialLinks?:
     | T
     | {

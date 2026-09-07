@@ -5,10 +5,15 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
+import { Candidates } from './collections/Candidates'
 import { Categories } from './collections/Categories'
+import { ClubMembers } from './collections/ClubMembers'
+import { Districts } from './collections/Districts'
+import { Highlights } from './collections/Highlights'
 import { Media } from './collections/Media'
 import { MeetingMinutes } from './collections/MeetingMinutes'
 import { Meetings } from './collections/Meetings'
+import { MinutesSubmissions } from './collections/MinutesSubmissions'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
@@ -85,7 +90,20 @@ export default buildConfig({
       },
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Meetings, MeetingMinutes, Users],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Meetings,
+    MeetingMinutes,
+    Candidates,
+    Districts,
+    Highlights,
+    MinutesSubmissions,
+    Users,
+    ClubMembers,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   serverURL: getServerSideURL(),
   globals: [Footer, Header],

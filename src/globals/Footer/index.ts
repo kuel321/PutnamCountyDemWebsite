@@ -21,6 +21,15 @@ export const Footer: GlobalConfig = {
       label: 'Contact Email',
     },
     {
+      name: 'chasingAChanceUrl',
+      type: 'text',
+      label: 'Chasing a Chance Link',
+      defaultValue: 'https://chasingachance.com',
+      admin: {
+        description: 'Where the "Site by Chasing a Chance" credit in the footer corner links to.',
+      },
+    },
+    {
       name: 'socialLinks',
       type: 'array',
       label: 'Social Links',

@@ -1,6 +1,8 @@
 import { getGlobal } from '@/utilities/getGlobals'
 import { resolveHref } from '@/components/Header/resolveHref'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { HomeSidebar } from '@/components/HomeSidebar'
+import { RotatingWord } from '@/components/Hero/RotatingWord'
 
 export default async function HomePage() {
   const headerData = await getGlobal('header', 1)
@@ -8,30 +10,35 @@ export default async function HomePage() {
 
   return (
     <>
-      <section
-        className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-brand-navy bg-cover bg-scroll px-6 text-center text-white lg:bg-fixed"
-        style={{
-          backgroundImage:
-            'url(/_next/image?url=%2Fmedia%2Fputnam-county-park.jpg&w=1920&q=100)',
-          backgroundPosition: 'center 70%',
-        }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-navy/95 via-brand-navy/80 to-brand-red/50" />
+      <section className="relative flex min-h-[70vh] items-end overflow-hidden bg-brand-navy-dark px-6 pb-14 pt-40 text-white sm:min-h-[85vh] sm:px-10 sm:pb-20 lg:px-16">
+        <div
+          className="absolute inset-0 bg-cover bg-scroll lg:bg-fixed"
+          style={{
+            backgroundImage: 'url(/_next/image?url=%2Fmedia%2Fspruce_knob.jpg&w=1920&q=100)',
+            backgroundPosition: 'center 70%',
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-navy-dark via-brand-navy-dark/70 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy-dark/95 via-brand-navy-dark/30 to-transparent sm:via-brand-navy-dark/20" />
 
-        <div className="relative mx-auto max-w-5xl">
+        <div className="relative max-w-2xl">
           {headerData.logo && typeof headerData.logo === 'object' && (
             <img
               src={getMediaUrl(headerData.logo.url)}
               alt={headerData.logo.alt || 'Putnam County Democratic Party'}
-              className="mx-auto h-20 w-auto brightness-0 invert sm:h-28"
+              className="h-14 w-auto brightness-0 invert sm:h-16"
             />
           )}
-          <h1 className="mt-2 whitespace-nowrap text-[clamp(1.375rem,4.2vw,3.75rem)] font-bold">
-            Democrats Fighting for Working Families
+
+          <h1 className="mt-5 text-5xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
+            Fighting for
+            <br />
+            <RotatingWord />
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-white/80">
-            Organizing Democrats in Putnam County, West Virginia to elect leaders who fight for
-            working families.
+
+          <p className="mt-6 max-w-lg text-lg text-white/80">
+            Organizing Democrats in Putnam County, West Virginia to elect leaders who put working
+            families first.
           </p>
 
           <div className="mt-8 inline-flex overflow-hidden rounded-lg shadow-xl">
@@ -54,25 +61,29 @@ export default async function HomePage() {
       </section>
 
       <section className="px-6 py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl">
-          <h2 className="text-center text-2xl font-bold text-brand-navy sm:text-3xl">
-            Get to Know Us
-          </h2>
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {quickLinks.map((item) => {
-              const href = resolveHref(item.navItem.link)
-              return (
-                <a
-                  key={item.id}
-                  href={href}
-                  className="block rounded-lg border border-gray-200 p-6 shadow-sm transition hover:border-brand-navy hover:shadow-md"
-                >
-                  <h3 className="font-semibold text-brand-navy">{item.navItem.label}</h3>
-                  <span className="mt-2 inline-block text-sm text-brand-red">Learn more &rarr;</span>
-                </a>
-              )
-            })}
+        <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <h2 className="text-2xl font-bold text-brand-navy sm:text-3xl">Get to Know Us</h2>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2">
+              {quickLinks.map((item) => {
+                const href = resolveHref(item.navItem.link)
+                return (
+                  <a
+                    key={item.id}
+                    href={href}
+                    className="block rounded-lg border border-gray-200 p-6 shadow-sm transition hover:border-brand-navy hover:shadow-md"
+                  >
+                    <h3 className="font-semibold text-brand-navy">{item.navItem.label}</h3>
+                    <span className="mt-2 inline-block text-sm text-brand-red">
+                      Learn more &rarr;
+                    </span>
+                  </a>
+                )
+              })}
+            </div>
           </div>
+
+          <HomeSidebar />
         </div>
       </section>
     </>
