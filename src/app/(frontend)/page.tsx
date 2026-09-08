@@ -4,6 +4,11 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { HomeSidebar } from '@/components/HomeSidebar'
 import { RotatingWord } from '@/components/Hero/RotatingWord'
 
+// Home page content (Highlights, Candidate ads, Meetings) is edited in the
+// admin panel, not through a code deploy — revalidate periodically so those
+// changes actually show up without a full rebuild.
+export const revalidate = 60
+
 export default async function HomePage() {
   const headerData = await getGlobal('header', 1)
   const quickLinks = (headerData.navItems ?? []).filter((item) => item.navItem.label !== 'Home')
