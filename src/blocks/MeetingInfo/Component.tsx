@@ -27,6 +27,7 @@ export async function MeetingInfoBlock() {
       collection: 'meeting-minutes',
       sort: '-date',
       limit: 100,
+      overrideAccess: false,
     }),
   ])
 
