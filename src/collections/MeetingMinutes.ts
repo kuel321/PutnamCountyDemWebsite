@@ -10,6 +10,10 @@ import {
 
 import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
+import {
+  revalidateMeetingContent,
+  revalidateMeetingContentDelete,
+} from '../hooks/revalidateMeetingContent'
 
 export const MeetingMinutes: CollectionConfig = {
   slug: 'meeting-minutes',
@@ -26,6 +30,10 @@ export const MeetingMinutes: CollectionConfig = {
   },
   versions: {
     drafts: true,
+  },
+  hooks: {
+    afterChange: [revalidateMeetingContent],
+    afterDelete: [revalidateMeetingContentDelete],
   },
   defaultSort: '-date',
   fields: [

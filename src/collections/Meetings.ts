@@ -2,6 +2,10 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import {
+  revalidateMeetingContent,
+  revalidateMeetingContentDelete,
+} from '../hooks/revalidateMeetingContent'
 
 export const Meetings: CollectionConfig = {
   slug: 'meetings',
@@ -15,6 +19,10 @@ export const Meetings: CollectionConfig = {
     group: 'Meetings',
     useAsTitle: 'title',
     defaultColumns: ['title', 'date', 'time', 'location'],
+  },
+  hooks: {
+    afterChange: [revalidateMeetingContent],
+    afterDelete: [revalidateMeetingContentDelete],
   },
   defaultSort: 'date',
   fields: [
