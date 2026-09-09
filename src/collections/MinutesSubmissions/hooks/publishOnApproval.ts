@@ -13,6 +13,7 @@ export const publishOnApproval: CollectionAfterChangeHook = async ({
 
   const published = await req.payload.create({
     collection: 'meeting-minutes',
+    draft: false,
     data: {
       title: doc.title,
       date: doc.date,

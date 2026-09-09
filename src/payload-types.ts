@@ -512,6 +512,7 @@ export interface MeetingMinute {
   file?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1396,6 +1397,7 @@ export interface MeetingMinutesSelect<T extends boolean = true> {
   file?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

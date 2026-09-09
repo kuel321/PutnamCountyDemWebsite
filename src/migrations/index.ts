@@ -4,6 +4,7 @@ import * as migration_20260907_220845_highlights_club_members from './20260907_2
 import * as migration_20260907_222600_minutes_submissions from './20260907_222600_minutes_submissions';
 import * as migration_20260907_223000_minutes_file_upload from './20260907_223000_minutes_file_upload';
 import * as migration_20260907_232900_footer_credit_link from './20260907_232900_footer_credit_link';
+import * as migration_20260909_143000_meeting_minutes_drafts from './20260909_143000_meeting_minutes_drafts';
 
 export const migrations = [
   {
@@ -35,5 +36,10 @@ export const migrations = [
     up: migration_20260907_232900_footer_credit_link.up,
     down: migration_20260907_232900_footer_credit_link.down,
     name: '20260907_232900_footer_credit_link'
+  },
+  {
+    up: migration_20260909_143000_meeting_minutes_drafts.up,
+    down: migration_20260909_143000_meeting_minutes_drafts.down,
+    name: '20260909_143000_meeting_minutes_drafts'
   },
 ];

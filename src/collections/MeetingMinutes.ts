@@ -8,21 +8,24 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
 
 export const MeetingMinutes: CollectionConfig = {
   slug: 'meeting-minutes',
   access: {
     create: authenticated,
     delete: authenticated,
-    read: anyone,
+    read: authenticatedOrPublished,
     update: authenticated,
   },
   admin: {
     group: 'Meetings',
     useAsTitle: 'title',
-    defaultColumns: ['title', 'date', 'meeting'],
+    defaultColumns: ['title', 'date', 'meeting', '_status'],
+  },
+  versions: {
+    drafts: true,
   },
   defaultSort: '-date',
   fields: [
