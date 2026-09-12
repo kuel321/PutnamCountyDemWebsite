@@ -8,6 +8,8 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
+import { slugField } from 'payload'
+
 import { linkGroup } from '@/fields/linkGroup'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
@@ -23,7 +25,7 @@ export const Candidates: CollectionConfig = {
   admin: {
     group: 'Candidates',
     useAsTitle: 'title',
-    defaultColumns: ['title', 'type', 'district'],
+    defaultColumns: ['title', 'type', 'district', 'slug'],
   },
   defaultSort: 'title',
   fields: [
@@ -101,5 +103,6 @@ export const Candidates: CollectionConfig = {
         },
       ],
     },
+    slugField(),
   ],
 }

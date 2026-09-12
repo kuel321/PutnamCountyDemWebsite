@@ -57,5 +57,31 @@ export const Meetings: CollectionConfig = {
       name: 'notes',
       type: 'textarea',
     },
+    {
+      name: 'photos',
+      type: 'array',
+      admin: {
+        initCollapsed: true,
+        description: 'Photos from this meeting, shown alongside its listing.',
+      },
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'hideFromPublic',
+          type: 'checkbox',
+          defaultValue: false,
+          label: "Don't show on public page",
+          admin: {
+            description:
+              'When checked, this photo is only visible to logged-in club members, not on the public Meeting Dates & Location page.',
+          },
+        },
+      ],
+    },
   ],
 }

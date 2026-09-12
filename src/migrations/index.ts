@@ -5,6 +5,7 @@ import * as migration_20260907_222600_minutes_submissions from './20260907_22260
 import * as migration_20260907_223000_minutes_file_upload from './20260907_223000_minutes_file_upload';
 import * as migration_20260907_232900_footer_credit_link from './20260907_232900_footer_credit_link';
 import * as migration_20260909_143000_meeting_minutes_drafts from './20260909_143000_meeting_minutes_drafts';
+import * as migration_20260912_152314_candidate_slug_meeting_photos from './20260912_152314_candidate_slug_meeting_photos';
 
 export const migrations = [
   {
@@ -41,5 +42,10 @@ export const migrations = [
     up: migration_20260909_143000_meeting_minutes_drafts.up,
     down: migration_20260909_143000_meeting_minutes_drafts.down,
     name: '20260909_143000_meeting_minutes_drafts'
+  },
+  {
+    up: migration_20260912_152314_candidate_slug_meeting_photos.up,
+    down: migration_20260912_152314_candidate_slug_meeting_photos.down,
+    name: '20260912_152314_candidate_slug_meeting_photos'
   },
 ];

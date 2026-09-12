@@ -2,6 +2,7 @@ import { getGlobal } from '@/utilities/getGlobals'
 import { resolveHref } from '@/components/Header/resolveHref'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { HomeSidebar } from '@/components/HomeSidebar'
+import { CandidateAdsSpotlight } from '@/components/HomeSidebar/CandidateAdsSpotlight'
 import { RotatingWord } from '@/components/Hero/RotatingWord'
 
 // Home page content (Highlights, Candidate ads, Meetings) is edited in the
@@ -68,7 +69,9 @@ export default async function HomePage() {
       <section className="px-6 py-16 sm:py-20">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <h2 className="text-2xl font-bold text-brand-navy sm:text-3xl">Get to Know Us</h2>
+            <CandidateAdsSpotlight />
+
+            <h2 className="mt-10 text-2xl font-bold text-brand-navy sm:text-3xl">Get to Know Us</h2>
             <div className="mt-10 grid gap-6 sm:grid-cols-2">
               {quickLinks.map((item) => {
                 const href = resolveHref(item.navItem.link)

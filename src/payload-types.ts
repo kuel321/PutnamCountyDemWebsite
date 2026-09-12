@@ -476,6 +476,19 @@ export interface Meeting {
   time?: string | null;
   location?: string | null;
   notes?: string | null;
+  /**
+   * Photos from this meeting, shown alongside its listing.
+   */
+  photos?:
+    | {
+        image: number | Media;
+        /**
+         * When checked, this photo is only visible to logged-in club members, not on the public Meeting Dates & Location page.
+         */
+        hideFromPublic?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -578,6 +591,11 @@ export interface Candidate {
         id?: string | null;
       }[]
     | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1382,6 +1400,13 @@ export interface MeetingsSelect<T extends boolean = true> {
   time?: T;
   location?: T;
   notes?: T;
+  photos?:
+    | T
+    | {
+        image?: T;
+        hideFromPublic?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1430,6 +1455,8 @@ export interface CandidatesSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  generateSlug?: T;
+  slug?: T;
   updatedAt?: T;
   createdAt?: T;
 }
