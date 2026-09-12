@@ -10,6 +10,7 @@ import * as migration_20260912_193409_candidate_office_and_candidates_block from
 import * as migration_20260912_195232_president_messages from './20260912_195232_president_messages';
 import * as migration_20260912_195900_president_message_author from './20260912_195900_president_message_author';
 import * as migration_20260912_201355_candidate_photos from './20260912_201355_candidate_photos';
+import * as migration_20260912_203452_locked_docs_president_messages from './20260912_203452_locked_docs_president_messages';
 
 export const migrations = [
   {
@@ -71,5 +72,10 @@ export const migrations = [
     up: migration_20260912_201355_candidate_photos.up,
     down: migration_20260912_201355_candidate_photos.down,
     name: '20260912_201355_candidate_photos'
+  },
+  {
+    up: migration_20260912_203452_locked_docs_president_messages.up,
+    down: migration_20260912_203452_locked_docs_president_messages.down,
+    name: '20260912_203452_locked_docs_president_messages'
   },
 ];
