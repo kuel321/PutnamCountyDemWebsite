@@ -16,7 +16,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="relative flex min-h-[70vh] items-end overflow-hidden bg-brand-navy-dark px-6 pb-14 pt-40 text-white sm:min-h-[85vh] sm:px-10 sm:pb-20 lg:px-16">
+      <section className="relative flex min-h-[70vh] items-end justify-between gap-8 overflow-hidden bg-brand-navy-dark px-6 pb-14 pt-40 text-white sm:min-h-[85vh] sm:px-10 sm:pb-20 lg:px-16">
         <div
           className="absolute inset-0 bg-cover bg-scroll lg:bg-fixed"
           style={{
@@ -27,7 +27,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-brand-navy-dark via-brand-navy-dark/70 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-brand-navy-dark/95 via-brand-navy-dark/30 to-transparent sm:via-brand-navy-dark/20" />
 
-        <div className="relative max-w-2xl">
+        <div className="relative max-w-2xl lg:max-w-3xl xl:max-w-4xl">
           {headerData.logo && typeof headerData.logo === 'object' && (
             <img
               src={getMediaUrl(headerData.logo.url)}
@@ -64,12 +64,18 @@ export default async function HomePage() {
             )}
           </div>
         </div>
+
+        <div className="relative hidden w-[28rem] shrink-0 xl:block 2xl:w-[34rem]">
+          <CandidateAdsSpotlight />
+        </div>
       </section>
 
       <section className="px-6 py-16 sm:py-20">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <CandidateAdsSpotlight />
+            <div className="xl:hidden">
+              <CandidateAdsSpotlight />
+            </div>
 
             <h2 className="mt-10 text-2xl font-bold text-brand-navy sm:text-3xl">Get to Know Us</h2>
             <div className="mt-10 grid gap-6 sm:grid-cols-2">

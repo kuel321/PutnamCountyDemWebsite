@@ -52,8 +52,8 @@ export function AutoCarousel({
               type="button"
               aria-label={`Show slide ${dotIndex + 1}`}
               onClick={() => setIndex(dotIndex)}
-              className={`h-1.5 w-1.5 rounded-full transition-colors ${
-                dotIndex === index ? 'bg-brand-navy' : 'bg-gray-300'
+              className={`h-1.5 w-1.5 rounded-full shadow-sm ring-1 ring-black/10 transition-colors ${
+                dotIndex === index ? 'bg-brand-red' : 'bg-white'
               }`}
             />
           ))}

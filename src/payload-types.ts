@@ -80,6 +80,7 @@ export interface Config {
     'minutes-submissions': MinutesSubmission;
     users: User;
     'club-members': ClubMember;
+    'president-messages': PresidentMessage;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -109,6 +110,7 @@ export interface Config {
     'minutes-submissions': MinutesSubmissionsSelect<false> | MinutesSubmissionsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'club-members': ClubMembersSelect<false> | ClubMembersSelect<true>;
+    'president-messages': PresidentMessagesSelect<false> | PresidentMessagesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -191,7 +193,7 @@ export interface ClubMemberAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  layout?: (ContentBlock | MeetingInfoBlock)[] | null;
+  layout?: (ContentBlock | MeetingInfoBlock | CandidatesBlock | PresidentMessageBlock)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -242,6 +244,25 @@ export interface MeetingInfoBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'meetingInfo';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CandidatesBlock".
+ */
+export interface CandidatesBlock {
+  heading?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'candidates';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PresidentMessageBlock".
+ */
+export interface PresidentMessageBlock {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'presidentMessage';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -443,6 +464,10 @@ export interface Category {
 export interface User {
   id: number;
   name?: string | null;
+  /**
+   * Profile photo, used anywhere this person is credited as an author.
+   */
+  image?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -539,6 +564,10 @@ export interface Candidate {
    * Putnam Co. voting district this candidate is running in.
    */
   district?: (number | null) | District;
+  /**
+   * e.g. "US Senate Candidate" or "WV House of Representatives - District 21".
+   */
+  office?: string | null;
   headshot?: (number | null) | Media;
   content?: {
     root: {
@@ -583,7 +612,16 @@ export interface Candidate {
       }[]
     | null;
   /**
-   * Candidate ad images, used for the home page ads spotlight carousel.
+   * General photos of this candidate (e.g. from events), shown on their profile page.
+   */
+  photos?:
+    | {
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Candidate ad images, used for the home page ads spotlight carousel and shown on their profile page.
    */
   gallery?:
     | {
@@ -717,6 +755,38 @@ export interface ClubMember {
     | null;
   password?: string | null;
   collection: 'club-members';
+}
+/**
+ * Messages from the club president. Only the most recent one currently in its active window (display date reached, archive date not yet passed) is shown.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "president-messages".
+ */
+export interface PresidentMessage {
+  id: number;
+  /**
+   * Shown as the banner heading. Only used internally if left generic.
+   */
+  title: string;
+  /**
+   * Name and photo come from this person's user profile.
+   */
+  author: number | User;
+  message: string;
+  /**
+   * This message becomes active on this date.
+   */
+  displayDate: string;
+  /**
+   * Optional. This message stops showing after this date. Leave blank to let it keep showing until a newer message supersedes it.
+   */
+  archiveDate?: string | null;
+  /**
+   * Site-wide shows this as a banner on every page. "Only where added as a block" only shows it on pages where a President's Message block has been manually added.
+   */
+  placement: 'sitewide' | 'block';
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1131,6 +1201,10 @@ export interface PayloadLockedDocument {
         value: number | ClubMember;
       } | null)
     | ({
+        relationTo: 'president-messages';
+        value: number | PresidentMessage;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1213,6 +1287,8 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         content?: T | ContentBlockSelect<T>;
         meetingInfo?: T | MeetingInfoBlockSelect<T>;
+        candidates?: T | CandidatesBlockSelect<T>;
+        presidentMessage?: T | PresidentMessageBlockSelect<T>;
       };
   meta?:
     | T
@@ -1242,6 +1318,23 @@ export interface ContentBlockSelect<T extends boolean = true> {
  * via the `definition` "MeetingInfoBlock_select".
  */
 export interface MeetingInfoBlockSelect<T extends boolean = true> {
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CandidatesBlock_select".
+ */
+export interface CandidatesBlockSelect<T extends boolean = true> {
+  heading?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PresidentMessageBlock_select".
+ */
+export interface PresidentMessageBlockSelect<T extends boolean = true> {
   id?: T;
   blockName?: T;
 }
@@ -1432,6 +1525,7 @@ export interface CandidatesSelect<T extends boolean = true> {
   title?: T;
   type?: T;
   district?: T;
+  office?: T;
   headshot?: T;
   content?: T;
   links?:
@@ -1447,6 +1541,12 @@ export interface CandidatesSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        id?: T;
+      };
+  photos?:
+    | T
+    | {
+        image?: T;
         id?: T;
       };
   gallery?:
@@ -1504,6 +1604,7 @@ export interface MinutesSubmissionsSelect<T extends boolean = true> {
  */
 export interface UsersSelect<T extends boolean = true> {
   name?: T;
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1544,6 +1645,20 @@ export interface ClubMembersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "president-messages_select".
+ */
+export interface PresidentMessagesSelect<T extends boolean = true> {
+  title?: T;
+  author?: T;
+  message?: T;
+  displayDate?: T;
+  archiveDate?: T;
+  placement?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -23,6 +23,14 @@ export const Users: CollectionConfig = {
       name: 'name',
       type: 'text',
     },
+    {
+      name: 'image',
+      type: 'upload',
+      relationTo: 'media',
+      admin: {
+        description: 'Profile photo, used anywhere this person is credited as an author.',
+      },
+    },
   ],
   hooks: {
     afterChange: [sendNewUserEmails],

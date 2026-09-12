@@ -16,6 +16,7 @@ import { Meetings } from './collections/Meetings'
 import { MinutesSubmissions } from './collections/MinutesSubmissions'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
+import { PresidentMessages } from './collections/PresidentMessages'
 import { Users } from './collections/Users'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
@@ -103,6 +104,7 @@ export default buildConfig({
     MinutesSubmissions,
     Users,
     ClubMembers,
+    PresidentMessages,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   serverURL: getServerSideURL(),

@@ -12,7 +12,7 @@ export function ContentBlock({ richText }: ContentBlockProps) {
       <div className="mx-auto max-w-4xl">
         <RichText
           data={richText}
-          className="prose prose-lg max-w-none prose-headings:text-brand-navy prose-a:text-brand-red prose-a:no-underline hover:prose-a:underline"
+          className="prose prose-xl max-w-none prose-headings:text-brand-navy prose-a:text-brand-red prose-a:no-underline hover:prose-a:underline"
         />
       </div>
     </section>

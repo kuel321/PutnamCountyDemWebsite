@@ -28,7 +28,7 @@ export async function NewsReel() {
               {highlight.content && (
                 <RichText
                   data={highlight.content}
-                  className="prose prose-sm mt-1 max-w-none prose-headings:text-brand-navy prose-a:text-brand-red"
+                  className="prose mt-1 max-w-none prose-headings:text-brand-navy prose-a:text-brand-red"
                 />
               )}
             </div>

@@ -53,7 +53,7 @@ export async function PublishedMinutesAccordion() {
               {entry.content && (
                 <RichText
                   data={entry.content}
-                  className="prose prose-sm max-w-none prose-headings:text-brand-navy prose-a:text-brand-red"
+                  className="prose max-w-none prose-headings:text-brand-navy prose-a:text-brand-red"
                 />
               )}
               {entry.file && typeof entry.file === 'object' && (

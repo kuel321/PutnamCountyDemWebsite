@@ -6,6 +6,24 @@
   --color-brand-navy-dark: #12274a;
   --color-brand-red: #c0182a;
   --color-brand-red-dark: #9c1321;
+
+  /* Bumped up one step site-wide per client feedback that text read too small. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: calc(1.25 / 0.8125);
+  --text-sm: 1rem;
+  --text-sm--line-height: calc(1.5 / 1);
+  --text-base: 1.125rem;
+  --text-base--line-height: calc(1.75 / 1.125);
+  --text-lg: 1.25rem;
+  --text-lg--line-height: calc(1.75 / 1.25);
+  --text-xl: 1.375rem;
+  --text-xl--line-height: calc(1.85 / 1.375);
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: calc(2.1 / 1.625);
+  --text-3xl: 2rem;
+  --text-3xl--line-height: calc(2.4 / 2);
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: calc(2.75 / 2.5);
 }
 
 header {

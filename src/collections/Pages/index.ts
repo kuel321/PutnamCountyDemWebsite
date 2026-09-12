@@ -8,6 +8,8 @@ import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { Content } from '@/blocks/Content/config'
 import { MeetingInfo } from '@/blocks/MeetingInfo/config'
+import { Candidates } from '@/blocks/Candidates/config'
+import { PresidentMessage } from '@/blocks/PresidentMessage/config'
 
 import {
   MetaDescriptionField,
@@ -65,7 +67,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [Content, MeetingInfo],
+              blocks: [Content, MeetingInfo, Candidates, PresidentMessage],
               label: false,
             },
           ],

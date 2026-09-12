@@ -6,6 +6,10 @@ import * as migration_20260907_223000_minutes_file_upload from './20260907_22300
 import * as migration_20260907_232900_footer_credit_link from './20260907_232900_footer_credit_link';
 import * as migration_20260909_143000_meeting_minutes_drafts from './20260909_143000_meeting_minutes_drafts';
 import * as migration_20260912_152314_candidate_slug_meeting_photos from './20260912_152314_candidate_slug_meeting_photos';
+import * as migration_20260912_193409_candidate_office_and_candidates_block from './20260912_193409_candidate_office_and_candidates_block';
+import * as migration_20260912_195232_president_messages from './20260912_195232_president_messages';
+import * as migration_20260912_195900_president_message_author from './20260912_195900_president_message_author';
+import * as migration_20260912_201355_candidate_photos from './20260912_201355_candidate_photos';
 
 export const migrations = [
   {
@@ -47,5 +51,25 @@ export const migrations = [
     up: migration_20260912_152314_candidate_slug_meeting_photos.up,
     down: migration_20260912_152314_candidate_slug_meeting_photos.down,
     name: '20260912_152314_candidate_slug_meeting_photos'
+  },
+  {
+    up: migration_20260912_193409_candidate_office_and_candidates_block.up,
+    down: migration_20260912_193409_candidate_office_and_candidates_block.down,
+    name: '20260912_193409_candidate_office_and_candidates_block'
+  },
+  {
+    up: migration_20260912_195232_president_messages.up,
+    down: migration_20260912_195232_president_messages.down,
+    name: '20260912_195232_president_messages'
+  },
+  {
+    up: migration_20260912_195900_president_message_author.up,
+    down: migration_20260912_195900_president_message_author.down,
+    name: '20260912_195900_president_message_author'
+  },
+  {
+    up: migration_20260912_201355_candidate_photos.up,
+    down: migration_20260912_201355_candidate_photos.down,
+    name: '20260912_201355_candidate_photos'
   },
 ];
