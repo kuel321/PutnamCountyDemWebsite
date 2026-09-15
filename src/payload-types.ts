@@ -193,7 +193,7 @@ export interface ClubMemberAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  layout?: (ContentBlock | MeetingInfoBlock | CandidatesBlock | PresidentMessageBlock)[] | null;
+  layout?: (ContentBlock | MeetingInfoBlock | CandidatesBlock | PresidentMessageBlock | MediaContentBlock)[] | null;
   meta?: {
     title?: string | null;
     /**
@@ -263,6 +263,38 @@ export interface PresidentMessageBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'presidentMessage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaContentBlock".
+ */
+export interface MediaContentBlock {
+  /**
+   * Click into this field and paste (Ctrl+V / Cmd+V) an image copied from Facebook or another site to upload it directly — no trip to the Media Library required. Drag-and-drop and browsing existing media still work as usual.
+   */
+  media: number | Media;
+  /**
+   * If this photo/ad is from Facebook, Instagram, etc., paste the original post's URL here to make the image clickable back to the source.
+   */
+  externalLink?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaContent';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1289,6 +1321,7 @@ export interface PagesSelect<T extends boolean = true> {
         meetingInfo?: T | MeetingInfoBlockSelect<T>;
         candidates?: T | CandidatesBlockSelect<T>;
         presidentMessage?: T | PresidentMessageBlockSelect<T>;
+        mediaContent?: T | MediaContentBlockSelect<T>;
       };
   meta?:
     | T
@@ -1335,6 +1368,17 @@ export interface CandidatesBlockSelect<T extends boolean = true> {
  * via the `definition` "PresidentMessageBlock_select".
  */
 export interface PresidentMessageBlockSelect<T extends boolean = true> {
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaContentBlock_select".
+ */
+export interface MediaContentBlockSelect<T extends boolean = true> {
+  media?: T;
+  externalLink?: T;
+  content?: T;
   id?: T;
   blockName?: T;
 }

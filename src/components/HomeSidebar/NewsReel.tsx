@@ -17,8 +17,8 @@ export async function NewsReel() {
   if (highlights.length === 0) return null
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5">
-      <h3 className="text-lg font-semibold text-brand-navy">News Reel & Highlights</h3>
+    <div className="rounded-lg border border-gray-200 bg-white p-6 sm:p-8">
+      <h2 className="text-xl font-bold text-brand-navy sm:text-2xl">News Reel & Highlights</h2>
       <div className="mt-4">
         <AutoCarousel
           intervalMs={7000}

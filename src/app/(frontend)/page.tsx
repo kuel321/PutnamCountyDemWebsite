@@ -1,7 +1,8 @@
 import { getGlobal } from '@/utilities/getGlobals'
 import { resolveHref } from '@/components/Header/resolveHref'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
-import { HomeSidebar } from '@/components/HomeSidebar'
+import { NewsReel } from '@/components/HomeSidebar/NewsReel'
+import { UpcomingMeetings } from '@/components/HomeSidebar/UpcomingMeetings'
 import { CandidateAdsSpotlight } from '@/components/HomeSidebar/CandidateAdsSpotlight'
 import { RotatingWord } from '@/components/Hero/RotatingWord'
 
@@ -70,6 +71,12 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="px-6 pt-10 sm:pt-14">
+        <div className="mx-auto max-w-6xl">
+          <NewsReel />
+        </div>
+      </section>
+
       <section className="px-6 py-16 sm:py-20">
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-3">
           <div className="lg:col-span-2">
@@ -97,7 +104,9 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <HomeSidebar />
+          <aside>
+            <UpcomingMeetings />
+          </aside>
         </div>
       </section>
     </>

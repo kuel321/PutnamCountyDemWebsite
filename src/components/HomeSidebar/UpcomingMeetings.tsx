@@ -24,7 +24,7 @@ export async function UpcomingMeetings() {
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-5">
-      <h3 className="text-lg font-semibold text-brand-navy">Upcoming Meetings</h3>
+      <h2 className="text-xl font-bold text-brand-navy sm:text-2xl">Upcoming Meetings</h2>
       <ul className="mt-4 divide-y divide-gray-100">
         {meetings.map((meeting) => (
           <li key={meeting.id} className="flex gap-3 py-2.5 first:pt-0 last:pb-0">
