@@ -12,6 +12,18 @@ export default function AdminFooter() {
         lineHeight: '1.5',
       }}
     >
+      <a
+        href="/admin/guide"
+        style={{
+          display: 'inline-block',
+          marginBottom: '10px',
+          fontSize: '13px',
+          fontWeight: 600,
+          color: 'var(--theme-success-500)',
+        }}
+      >
+        📖 Admin Guide
+      </a>
       <p style={{ margin: 0, fontWeight: 600 }}>ChanceCMS by Chasing a Chance, LLC.</p>
       <p style={{ margin: '4px 0 0' }}>
         Please email{' '}

@@ -45,6 +45,12 @@ export default buildConfig({
         Logo: '@/components/AdminLogo',
         Icon: '@/components/AdminIcon',
       },
+      views: {
+        guide: {
+          Component: '@/components/AdminGuide/View',
+          path: '/guide',
+        },
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),
