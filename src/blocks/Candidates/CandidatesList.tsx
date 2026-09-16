@@ -41,21 +41,21 @@ function CandidateItem({ candidate }: { candidate: Candidate }) {
       </summary>
 
       <div className="mt-4 border-t border-gray-100 pt-4">
-        {candidate.content ? (
-          <RichText
-            data={candidate.content}
-            className="prose max-w-none prose-headings:text-brand-navy prose-a:text-brand-red"
-          />
-        ) : (
-          <p className="text-sm text-gray-500">Full bio coming soon.</p>
-        )}
-
         <a
           href={`/candidate/${candidate.slug}`}
-          className="mt-4 inline-block text-sm font-semibold text-brand-red hover:underline"
+          className="inline-block text-sm font-semibold text-brand-red hover:underline"
         >
           View full profile &rarr;
         </a>
+
+        {candidate.content ? (
+          <RichText
+            data={candidate.content}
+            className="prose mt-4 max-w-none prose-headings:text-brand-navy prose-a:text-brand-red"
+          />
+        ) : (
+          <p className="mt-4 text-sm text-gray-500">Full bio coming soon.</p>
+        )}
       </div>
     </details>
   )
