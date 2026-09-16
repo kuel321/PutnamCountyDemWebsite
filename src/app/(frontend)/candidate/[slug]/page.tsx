@@ -1,12 +1,15 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
+import { pointOnFeature } from '@turf/turf'
+import type { Polygon, MultiPolygon } from 'geojson'
 
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { Media } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { resolveHref } from '@/components/Header/resolveHref'
 import { SocialIcon, socialLinkLabel } from '@/components/SocialIcon'
+import { DistrictPreviewMap } from '@/components/DistrictPreviewMap'
 
 type CandidatePageProps = {
   params: Promise<{ slug: string }>
@@ -65,45 +68,72 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
       Boolean(item.image) && typeof item.image === 'object',
   )
 
+  let labelPosition: [number, number] | null = null
+  if (district?.boundary) {
+    try {
+      const [lon, lat] = pointOnFeature(
+        district.boundary as unknown as Polygon | MultiPolygon,
+      ).geometry.coordinates
+      labelPosition = [lat, lon]
+    } catch {
+      labelPosition = null
+    }
+  }
+
   return (
     <>
-      <section className="bg-brand-navy px-6 py-12 sm:py-16">
-        <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
-          {headshot && (
-            <img
-              src={getMediaUrl(headshot.url)}
-              alt={headshot.alt || candidate.title}
-              className="h-32 w-32 shrink-0 rounded-full border-4 border-white/20 object-cover sm:h-40 sm:w-40"
-            />
-          )}
-          <div>
-            <h1 className="text-3xl font-bold text-white sm:text-4xl">{candidate.title}</h1>
-            <p className="mt-2 text-white/70">
-              {typeLabels[candidate.type] ?? candidate.type}
-              {district && ` · ${district.title}`}
-            </p>
+      <section className="relative min-h-[22rem] overflow-hidden bg-brand-navy sm:min-h-[28rem]">
+        {district?.boundary && (
+          <DistrictPreviewMap
+            boundary={district.boundary as Record<string, unknown>}
+            label={district.title}
+            districtNumber={district.number ?? null}
+            labelPosition={labelPosition}
+            className="absolute inset-0"
+          />
+        )}
 
-            {candidate.links && candidate.links.length > 0 && (
-              <div className="mt-4 flex justify-center gap-3 sm:justify-start">
-                {candidate.links.map((item, index) => {
-                  const href = resolveHref(item.link)
-                  if (!href) return null
+        {/* Scrim so the centered text stays readable regardless of what the map is doing behind it. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/70 to-transparent" />
 
-                  return (
-                    <a
-                      key={item.id ?? index}
-                      href={href}
-                      target={item.link.newTab ? '_blank' : undefined}
-                      rel={item.link.newTab ? 'noopener noreferrer' : undefined}
-                      aria-label={item.link.label || socialLinkLabel(href)}
-                      className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-                    >
-                      <SocialIcon url={href} className="h-5 w-5" />
-                    </a>
-                  )
-                })}
-              </div>
+        <div className="absolute inset-0 flex items-center justify-center px-6">
+          <div className="flex flex-col items-center gap-6 text-center">
+            {headshot && (
+              <img
+                src={getMediaUrl(headshot.url)}
+                alt={headshot.alt || candidate.title}
+                className="h-32 w-32 shrink-0 rounded-full object-cover sm:h-40 sm:w-40"
+              />
             )}
+            <div>
+              <h1 className="text-3xl font-bold text-white sm:text-4xl">{candidate.title}</h1>
+              <p className="mt-2 text-white/70">
+                {typeLabels[candidate.type] ?? candidate.type}
+                {district && ` · ${district.title}`}
+              </p>
+
+              {candidate.links && candidate.links.length > 0 && (
+                <div className="mt-4 flex justify-center gap-3">
+                  {candidate.links.map((item, index) => {
+                    const href = resolveHref(item.link)
+                    if (!href) return null
+
+                    return (
+                      <a
+                        key={item.id ?? index}
+                        href={href}
+                        target={item.link.newTab ? '_blank' : undefined}
+                        rel={item.link.newTab ? 'noopener noreferrer' : undefined}
+                        aria-label={item.link.label || socialLinkLabel(href)}
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                      >
+                        <SocialIcon url={href} className="h-5 w-5" />
+                      </a>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
