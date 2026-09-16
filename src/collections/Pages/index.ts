@@ -11,6 +11,7 @@ import { MeetingInfo } from '@/blocks/MeetingInfo/config'
 import { Candidates } from '@/blocks/Candidates/config'
 import { PresidentMessage } from '@/blocks/PresidentMessage/config'
 import { MediaContent } from '@/blocks/MediaContent/config'
+import { FindDistrict } from '@/blocks/FindDistrict/config'
 
 import {
   MetaDescriptionField,
@@ -68,7 +69,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [Content, MeetingInfo, Candidates, PresidentMessage, MediaContent],
+              blocks: [Content, MeetingInfo, Candidates, PresidentMessage, MediaContent, FindDistrict],
               label: false,
             },
           ],

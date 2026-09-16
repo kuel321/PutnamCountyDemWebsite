@@ -38,7 +38,8 @@ export const Districts: CollectionConfig = {
       type: 'json',
       admin: {
         description:
-          'Placeholder for GeoJSON boundary data once real district shapes are available.',
+          'GeoJSON Polygon/MultiPolygon shape of this district, shown on candidate profile pages. Populated by scripts/build-district-boundaries.ts — re-run that after WV redistricts rather than editing this by hand.',
+        readOnly: true,
       },
     },
   ],

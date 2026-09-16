@@ -5,6 +5,7 @@ import { MeetingInfoBlock } from '@/blocks/MeetingInfo/Component'
 import { CandidatesBlock } from '@/blocks/Candidates/Component'
 import { PresidentMessageBlock } from '@/blocks/PresidentMessage/Component'
 import { MediaContentBlock } from '@/blocks/MediaContent/Component'
+import { FindDistrictBlock } from '@/blocks/FindDistrict/Component'
 
 type LayoutBlocks = NonNullable<Page['layout']>
 
@@ -27,6 +28,8 @@ export function RenderBlocks({ blocks }: { blocks?: LayoutBlocks | null }) {
             return <PresidentMessageBlock key={block.id ?? index} />
           case 'mediaContent':
             return <MediaContentBlock key={block.id ?? index} {...block} />
+          case 'findDistrict':
+            return <FindDistrictBlock key={block.id ?? index} {...block} />
           default:
             return null
         }

@@ -193,7 +193,16 @@ export interface ClubMemberAuthOperations {
 export interface Page {
   id: number;
   title: string;
-  layout?: (ContentBlock | MeetingInfoBlock | CandidatesBlock | PresidentMessageBlock | MediaContentBlock)[] | null;
+  layout?:
+    | (
+        | ContentBlock
+        | MeetingInfoBlock
+        | CandidatesBlock
+        | PresidentMessageBlock
+        | MediaContentBlock
+        | FindDistrictBlock
+      )[]
+    | null;
   meta?: {
     title?: string | null;
     /**
@@ -414,6 +423,17 @@ export interface FolderInterface {
   folderType?: 'media'[] | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FindDistrictBlock".
+ */
+export interface FindDistrictBlock {
+  heading?: string | null;
+  intro?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'findDistrict';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -684,7 +704,7 @@ export interface District {
    */
   number?: number | null;
   /**
-   * Placeholder for GeoJSON boundary data once real district shapes are available.
+   * GeoJSON Polygon/MultiPolygon shape of this district, shown on candidate profile pages. Populated by scripts/build-district-boundaries.ts — re-run that after WV redistricts rather than editing this by hand.
    */
   boundary?:
     | {
@@ -1322,6 +1342,7 @@ export interface PagesSelect<T extends boolean = true> {
         candidates?: T | CandidatesBlockSelect<T>;
         presidentMessage?: T | PresidentMessageBlockSelect<T>;
         mediaContent?: T | MediaContentBlockSelect<T>;
+        findDistrict?: T | FindDistrictBlockSelect<T>;
       };
   meta?:
     | T
@@ -1379,6 +1400,16 @@ export interface MediaContentBlockSelect<T extends boolean = true> {
   media?: T;
   externalLink?: T;
   content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FindDistrictBlock_select".
+ */
+export interface FindDistrictBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
   id?: T;
   blockName?: T;
 }

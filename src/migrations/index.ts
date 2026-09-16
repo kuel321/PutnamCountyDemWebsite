@@ -12,6 +12,7 @@ import * as migration_20260912_195900_president_message_author from './20260912_
 import * as migration_20260912_201355_candidate_photos from './20260912_201355_candidate_photos';
 import * as migration_20260912_203452_locked_docs_president_messages from './20260912_203452_locked_docs_president_messages';
 import * as migration_20260915_150000_media_content_block from './20260915_150000_media_content_block';
+import * as migration_20260916_133500_find_district_block from './20260916_133500_find_district_block';
 
 export const migrations = [
   {
@@ -83,5 +84,10 @@ export const migrations = [
     up: migration_20260915_150000_media_content_block.up,
     down: migration_20260915_150000_media_content_block.down,
     name: '20260915_150000_media_content_block'
+  },
+  {
+    up: migration_20260916_133500_find_district_block.up,
+    down: migration_20260916_133500_find_district_block.down,
+    name: '20260916_133500_find_district_block'
   },
 ];
