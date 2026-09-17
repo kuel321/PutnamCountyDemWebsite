@@ -81,6 +81,7 @@ export interface Config {
     users: User;
     'club-members': ClubMember;
     'president-messages': PresidentMessage;
+    'activity-log': ActivityLog;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -111,6 +112,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     'club-members': ClubMembersSelect<false> | ClubMembersSelect<true>;
     'president-messages': PresidentMessagesSelect<false> | PresidentMessagesSelect<true>;
+    'activity-log': ActivityLogSelect<false> | ActivityLogSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -129,10 +131,12 @@ export interface Config {
   globals: {
     footer: Footer;
     header: Header;
+    candidatePages: CandidatePage;
   };
   globalsSelect: {
     footer: FooterSelect<false> | FooterSelect<true>;
     header: HeaderSelect<false> | HeaderSelect<true>;
+    candidatePages: CandidatePagesSelect<false> | CandidatePagesSelect<true>;
   };
   locale: null;
   widgets: {
@@ -703,6 +707,10 @@ export interface Candidate {
       }[]
     | null;
   /**
+   * Extra blocks shown at the bottom of this candidate's profile page, below their bio, photos, and ads. The profile page itself always exists as long as this candidate record does — these blocks just add to it.
+   */
+  layout?: (ContentBlock | MediaContentBlock | MediaGridBlock)[] | null;
+  /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
@@ -858,6 +866,33 @@ export interface PresidentMessage {
    * Site-wide shows this as a banner on every page. "Only where added as a block" only shows it on pages where a President's Message block has been manually added.
    */
   placement: 'sitewide' | 'block';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Automatic record of who changed what, and when. Written by the system — nothing here is entered by hand.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activity-log".
+ */
+export interface ActivityLog {
+  id: number;
+  summary?: string | null;
+  actor?:
+    | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'club-members';
+        value: number | ClubMember;
+      } | null);
+  action?: ('create' | 'update' | 'delete') | null;
+  /**
+   * Which collection or setting this happened in.
+   */
+  area?: string | null;
+  item?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1278,6 +1313,10 @@ export interface PayloadLockedDocument {
         value: number | PresidentMessage;
       } | null)
     | ({
+        relationTo: 'activity-log';
+        value: number | ActivityLog;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1668,6 +1707,13 @@ export interface CandidatesSelect<T extends boolean = true> {
         image?: T;
         id?: T;
       };
+  layout?:
+    | T
+    | {
+        content?: T | ContentBlockSelect<T>;
+        mediaContent?: T | MediaContentBlockSelect<T>;
+        mediaGrid?: T | MediaGridBlockSelect<T>;
+      };
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -1770,6 +1816,19 @@ export interface PresidentMessagesSelect<T extends boolean = true> {
   displayDate?: T;
   archiveDate?: T;
   placement?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activity-log_select".
+ */
+export interface ActivityLogSelect<T extends boolean = true> {
+  summary?: T;
+  actor?: T;
+  action?: T;
+  area?: T;
+  item?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2128,6 +2187,19 @@ export interface Header {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "candidatePages".
+ */
+export interface CandidatePage {
+  id: number;
+  /**
+   * Shown on every candidate's profile page (below their bio/photos/ads, above that candidate's own Additional Content Blocks). Use this for things like the district finder that should appear everywhere, instead of adding it to each candidate one by one.
+   */
+  layout?: (FindDistrictBlock | ContentBlock | MediaContentBlock | MediaGridBlock)[] | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
@@ -2188,6 +2260,23 @@ export interface HeaderSelect<T extends boolean = true> {
     | {
         text?: T;
         url?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "candidatePages_select".
+ */
+export interface CandidatePagesSelect<T extends boolean = true> {
+  layout?:
+    | T
+    | {
+        findDistrict?: T | FindDistrictBlockSelect<T>;
+        content?: T | ContentBlockSelect<T>;
+        mediaContent?: T | MediaContentBlockSelect<T>;
+        mediaGrid?: T | MediaGridBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

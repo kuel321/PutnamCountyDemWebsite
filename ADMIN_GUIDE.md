@@ -1,328 +1,286 @@
-# Putnam County Democratic Party Website — Admin Guide
+# Putnam County Democratic Party Website Admin Guide
 
-This guide walks through everyday tasks in the site's admin panel: creating and editing pages, building pages out of content blocks, managing photos, running the Members-Only area, and publishing changes. It assumes no prior experience with the system.
+This guide covers the things you'll use most often in the website's admin area: updating pages, adding photos, managing meetings and candidates, publishing changes, and working with the members-only section.
 
-**Admin panel address:** `https://[your-site-domain]/admin`
+You don't need any technical experience to use it. If something feels unclear or looks broken, just reach out to Luke rather than worrying about messing anything up.
 
----
+**Admin address:** `https://[your-site-domain]/admin`
 
-## Table of Contents
+## Table of contents
 
-1. [Logging In](#1-logging-in)
-2. [The Admin Panel at a Glance](#2-the-admin-panel-at-a-glance)
-3. [Creating and Editing Pages](#3-creating-and-editing-pages)
-4. [Building a Page with Blocks](#4-building-a-page-with-blocks)
-5. [The Media Library (Photos & Files)](#5-the-media-library-photos--files)
-6. [Drafts, Publishing & Preview](#6-drafts-publishing--preview)
-7. [Site-Wide Settings: Header & Footer](#7-site-wide-settings-header--footer)
-8. [Home Page Content: News Reel & Highlights](#8-home-page-content-news-reel--highlights)
-9. [Meetings & Meeting Minutes](#9-meetings--meeting-minutes)
-10. [Candidates & Districts](#10-candidates--districts)
-11. [President's Messages](#11-presidents-messages)
-12. [The Members-Only Area](#12-the-members-only-area)
-13. [Staff Accounts (Users)](#13-staff-accounts-users)
-14. [SEO Settings](#14-seo-settings)
-15. [Troubleshooting / FAQ](#15-troubleshooting--faq)
-16. [Getting Help](#16-getting-help)
+1. [Logging in](#1-logging-in)
+2. [Finding your way around](#2-finding-your-way-around)
+3. [Creating and editing pages](#3-creating-and-editing-pages)
+4. [Building a page with blocks](#4-building-a-page-with-blocks)
+5. [Photos and files](#5-photos-and-files)
+6. [Drafts, publishing, and previewing](#6-drafts-publishing-and-previewing)
+7. [Header and footer](#7-header-and-footer)
+8. [Home page news and highlights](#8-home-page-news-and-highlights)
+9. [Meetings and meeting minutes](#9-meetings-and-meeting-minutes)
+10. [Candidates and districts](#10-candidates-and-districts)
+11. [President's messages](#11-presidents-messages)
+12. [Members-only area](#12-members-only-area)
+13. [Activity log](#13-activity-log)
+14. [Staff accounts](#14-staff-accounts)
+15. [SEO settings](#15-seo-settings)
+16. [Common questions](#16-common-questions)
+17. [Getting help](#17-getting-help)
 
----
+## 1. Logging in
 
-## 1. Logging In
+1. Go to `/admin` on the website. For example: `https://yoursite.com/admin`.
+2. Enter the email address and password for your staff account.
+3. After logging in, you'll land on the Dashboard. The menu on the left contains the different parts of the site you can manage.
 
-1. Go to `/admin` on the website (e.g. `https://yoursite.com/admin`).
-2. Enter the email and password for your staff account.
-3. You'll land on the **Dashboard**, which lists every content type ("collection") down the left sidebar, grouped into sections.
+Your staff login is separate from the login club members use for the members-only area. If you need a staff account, someone who already has access can create one for you under **Admin → Users**.
 
-> **Note:** This staff login is completely separate from the **Members-Only** login that club members use on the public site. See [Section 12](#12-the-members-only-area) for that.
+## 2. Finding your way around
 
-If you don't have a staff account yet, someone who already has one needs to create it for you — see [Section 13](#13-staff-accounts-users).
+The menu on the left is divided into a few groups:
 
----
-
-## 2. The Admin Panel at a Glance
-
-The left sidebar is organized into groups:
-
-| Group | What's in it |
+| Group | What you'll find there |
 |---|---|
-| **Content** | Pages, Media (photo/file library), News Reel & Highlights, President's Messages |
-| **Meetings** | Meetings, Meeting Minutes |
-| **Candidates** | Candidates, Districts |
-| **Club Members** | Club Members (member accounts), Minutes Submissions |
-| **Site-wide** | Header, Footer |
-| **Admin** | Users (staff accounts) |
+| **Content** | Pages, photos and files, News Reel & Highlights, and President's Messages |
+| **Meetings** | Meetings and Meeting Minutes |
+| **Candidates** | Candidates, Districts, and content shared across candidate pages |
+| **Club Members** | Member accounts and submitted meeting minutes |
+| **Site-wide** | Header and Footer settings |
+| **Admin** | Staff user accounts and the activity log |
 
-Clicking any item in the sidebar shows a list of that content type; click **Create New** (top right of a list view) to add a new one, or click an existing row to edit it.
+Select an item to see everything already saved in that section. From there, choose an existing item to edit it or select **Create New** in the upper-right corner.
 
----
+## 3. Creating and editing pages
 
-## 3. Creating and Editing Pages
+Pages are used for most of the site's general content, including About, History, Leadership, Get Involved, Events, News, and The Issues.
 
-Pages are the general-purpose building block for everything that isn't a specialized list (like Meetings or Candidates) — About, History, Leadership, Get Involved, Events, News, The Issues, etc.
+### Creating a page
 
-### To create a new page
+1. Go to **Content → Pages**, then select **Create New**.
+2. Enter a **Title**.
+3. Open the **Content** tab and add the blocks you want to use. Blocks are covered in the next section.
+4. Check the **Slug** in the sidebar. This becomes the page's URL, so a slug of `about` creates `yoursite.com/about`. It is filled in from the title automatically, but you can unlock the field and change it if needed.
+5. Save the page as a draft or publish it when you're ready for it to go live.
 
-1. Sidebar → **Content → Pages** → **Create New**.
-2. Fill in the **Title** — this is what shows in the browser tab and at the top of the page.
-3. Go to the **Content** tab and add [blocks](#4-building-a-page-with-blocks) to build out the page (see next section).
-4. Check the **Slug** field (in the sidebar) — this is the page's URL (e.g. `about` makes the page live at `yoursite.com/about`). It fills in automatically from the title; there's a small icon next to it to unlock it and edit it manually if you need a different URL.
-5. Click **Save** (draft) or **Publish** at the top right when ready — see [Section 6](#6-drafts-publishing--preview) for the difference.
+### Editing a page
 
-### To edit an existing page
+Go to **Content → Pages**, select the page, make your changes, and then choose **Save** or **Publish**.
 
-Sidebar → **Content → Pages** → click the page in the list → make your changes → **Save** or **Publish**.
+Creating a page does not automatically add it to the website's menu. To do that, you'll also need to update the Header under **Site-wide**.
 
-### Adding the page to the site's navigation menu
+## 4. Building a page with blocks
 
-Creating a page does **not** automatically add a link to it in the header menu — that's a separate step. See [Section 7](#7-site-wide-settings-header--footer).
-
----
-
-## 4. Building a Page with Blocks
-
-Every page is built by stacking **blocks** on top of each other in the **Content** tab. Click **+ Add Block** to insert one, drag the handle on the left of a block to reorder it, and use the trash icon to remove one.
-
-Here's what each available block does:
+Pages are built by stacking content blocks in whatever order you need. In the **Content** tab, select **Add Block** to add a section. You can drag blocks to reorder them or use the trash icon to remove them.
 
 ### Content
 
-A plain rich-text block — paragraphs, headings, bold/italic, links, bullet lists, horizontal dividers. Use this for ordinary body text. There's a formatting toolbar at the top of the text area (bold, italic, headings, etc.).
+Use this for regular text: paragraphs, headings, links, lists, dividers, and bold or italic formatting.
 
 ### Media + Content (Side-by-Side)
 
-Use this when you want a **photo or ad next to a paragraph of text** — for example, a Facebook announcement with its image on one side and the write-up beside it. This is the main block for the **News & Resources** page.
+This places a photo or ad next to a section of text. It's especially useful for announcements on the **News & Resources** page.
 
-Fields:
-- **Media** — the photo. See the callout below — you can paste an image directly here.
-- **Link back to original post** *(optional)* — if the photo came from Facebook, Instagram, etc., paste that post's URL here and the photo becomes clickable, opening the original post in a new tab.
-- **Content** — the write-up/announcement text, using the same rich-text toolbar as the Content block.
+- **Media:** The image you want to show.
+- **Link back to original post:** Optional. If the image came from Facebook, Instagram, or another website, paste the original post's URL here to make the image clickable.
+- **Content:** The text that appears beside the image.
 
-> **📋 Pasting a photo directly (no separate upload step)**
-> Click into the **Media** field, then press **Ctrl+V** (or **Cmd+V** on a Mac) to paste an image you've copied — for example, right-click a photo on Facebook and choose **Copy Image**, then paste it straight into this field. It uploads automatically; you don't need to save it to your computer or visit the Media Library first.
-> You can still drag a file in, or click to browse and pick an existing photo from the Media Library, the normal way — pasting is just an extra shortcut.
-> If a paste doesn't take (you'll see "Could not upload the pasted image"), drag-and-drop the file instead as a fallback.
+**Quick way to add an image:** Copy the image, click inside the Media field, and press **Ctrl+V** on Windows or **Cmd+V** on a Mac. The site will upload it for you. You can also drag in a file or choose one from the Media Library. If pasting doesn't work, save the image and drag the file into the field instead.
 
 ### Meeting Info
 
-Automatically shows the club's meeting schedule/location info pulled from the **Meetings** collection ([Section 9](#9-meetings--meeting-minutes)). No fields to fill in here — just drop the block on a page (e.g. "Meeting Dates & Location") and it stays current on its own.
+This automatically displays information from the **Meetings** section. There aren't any fields to fill out in the block itself. Add it to a page and it will stay updated as meetings are added or changed.
 
 ### Candidates
 
-Shows the full candidate roster, automatically pulled from the **Candidates** collection ([Section 10](#10-candidates--districts)), with filter buttons (All / Federal-State / Putnam Co.) and grouping by district. The only field is a **Heading** above the list (defaults to "Meet Our Candidates") — change it if you want different wording.
+This pulls in the candidate roster and organizes it by candidate type and district. You can change the heading above the list, which defaults to “Meet Our Candidates.” Candidate information itself is managed under **Candidates → Candidates**.
 
 ### President's Message
 
-Displays whichever President's Message is currently active ([Section 11](#11-presidents-messages)). No fields — just add it to a page if you want the message to also appear inline on that page (most of the time it already shows as a banner site-wide, so you usually won't need this block).
+This displays the currently active President's Message. Since messages can already be shown across the whole site, you'll generally only use this block when you want the message to appear inside a specific page.
 
----
+## 5. Photos and files
 
-## 5. The Media Library (Photos & Files)
+Go to **Content → Media** to see the photos, PDFs, and other files uploaded to the site.
 
-Sidebar → **Content → Media**. This is every photo, PDF, and file uploaded anywhere on the site.
+### Uploading from the Media Library
 
-### Uploading directly
+1. Select **Create New**.
+2. Drag in a file or click to browse your computer.
+3. Add **Alt Text**, which is a short description used by screen readers, such as “Candidate John Smith headshot.”
+4. Add a caption if you want one displayed with the image.
+5. Select **Save**.
 
-1. **Create New** → drag a file in, or click to browse.
-2. **Alt Text** — a short description for accessibility/screen readers (e.g. "Candidate John Smith headshot"). Good practice to fill in, especially for photos.
-3. **Caption** *(optional)* — text shown under the image in places that display captions.
-4. **Save**.
+Most of the time, you won't need to open the Media Library first. Image fields throughout the admin area allow you to upload or drag in a new file while you're editing the page, meeting, or candidate.
 
-### Uploading while editing a page (the easier way)
+## 6. Drafts, publishing, and previewing
 
-Most of the time you don't need to visit the Media Library at all — any field that takes a photo (a block's Media field, a candidate's headshot, etc.) lets you drag a file in or browse-and-upload right from that field. And for the **Media + Content** block specifically, you can paste a copied image directly — see the callout in [Section 4](#4-building-a-page-with-blocks).
+Pages and Meeting Minutes can be saved as drafts.
 
----
+- **Save** keeps your changes as a draft without changing the public website.
+- **Publish** makes the current version live.
+- **Preview** opens the draft as it will appear on the website, without making it public.
 
-## 6. Drafts, Publishing & Preview
+It's fine to save unfinished work and come back to it later. The public version won't change until you publish.
 
-Pages (and Meeting Minutes) support **drafts**:
+## 7. Header and footer
 
-- **Save** — stores your changes as a draft. The public page is *not* updated. Only logged-in staff can see the draft version.
-- **Publish** — makes the current version live on the public site immediately.
-- You can keep editing and re-saving a draft indefinitely before publishing, so it's safe to leave work half-finished.
-
-### Preview
-
-While editing a page, the **Preview** button (top right) opens the page in a new tab exactly as it will look when published — including any unpublished draft changes — without anyone else being able to see those changes. Some editors also show a **live preview** panel that updates as you type.
-
----
-
-## 7. Site-Wide Settings: Header & Footer
-
-These two live under the **Site-wide** group and control elements that appear on *every* page.
+The Header and Footer are under **Site-wide** because changes made there appear across the entire website.
 
 ### Header
 
-Sidebar → **Site-wide → Header**.
+Go to **Site-wide → Header** to manage:
 
-- **Logo** — the logo shown top-left of every page.
-- **Nav Items** — the menu links across the top of the site. Each item has:
-  - **Label** — the text shown in the menu.
-  - **Type** — either:
-    - **Direct Link** — clicking it goes straight to a page (or a custom URL).
-    - **Dropdown** — clicking/hovering shows a list of **Sub Links** underneath it (used for the "Members" menu item, which drops down to "Members" and "Members Only" — see [Section 12](#12-the-members-only-area)).
-  - For a Direct Link (or each Sub Link), you choose **Internal link** (pick an existing Page/Post from a dropdown) or **Custom URL** (type any address, e.g. `/members` or an external site).
-- **Donate Button** — the button text and link shown at the far right of the menu.
+- **Logo:** The logo in the upper-left corner.
+- **Nav Items:** The links in the main menu.
+- **Donate Button:** The label and destination for the button on the right side of the menu.
 
-Drag items up/down to reorder the menu. **Save** when done — changes apply site-wide immediately.
+A navigation item can be either a **Direct Link**, which opens one page, or a **Dropdown**, which contains several links. For each link, you can select an existing page or enter a custom URL. Drag items to change their order, then save your changes.
 
 ### Footer
 
-Sidebar → **Site-wide → Footer**.
+Go to **Site-wide → Footer** to update the contact email, social links, and the small “Site by…” credit. Add one social link for each platform you want displayed.
 
-- **Contact Email**
-- **Chasing a Chance Link** — where the small "Site by..." credit in the footer corner points to.
-- **Social Links** — add one entry per platform (Facebook, Instagram, X/Twitter) with its URL. These show as icons in the footer.
+## 8. Home page news and highlights
 
----
+Go to **Content → News Reel & Highlights** to manage the rotating messages near the top of the home page.
 
-## 8. Home Page Content: News Reel & Highlights
+Each item has a title, an order number, and the message itself. Lower order numbers appear first. Add, remove, or reorder these items whenever you need to; the home page updates from this list automatically.
 
-Sidebar → **Content → News Reel & Highlights** (collection name: *Highlights*). This feeds the rotating banner near the top of the home page.
-
-- **Title** — short headline.
-- **Order** — lower numbers show first in the rotation.
-- **Content** — the message body (rich text).
-
-Add, remove, or reorder these any time — the home page always shows whatever currently exists, in **Order** sequence.
-
----
-
-## 9. Meetings & Meeting Minutes
+## 9. Meetings and meeting minutes
 
 ### Meetings
 
-Sidebar → **Meetings → Meetings**. One entry per club meeting.
+Go to **Meetings → Meetings**. Create one item for each club meeting and fill in its title, date, time, location, and any notes.
 
-- **Title**, **Date**, **Time** *(free text, e.g. "6:30pm" or "TBD")*, **Location**, **Notes**.
-- **Photos** — add photos from that meeting. Each photo has a **"Don't show on public page"** checkbox — check it to keep a photo visible only to logged-in members (Members-Only area) instead of the public Meeting Dates & Location page.
+You can also add photos from the meeting. Check **Don't show on public page** if a photo should only be visible to logged-in members.
 
-These automatically feed both the **Meeting Info** block ([Section 4](#4-building-a-page-with-blocks)) and the "Upcoming Meetings" list on the home page (which only shows meetings dated today or later).
+Meeting records feed the Meeting Info block and the Upcoming Meetings section on the home page. The home page only shows meetings happening today or later.
 
 ### Meeting Minutes
 
-Sidebar → **Meetings → Meeting Minutes**. This is what members see in the [Members-Only area](#12-the-members-only-area).
+Go to **Meetings → Meeting Minutes** and select **Create New**.
 
-1. **Create New**.
-2. **Title**, **Date**, optionally link it to the corresponding **Meeting**.
-3. **Content** — type up the minutes directly (rich text), and/or
-4. **File** — upload the original PDF/Word document if one exists.
-5. **Save** as a draft while you're still working on it, then **Publish** when it's ready for members to see — only **published** minutes appear in the Members-Only list.
+1. Enter the title and date.
+2. Link the minutes to the corresponding meeting if applicable.
+3. Type the minutes into the Content field, upload the original PDF or Word document, or do both.
+4. Save your work as a draft until it's ready, then publish it.
 
-> There's also a **Minutes Submissions** list under **Club Members** in the sidebar — that's a review queue for minutes members can submit themselves; if any submitted item shows up "Pending Review" there, review it and change its status to **Approved** (that publishes it automatically) or **Rejected**.
+Only published minutes appear in the members-only area.
 
----
+Members can also submit minutes for review. Those appear under **Club Members → Minutes Submissions**. Open a pending submission and mark it **Approved** to publish it or **Rejected** to decline it.
 
-## 10. Candidates & Districts
+## 10. Candidates and districts
 
 ### Candidates
 
-Sidebar → **Candidates → Candidates**.
+Go to **Candidates → Candidates** to create or update a candidate profile. Each record includes:
 
-- **Candidate Name**, **Type** (*Federal/State* or *Putnam Co.*).
-- **District** *(only for Putnam Co. candidates)* — which voting district they're running in.
-- **Office/Race** — e.g. "US Senate Candidate."
-- **Headshot** — profile photo.
-- **Content** — bio text (rich text).
-- **Links** — website / Facebook page links.
-- **Photos** — general event photos shown on their profile page.
-- **Gallery** — ad images used in the home page's rotating ad spotlight and on their profile page.
-- **Slug** — controls their profile page URL (`yoursite.com/candidate/their-slug`).
+- Candidate name and type
+- District, when applicable
+- Office or race
+- Headshot
+- Bio
+- Website and social links
+- Event photos
+- Campaign ads
+- Slug, which controls the profile URL
+- Additional Content Blocks for anything extra that belongs only on that candidate's page
+
+Candidate pages work a little differently from regular pages. A regular page's layout is built from blocks stored in Payload and passed to `<RenderBlocks />`. Candidate pages use their own `[slug]/page.tsx` route with the main layout written in JSX. Payload supplies the candidate's information, but the React template controls where the headshot, bio, photos, ads, and other standard sections appear.
+
+In other words, the candidate's content is editable in the CMS, but the main page layout is fixed in code. **Additional Content Blocks** gives you a way to add custom sections to the bottom of one candidate's page without changing that template.
+
+### Content shared across every candidate page
+
+Go to **Candidates → Candidate Pages (All Candidates)** to add content that should appear on every candidate profile. This is useful for shared sections such as the district finder.
+
+The page order is:
+
+1. The candidate's standard profile content
+2. Blocks shared across all candidate pages
+3. Additional blocks added to that individual candidate
 
 ### Districts
 
-Sidebar → **Candidates → Districts**. Just a **Title** (e.g. "District 3") and **Number** (controls sort order) — used to group candidates by district wherever the Candidates block is shown.
+Go to **Candidates → Districts** to manage the districts used to group candidates. The **Number** field controls the order in which districts appear.
 
----
+## 11. President's messages
 
-## 11. President's Messages
+Go to **Content → President's Messages** to create or update a message.
 
-Sidebar → **Content → President's Messages**.
+- **Title:** The internal label for the message.
+- **Author:** The staff user credited with the message.
+- **Message:** The text that will be displayed.
+- **Display Date:** When the message should begin appearing.
+- **Archive Date:** Optional. When the message should stop appearing.
+- **Placement:** Show it as a site-wide banner or only on pages where the President's Message block has been added.
 
-- **Title** — internal label; the public banner heading is generic unless you change this.
-- **Author** — pick a staff user (their name/photo comes from their [Users](#13-staff-accounts-users) profile).
-- **Message** — the text.
-- **Display Date** — when the message starts showing.
-- **Archive Date** *(optional)* — when it stops showing. Leave blank to let it keep showing until you add a newer one.
-- **Placement**:
-  - *Site-wide banner* — shows automatically on every page.
-  - *Only where added as a block* — only shows on pages where you've manually added the President's Message block.
+If more than one message falls within its display window, the most recent one is shown.
 
-Only one message is ever active at a time — whichever one's display window (Display Date reached, Archive Date not yet passed) is most recent.
+## 12. Members-only area
 
----
+The members-only section uses a separate login from the website admin.
 
-## 12. The Members-Only Area
-
-This is a separate password-protected area for club members — distinct from staff logins.
-
-### How a visitor gets there
-
-The header menu's **Members** item is a dropdown:
-- **Members** — a normal, public page anyone can view.
-- **Members Only** — goes to `/members`, which requires a member login. If not logged in, it redirects to a login form first.
+The **Members** menu contains two links: a public Members page and a protected Members Only page at `/members`. Visitors who aren't logged in are sent to the member login screen.
 
 ### Creating a member account
 
-1. Sidebar → **Club Members → Club Members** → **Create New**.
-2. Fill in their **Name**, **Email**, and set a **Password**.
-3. **Access Enabled** is checked by default — leave it checked to allow them to log in.
-4. **Save**.
+1. Go to **Club Members → Club Members** and select **Create New**.
+2. Enter the member's name and email address, then set a password.
+3. Leave **Access Enabled** checked.
+4. Save the account and give the member the email address and password you set.
 
-Give the member their email and the password you set (there's currently no self-service "forgot password" flow for this login, so if they lose it, reset it here and tell them the new one).
+There isn't currently a self-service password reset for members. If someone forgets their password, open their record, set a new one, and send it to them.
 
-### Disabling a member without deleting them
+To temporarily remove access without deleting the account, uncheck **Access Enabled**. You can turn it back on later.
 
-Uncheck **Access Enabled** on their record and **Save**. They'll no longer be able to log in, but their account and history stay intact — check the box again any time to restore access.
+After logging in, members can view all published Meeting Minutes and log out. Draft minutes are never shown there.
 
-### What a member sees after logging in
+## 13. Activity log
 
-A simple dashboard listing all **published** Meeting Minutes ([Section 9](#9-meetings--meeting-minutes)) as an expandable accordion, plus a **Log Out** button. That's it today — draft minutes never show here, only published ones.
+Go to **Admin → Activity Log** to see a running record of who changed what, and when — for example, "Jane Smith updated Pages: About" or "Luke deleted Media: old-flyer.jpg."
 
----
+This list is written automatically by the site itself every time something is created, changed, or deleted — there's nothing to fill in here, and entries can't be edited or removed. It's meant purely as a reference if you ever need to check who made a particular change.
 
-## 13. Staff Accounts (Users)
+## 14. Staff accounts
 
-Sidebar → **Admin → Users**. This is for people who need to log into `/admin` and manage content — a different system from Club Members above.
+Go to **Admin → Users** to manage people who can log into the website admin. This is separate from the Club Members list.
 
-1. **Create New** → fill in **Name**, **Email**, **Password**, and optionally a profile **Image** (shown wherever they're credited, e.g. as a President's Message author).
-2. **Save**.
+To add someone, select **Create New**, then enter their name, email address, password, and an optional profile photo. The profile photo can appear anywhere they're credited, such as a President's Message. A welcome email is sent when the account is created.
 
-The new person gets a welcome/notification email automatically when their account is created.
+Staff accounts have access to edit the site's pages, collections, and site-wide settings, so they should only be created for people who need that level of access.
 
-> Be thoughtful about who gets a staff account — anyone with one can edit every page, every collection, and site-wide settings.
+## 15. SEO settings
 
----
+Regular pages have an **SEO** tab with three optional fields:
 
-## 14. SEO Settings
+- **Meta Title:** The title used in search results.
+- **Meta Description:** The short description shown below it.
+- **Meta Image:** The image used when the page is shared on social media.
 
-Every page has an **SEO** tab (next to **Content**) with:
-- **Meta Title** / **Meta Description** — what shows up in Google search results and when the page link is shared.
-- **Meta Image** — the preview image used when the page is shared on social media.
+These are worth filling out for important pages, but you don't have to complete them before publishing.
 
-Fill these in for any page you want to show up well in search results or look good when shared — it's optional but recommended for the more important pages.
+## 16. Common questions
 
----
+### I published a change, but I don't see it yet
 
-## 15. Troubleshooting / FAQ
+Most pages update right away, but some areas, including the home page, can take a short time to refresh. Give it a minute, then reload the page.
 
-**"I published a page but the change isn't showing on the live site yet."**
-Most pages update immediately. A few things (like the home page) refresh on a short delay rather than instantly — give it a minute and refresh.
+### An image is broken or missing
 
-**"An image shows as broken/missing."**
-Make sure the Media item still exists in the Media Library and hasn't been deleted, and that the field is actually pointing at an uploaded image (not left empty).
+Check that the image still exists under **Content → Media** and that the image field isn't empty.
 
-**"I can't log into the Members-Only area."**
-Check the **Club Members** record for that email — is **Access Enabled** checked? If they've forgotten their password, set a new one on their record and give it to them.
+### A member can't log in
 
-**"A block I added isn't showing anything."**
-Some blocks (Meeting Info, Candidates, President's Message) pull their content automatically from other collections — if the underlying collection is empty (no meetings, no candidates, no active message), the block has nothing to show and stays blank. Add the underlying content first.
+Open their record under **Club Members** and make sure **Access Enabled** is checked. If they forgot their password, set a new one and send it to them.
 
-**"The pasted image in the Media + Content block didn't work."**
-Make sure you copied an actual image (not just a link/text) before pasting, and that you clicked directly into the Media field first. If it still doesn't work, drag the image file in instead, or download it and upload it normally.
+### A block I added is blank
 
----
+Some blocks pull information from another part of the admin. For example, Meeting Info needs at least one meeting, Candidates needs candidate records, and President's Message needs an active message. If there isn't any content available to pull in, the block won't have anything to display.
 
-## 16. Getting Help
+### I couldn't paste an image into the Media + Content block
 
-For anything not covered here, or if something looks broken rather than just unfamiliar, reach out to Luke (site developer) rather than guessing — some things (site-wide settings, navigation, user accounts) are easy to get into a confusing state if edited by more than one person at once.
+Make sure you copied the image itself rather than the page link, and click inside the Media field before pasting. If it still doesn't work, save the image to your computer and drag the file into the field.
+
+## 17. Getting help
+
+If something isn't covered here, or the site seems broken rather than unfamiliar, reach out to Luke. A quick question is usually easier to sort out than trying to untangle a setting you're unsure about.

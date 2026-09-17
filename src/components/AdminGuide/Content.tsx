@@ -612,7 +612,36 @@ export function AdminGuideContent() {
                 <strong>Slug</strong> — controls their profile page URL (
                 <code style={codeStyle}>yoursite.com/candidate/their-slug</code>).
               </li>
+              <li>
+                <strong>Additional Content Blocks</strong> — extra blocks (Content, Media +
+                Content, Photo Grid) shown at the very bottom of <em>this candidate&apos;s</em>{' '}
+                profile page, below their bio, photos, and ads. Use this for anything specific to
+                that one candidate.
+              </li>
             </ul>
+            <Banner type="info">
+              Candidate profile pages aren&apos;t built page-by-page the way regular Pages are —
+              a candidate&apos;s page (headshot, name, bio, photos, ads) is generated
+              automatically the moment you fill in their info, so there&apos;s nothing to
+              &ldquo;build.&rdquo; The Additional Content Blocks field above is just a way to tack
+              extra content onto the bottom of that auto-generated page.
+            </Banner>
+
+            <h3 style={h3Style}>Blocks Shown on Every Candidate&apos;s Page</h3>
+            <p style={pStyle}>
+              Sidebar → <strong>Candidates → Candidate Pages (All Candidates)</strong>. This is
+              different from the Additional Content Blocks on an individual candidate above —
+              anything added here (Find Your District, Content, Media + Content, Photo Grid)
+              shows up on <strong>every</strong> candidate&apos;s profile page automatically,
+              without editing each candidate one by one. Use this for things every candidate&apos;s
+              page should have, like the district finder tool.
+            </p>
+            <p style={pStyle}>
+              Order on the page, top to bottom: the candidate&apos;s photo/bio/photos/ads (always
+              there) → blocks from this shared setting → that candidate&apos;s own Additional
+              Content Blocks.
+            </p>
+
             <h3 style={h3Style}>Districts</h3>
             <p style={pStyle}>
               Sidebar → <strong>Candidates → Districts</strong>. Just a Title (e.g.

@@ -5,6 +5,7 @@ import path from 'path'
 import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
+import { ActivityLog } from './collections/ActivityLog'
 import { Candidates } from './collections/Candidates'
 import { Categories } from './collections/Categories'
 import { ClubMembers } from './collections/ClubMembers'
@@ -20,9 +21,11 @@ import { PresidentMessages } from './collections/PresidentMessages'
 import { Users } from './collections/Users'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
+import { CandidatePages } from './globals/CandidatePages'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { withActivityLogging, withGlobalActivityLogging } from './hooks/activityLog'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -97,7 +100,7 @@ export default buildConfig({
       },
     },
   }),
-  collections: [
+  collections: withActivityLogging([
     Pages,
     Posts,
     Media,
@@ -111,10 +114,11 @@ export default buildConfig({
     Users,
     ClubMembers,
     PresidentMessages,
-  ],
+    ActivityLog,
+  ]),
   cors: [getServerSideURL()].filter(Boolean),
   serverURL: getServerSideURL(),
-  globals: [Footer, Header],
+  globals: withGlobalActivityLogging([Footer, Header, CandidatePages]),
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

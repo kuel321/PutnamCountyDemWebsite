@@ -14,6 +14,9 @@ import * as migration_20260912_203452_locked_docs_president_messages from './202
 import * as migration_20260915_150000_media_content_block from './20260915_150000_media_content_block';
 import * as migration_20260916_133500_find_district_block from './20260916_133500_find_district_block';
 import * as migration_20260917_143700_media_grid_block from './20260917_143700_media_grid_block';
+import * as migration_20260917_152500_candidates_layout_blocks from './20260917_152500_candidates_layout_blocks';
+import * as migration_20260917_162000_candidate_pages_global from './20260917_162000_candidate_pages_global';
+import * as migration_20260917_170500_activity_log from './20260917_170500_activity_log';
 
 export const migrations = [
   {
@@ -95,5 +98,20 @@ export const migrations = [
     up: migration_20260917_143700_media_grid_block.up,
     down: migration_20260917_143700_media_grid_block.down,
     name: '20260917_143700_media_grid_block'
+  },
+  {
+    up: migration_20260917_152500_candidates_layout_blocks.up,
+    down: migration_20260917_152500_candidates_layout_blocks.down,
+    name: '20260917_152500_candidates_layout_blocks'
+  },
+  {
+    up: migration_20260917_162000_candidate_pages_global.up,
+    down: migration_20260917_162000_candidate_pages_global.down,
+    name: '20260917_162000_candidate_pages_global'
+  },
+  {
+    up: migration_20260917_170500_activity_log.up,
+    down: migration_20260917_170500_activity_log.down,
+    name: '20260917_170500_activity_log'
   },
 ];

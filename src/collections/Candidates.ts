@@ -13,6 +13,9 @@ import { slugField } from 'payload'
 import { linkGroup } from '@/fields/linkGroup'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { Content } from '@/blocks/Content/config'
+import { MediaContent } from '@/blocks/MediaContent/config'
+import { MediaGrid } from '@/blocks/MediaGrid/config'
 
 export const Candidates: CollectionConfig = {
   slug: 'candidates',
@@ -127,6 +130,17 @@ export const Candidates: CollectionConfig = {
           required: true,
         },
       ],
+    },
+    {
+      name: 'layout',
+      label: 'Additional Content Blocks',
+      type: 'blocks',
+      blocks: [Content, MediaContent, MediaGrid],
+      admin: {
+        initCollapsed: true,
+        description:
+          "Extra blocks shown at the bottom of this candidate's profile page, below their bio, photos, and ads. The profile page itself always exists as long as this candidate record does — these blocks just add to it.",
+      },
     },
     slugField(),
   ],

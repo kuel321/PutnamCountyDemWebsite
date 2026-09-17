@@ -10,6 +10,8 @@ import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { resolveHref } from '@/components/Header/resolveHref'
 import { SocialIcon, socialLinkLabel } from '@/components/SocialIcon'
 import { DistrictPreviewMap } from '@/components/DistrictPreviewMap'
+import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { getGlobal } from '@/utilities/getGlobals'
 
 type CandidatePageProps = {
   params: Promise<{ slug: string }>
@@ -39,15 +41,18 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
   const { slug } = await params
   const payload = await getPayload({ config })
 
-  const result = await payload.find({
-    collection: 'candidates',
-    where: {
-      slug: {
-        equals: slug,
+  const [result, candidatePages] = await Promise.all([
+    payload.find({
+      collection: 'candidates',
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-    depth: 2,
-  })
+      depth: 2,
+    }),
+    getGlobal('candidatePages', 1),
+  ])
 
   const candidate = result.docs[0]
   if (!candidate) {
@@ -170,6 +175,9 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
           </div>
         </section>
       )}
+
+      <RenderBlocks blocks={candidatePages.layout} />
+      <RenderBlocks blocks={candidate.layout} />
     </>
   )
 }

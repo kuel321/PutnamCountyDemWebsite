@@ -54,7 +54,7 @@ function CandidateItem({ candidate }: { candidate: Candidate }) {
             alt={headshot.alt || candidate.title}
             width={headshot.width || undefined}
             height={headshot.height || undefined}
-            className="w-full rounded-md"
+            className="mx-auto w-full max-w-xs rounded-md"
           />
         )}
 
