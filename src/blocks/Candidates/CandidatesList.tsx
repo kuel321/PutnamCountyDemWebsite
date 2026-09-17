@@ -20,30 +20,52 @@ function CandidateItem({ candidate }: { candidate: Candidate }) {
   return (
     <details className="group p-5">
       <summary className="flex cursor-pointer list-none items-center gap-4">
-        {headshot ? (
-          <img
-            src={getMediaUrl(headshot.url)}
-            alt={headshot.alt || candidate.title}
-            className="h-24 w-24 shrink-0 rounded-md object-cover"
-          />
-        ) : (
-          <div className="h-24 w-24 shrink-0 rounded-md bg-gray-100" />
-        )}
+        <div className="flex min-w-0 flex-1 items-center gap-4 group-open:hidden">
+          {headshot ? (
+            <img
+              src={getMediaUrl(headshot.url)}
+              alt={headshot.alt || candidate.title}
+              className="h-24 w-24 shrink-0 rounded-md object-cover"
+            />
+          ) : (
+            <div className="h-24 w-24 shrink-0 rounded-md bg-gray-100" />
+          )}
 
-        <div className="min-w-0 flex-1">
-          <p className="font-semibold text-brand-navy">{candidate.title}</p>
-          {candidate.office && <p className="truncate text-sm text-gray-500">{candidate.office}</p>}
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold text-brand-navy">{candidate.title}</p>
+            {candidate.office && <p className="text-sm text-gray-500">{candidate.office}</p>}
+          </div>
         </div>
 
-        <span className="shrink-0 text-gray-400 transition-transform group-open:rotate-180">
+        <div className="hidden flex-1 items-center gap-2 text-sm font-semibold text-brand-navy group-open:flex">
+          <span className="inline-block transition-transform group-open:rotate-180">&#9662;</span>
+          Close
+        </div>
+
+        <span className="ml-auto shrink-0 text-gray-400 transition-transform group-open:rotate-180 group-open:hidden">
           &#9662;
         </span>
       </summary>
 
       <div className="mt-4 border-t border-gray-100 pt-4">
+        {headshot && (
+          <img
+            src={getMediaUrl(headshot.url)}
+            alt={headshot.alt || candidate.title}
+            width={headshot.width || undefined}
+            height={headshot.height || undefined}
+            className="w-full rounded-md"
+          />
+        )}
+
+        <div className={headshot ? 'mt-4' : ''}>
+          <p className="font-semibold text-brand-navy">{candidate.title}</p>
+          {candidate.office && <p className="text-sm text-gray-500">{candidate.office}</p>}
+        </div>
+
         <a
           href={`/candidate/${candidate.slug}`}
-          className="inline-block text-sm font-semibold text-brand-red hover:underline"
+          className="mt-4 inline-block text-sm font-semibold text-brand-red hover:underline"
         >
           View full profile &rarr;
         </a>

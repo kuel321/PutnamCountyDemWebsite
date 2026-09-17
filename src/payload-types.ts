@@ -201,6 +201,7 @@ export interface Page {
         | PresidentMessageBlock
         | MediaContentBlock
         | FindDistrictBlock
+        | MediaGridBlock
       )[]
     | null;
   meta?: {
@@ -434,6 +435,26 @@ export interface FindDistrictBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'findDistrict';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaGridBlock".
+ */
+export interface MediaGridBlock {
+  heading?: string | null;
+  items?:
+    | {
+        /**
+         * Click into this field and paste (Ctrl+V / Cmd+V) an image to upload it directly — no trip to the Media Library required. Drag-and-drop and browsing existing media still work as usual.
+         */
+        media: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mediaGrid';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1343,6 +1364,7 @@ export interface PagesSelect<T extends boolean = true> {
         presidentMessage?: T | PresidentMessageBlockSelect<T>;
         mediaContent?: T | MediaContentBlockSelect<T>;
         findDistrict?: T | FindDistrictBlockSelect<T>;
+        mediaGrid?: T | MediaGridBlockSelect<T>;
       };
   meta?:
     | T
@@ -1410,6 +1432,22 @@ export interface MediaContentBlockSelect<T extends boolean = true> {
 export interface FindDistrictBlockSelect<T extends boolean = true> {
   heading?: T;
   intro?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MediaGridBlock_select".
+ */
+export interface MediaGridBlockSelect<T extends boolean = true> {
+  heading?: T;
+  items?:
+    | T
+    | {
+        media?: T;
+        caption?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
