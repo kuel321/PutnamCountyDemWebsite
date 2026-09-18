@@ -17,13 +17,13 @@ export function PresidentMessageBanner({ presidentMessage }: { presidentMessage:
   const image = author?.image && typeof author.image === 'object' ? author.image : null
 
   return (
-    <div className="bg-brand-navy px-6 py-4 text-white">
+    <div className="bg-brand-navy/90 px-6 py-4 text-white">
       <div className="mx-auto flex max-w-6xl items-start gap-4">
         {image && (
           <img
             src={getMediaUrl(image.url)}
             alt={image.alt || author?.name || presidentMessage.title}
-            className="h-12 w-12 shrink-0 rounded-full object-cover"
+            className="h-16 w-16 shrink-0 rounded-full object-cover"
           />
         )}
         <div className="min-w-0">

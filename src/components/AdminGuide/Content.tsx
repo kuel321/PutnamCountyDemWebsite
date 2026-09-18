@@ -1,7 +1,24 @@
 'use client'
 
-import React from 'react'
-import { Banner, Gutter, SetStepNav } from '@payloadcms/ui'
+import React, { useRef } from 'react'
+import { Banner, Button, Gutter, SetStepNav } from '@payloadcms/ui'
+
+// The admin theme's CSS custom properties (var(--theme-text), etc.) only
+// exist inside Payload's own stylesheet, which isn't loaded in the blank
+// print window below — redefine them with plain, print-friendly values so
+// this page's inline styles (which reference those variables directly)
+// still resolve correctly there.
+const PRINT_THEME_VARS = `
+  :root {
+    --theme-text: #1a1a1a;
+    --theme-elevation-25: #fafafa;
+    --theme-elevation-50: #f5f5f5;
+    --theme-elevation-100: #e5e5e5;
+    --theme-elevation-150: #d0d0d0;
+    --theme-elevation-600: #666666;
+    --theme-success-500: #1a6b3c;
+  }
+`
 
 const sectionStyle: React.CSSProperties = {
   marginTop: '48px',
@@ -97,6 +114,7 @@ const toc = [
   ['candidates', 'Candidates & Districts'],
   ['president', "President's Messages"],
   ['members', 'The Members-Only Area'],
+  ['activity-log', 'Activity Log'],
   ['users', 'Staff Accounts (Users)'],
   ['seo', 'SEO Settings'],
   ['faq', 'Troubleshooting / FAQ'],
@@ -104,18 +122,72 @@ const toc = [
 ] as const
 
 export function AdminGuideContent() {
+  const printAreaRef = useRef<HTMLDivElement>(null)
+
+  function handlePrint() {
+    const source = printAreaRef.current
+    if (!source) return
+
+    // Clone rather than print in place — this page lives inside Payload's
+    // own nested admin layout (sidebar, header, etc.), and trying to hide
+    // everything else via CSS fought that layout and printed blank pages.
+    // A separate window with just this content sidesteps that entirely.
+    const clone = source.cloneNode(true) as HTMLElement
+    clone.querySelectorAll('.admin-guide-no-print').forEach((el) => el.remove())
+    // <details> print collapsed otherwise — there's no way to "click" on paper.
+    clone.querySelectorAll('details').forEach((el) => el.setAttribute('open', ''))
+
+    const printWindow = window.open('', '_blank', 'width=900,height=1200')
+    if (!printWindow) {
+      window.alert('Please allow pop-ups for this site to print the guide.')
+      return
+    }
+
+    printWindow.document.write(`<!DOCTYPE html>
+<html>
+  <head>
+    <title>Site Admin Guide</title>
+    <style>
+      ${PRINT_THEME_VARS}
+      body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 24px; }
+      a { color: var(--theme-success-500); }
+    </style>
+  </head>
+  <body>${clone.innerHTML}</body>
+</html>`)
+    printWindow.document.close()
+    printWindow.focus()
+    printWindow.onload = () => printWindow.print()
+  }
+
   return (
     <React.Fragment>
       <SetStepNav nav={[{ label: 'Admin Guide' }]} />
       <Gutter>
-        <div style={{ maxWidth: '860px', margin: '0 auto', paddingBottom: '80px' }}>
-          <div style={{ marginTop: '24px', marginBottom: '8px' }}>
-            <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--theme-text)', marginBottom: '4px' }}>
-              Site Admin Guide
-            </h1>
-            <p style={{ color: 'var(--theme-elevation-600)', fontSize: '14px' }}>
-              Powered by <strong>ChanceCMS</strong> by Chasing a Chance, LLC
-            </p>
+        <div ref={printAreaRef} style={{ maxWidth: '860px', margin: '0 auto', paddingBottom: '80px' }}>
+          <div
+            style={{
+              marginTop: '24px',
+              marginBottom: '8px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              gap: '16px',
+            }}
+          >
+            <div>
+              <h1 style={{ fontSize: '28px', fontWeight: 700, color: 'var(--theme-text)', marginBottom: '4px' }}>
+                Site Admin Guide
+              </h1>
+              <p style={{ color: 'var(--theme-elevation-600)', fontSize: '14px' }}>
+                Powered by <strong>ChanceCMS</strong> by Chasing a Chance, LLC
+              </p>
+            </div>
+            <div className="admin-guide-no-print">
+              <Button buttonStyle="secondary" size="small" onClick={handlePrint}>
+                Print This Guide
+              </Button>
+            </div>
           </div>
 
           <p style={pStyle}>
@@ -171,7 +243,7 @@ export function AdminGuideContent() {
               If you don&apos;t have a staff account yet, someone who already has one needs to
               create it for you — see{' '}
               <a href="#users" style={{ color: 'var(--theme-success-500)' }}>
-                Section 13
+                Section 14
               </a>
               .
             </p>
@@ -214,8 +286,12 @@ export function AdminGuideContent() {
                     <td style={tdStyle}>Header, Footer</td>
                   </tr>
                   <tr>
+                    <td style={tdStyle}><strong>Forms</strong></td>
+                    <td style={tdStyle}>Forms you&apos;ve built and the submissions people have sent in</td>
+                  </tr>
+                  <tr>
                     <td style={tdStyle}><strong>Admin</strong></td>
-                    <td style={tdStyle}>Users (staff accounts)</td>
+                    <td style={tdStyle}>Users (staff accounts) and the Activity Log</td>
                   </tr>
                 </tbody>
               </table>
@@ -366,6 +442,62 @@ export function AdminGuideContent() {
               time it already shows as a banner site-wide, so you usually won&apos;t need this
               block).
             </p>
+
+            <h3 style={h3Style}>Find Your District (Map)</h3>
+            <p style={pStyle}>
+              Lets a visitor type in their home address and see their Magisterial, WV House, WV
+              Senate, and US Congressional districts on a map. You can change the heading and
+              intro text; the lookup itself works automatically once the block is on a page —
+              nothing else to configure.
+            </p>
+
+            <h3 style={h3Style}>Photo Grid (3-Wide)</h3>
+            <p style={pStyle}>
+              Shows a set of photos in a three-across grid. You can change the heading, and for
+              each photo:
+            </p>
+            <ul style={ulStyle}>
+              <li>
+                <strong>Media</strong> — the photo itself.
+              </li>
+              <li>
+                <strong>Caption</strong> <em>(optional)</em> — text shown below the photo.
+              </li>
+              <li>
+                <strong>Courtesy of</strong> <em>(optional)</em> — a photo credit, shown as a
+                small label over the bottom-right corner of the image itself (e.g. entering
+                &ldquo;Jane Doe&rdquo; shows &ldquo;Courtesy of Jane Doe&rdquo; on the photo).
+              </li>
+            </ul>
+
+            <h3 style={h3Style}>Form</h3>
+            <p style={pStyle}>
+              Displays a form for visitors to fill out and submit — a contact form, volunteer
+              signup, and so on.
+            </p>
+            <ol style={ulStyle}>
+              <li>
+                Build the form itself first under{' '}
+                <strong>Forms → Forms</strong> in the sidebar (not inside the page). Add whatever
+                fields you need, set the submit button text, and choose what happens after
+                someone submits: an on-page confirmation message, or a redirect to another page.
+              </li>
+              <li>
+                Open that form&apos;s <strong>Emails</strong> tab to control who gets notified
+                when someone submits it, and what the email says. You can send to a fixed
+                address, or pull in whatever the visitor typed by wrapping a field&apos;s name in
+                double curly brackets, e.g. <code style={codeStyle}>{'{{email}}'}</code>.
+              </li>
+              <li>
+                Then add this <strong>Form</strong> block to a page and select the form you built.
+              </li>
+            </ol>
+            <Banner type="info">
+              Every submission is also saved under <strong>Forms → Form Submissions</strong>, so
+              nothing is lost even if an email fails to send. Any staff account can see every
+              submission — there&apos;s no way currently to restrict this to only some admins, so
+              treat everything submitted through a form as visible to the whole team.
+            </Banner>
           </section>
 
           {/* 5. Media */}
@@ -731,9 +863,25 @@ export function AdminGuideContent() {
             </p>
           </section>
 
-          {/* 13. Users */}
+          {/* 13. Activity Log */}
+          <section id="activity-log" style={sectionStyle}>
+            <h2 style={h2Style}>13. Activity Log</h2>
+            <p style={pStyle}>
+              Sidebar → <strong>Admin → Activity Log</strong>. A running record of who changed
+              what, and when — for example &ldquo;Jane Smith updated Pages: About&rdquo; or
+              &ldquo;Luke deleted Media: old-flyer.jpg.&rdquo;
+            </p>
+            <p style={pStyle}>
+              This is written automatically by the site itself every time something is created,
+              changed, or deleted — there&apos;s nothing to fill in here, and entries can&apos;t
+              be edited or removed. It&apos;s purely a reference for checking who made a
+              particular change.
+            </p>
+          </section>
+
+          {/* 14. Users */}
           <section id="users" style={sectionStyle}>
-            <h2 style={h2Style}>13. Staff Accounts (Users)</h2>
+            <h2 style={h2Style}>14. Staff Accounts (Users)</h2>
             <p style={pStyle}>
               Sidebar → <strong>Admin → Users</strong>. For people who need to log into{' '}
               <code style={codeStyle}>/admin</code> and manage content — a different system from
@@ -756,9 +904,9 @@ export function AdminGuideContent() {
             </Banner>
           </section>
 
-          {/* 14. SEO */}
+          {/* 15. SEO */}
           <section id="seo" style={sectionStyle}>
-            <h2 style={h2Style}>14. SEO Settings</h2>
+            <h2 style={h2Style}>15. SEO Settings</h2>
             <p style={pStyle}>
               Every page has an <strong>SEO</strong> tab (next to Content) with Meta Title / Meta
               Description (what shows up in Google search results and when shared) and a Meta
@@ -770,9 +918,9 @@ export function AdminGuideContent() {
             </p>
           </section>
 
-          {/* 15. FAQ */}
+          {/* 16. FAQ */}
           <section id="faq" style={sectionStyle}>
-            <h2 style={h2Style}>15. Troubleshooting / FAQ</h2>
+            <h2 style={h2Style}>16. Troubleshooting / FAQ</h2>
 
             <details style={detailsStyle}>
               <summary style={summaryStyle}>
@@ -822,11 +970,24 @@ export function AdminGuideContent() {
                 work, drag the image file in instead, or download it and upload it normally.
               </p>
             </details>
+
+            <details style={detailsStyle}>
+              <summary style={summaryStyle}>
+                A form was submitted but I never got an email.
+              </summary>
+              <p style={{ ...pStyle, marginTop: '8px', marginBottom: 0 }}>
+                Check <strong>Forms → Form Submissions</strong> first — if it&apos;s there, the
+                form worked and the information isn&apos;t lost. Then open the form under{' '}
+                <strong>Forms → Forms</strong> and check its <strong>Emails</strong> tab to
+                confirm a recipient address is actually set — a form with no email configured
+                will accept submissions but never send anything.
+              </p>
+            </details>
           </section>
 
-          {/* 16. Help */}
+          {/* 17. Help */}
           <section id="help" style={sectionStyle}>
-            <h2 style={h2Style}>16. Getting Help</h2>
+            <h2 style={h2Style}>17. Getting Help</h2>
             <p style={pStyle}>
               For anything not covered here, or if something looks broken rather than just
               unfamiliar, reach out to Luke (site developer) rather than guessing — some things

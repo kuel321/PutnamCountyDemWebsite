@@ -102,3 +102,14 @@ The practical effect: running `migrate:create` today diffs your current schema a
 **Until this is fixed, don't trust `migrate:create`'s interactive prompts blindly.** If it asks about a field you didn't touch, stop — that's this staleness, not a real ambiguity in your change. For an additive-only change (new field, new block, new collection) it's safe to write the migration file by hand instead: copy the exact `CREATE TABLE`/`ALTER TABLE ... ADD` SQL that push mode already generated in your local dev db's schema (`sqlite3 your.db ".schema table_name"`), following the style of any existing migration file. This is exactly what `20260918_150000_form_block_and_media_grid_credit` does — read it as a template.
 
 **The real fix** is to regenerate a fresh snapshot so future `migrate:create` runs have an accurate baseline again. That should happen the next time there's a quiet moment (not bundled into an unrelated feature deploy): run `migrate:create` once purely to produce a current snapshot, confirm the generated migration is a genuine no-op against production's actual schema (it should be, since production is fully caught up — see `migrate:status`), and commit both files. From then on, always commit the `.json` snapshot alongside every migration `.ts` file — that's step 5 of the normal workflow above; it was just being skipped.
+
+## TL;DR
+
+1. Make the change in your collection/global/block config. `npm run dev` pushes it to your local db automatically — confirm it looks right.
+2. `npx payload migrate:create <short-description> --force-accept-warning`
+   - Asks about a field you didn't touch? Stop — that's the stale-snapshot issue above, not a real question. Write the migration by hand instead (copy the `CREATE TABLE`/`ALTER TABLE` SQL push mode already put in your local db's schema).
+3. Open the generated (or hand-written) `.ts` file and read it. For a drop or rename, double check it's not silently losing data.
+4. Commit the migration `.ts`, its `.json` snapshot (if one was generated), and `src/migrations/index.ts`.
+5. For anything risky (a drop or rename), test it against a real copy of prod first — see "Testing a risky migration" above — before deploying for real.
+6. Back up the VM's live `.db` (see `VM_ACCESS.md`), then push and deploy as usual. `deploy.sh` runs `npx payload migrate` for you — no manual step on the VM.
+7. Never run `payload migrate` against your local dev db — only `migrate:create` locally, to generate the file.

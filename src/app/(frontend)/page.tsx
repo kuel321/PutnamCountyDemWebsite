@@ -5,11 +5,27 @@ import { NewsReel } from '@/components/HomeSidebar/NewsReel'
 import { UpcomingMeetings } from '@/components/HomeSidebar/UpcomingMeetings'
 import { CandidateAdsSpotlight } from '@/components/HomeSidebar/CandidateAdsSpotlight'
 import { RotatingWord } from '@/components/Hero/RotatingWord'
+import { SITE_FALLBACK_IMAGE } from '@/utilities/autoSEO'
+import type { Metadata } from 'next'
 
 // Home page content (Highlights, Candidate ads, Meetings) is edited in the
 // admin panel, not through a code deploy — revalidate periodically so those
 // changes actually show up without a full rebuild.
 export const revalidate = 60
+
+const title = 'Putnam County Democratic Party'
+const description =
+  'The official site of the Putnam County Democratic Party in West Virginia — meet our candidates, find upcoming meetings and events, and get involved.'
+
+export const metadata: Metadata = {
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    images: [{ url: SITE_FALLBACK_IMAGE, alt: 'Putnam County, West Virginia' }],
+  },
+}
 
 export default async function HomePage() {
   const headerData = await getGlobal('header', 1)

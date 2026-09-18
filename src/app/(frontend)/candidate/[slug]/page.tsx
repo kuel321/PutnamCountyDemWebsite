@@ -7,8 +7,10 @@ import { cache } from 'react'
 import type { Metadata } from 'next'
 
 import { RichText } from '@payloadcms/richtext-lexical/react'
+import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import type { Media } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { excerpt } from '@/utilities/textExcerpt'
 import { resolveHref } from '@/components/Header/resolveHref'
 import { SocialIcon, socialLinkLabel } from '@/components/SocialIcon'
 import { ShareButton } from '@/components/ShareButton'
@@ -45,11 +47,26 @@ export async function generateMetadata({ params }: CandidatePageProps): Promise<
 
   const headshot =
     candidate.headshot && typeof candidate.headshot === 'object' ? candidate.headshot : null
+  const district =
+    candidate.district && typeof candidate.district === 'object' ? candidate.district : null
+
+  const typeLabel = typeLabels[candidate.type] ?? candidate.type
+  const intro = district
+    ? `${typeLabel} candidate for ${district.title}.`
+    : `${typeLabel} candidate.`
+  // convertLexicalToPlaintext joins paragraphs with newlines, which Next
+  // silently drops from meta tags entirely — collapse to spaces.
+  const bio = candidate.content
+    ? convertLexicalToPlaintext({ data: candidate.content }).replace(/\s+/g, ' ').trim()
+    : ''
+  const description = bio ? `${intro} ${excerpt(bio, 140)}` : intro
 
   return {
     title: candidate.title,
+    description,
     openGraph: {
       title: candidate.title,
+      description,
       images: headshot
         ? [
             {

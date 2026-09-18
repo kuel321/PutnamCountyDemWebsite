@@ -5,13 +5,16 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
-import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
+import { GenerateDescription, GenerateImage, GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import { searchFields } from '@/search/fieldOverrides'
 import { beforeSyncWithSearch } from '@/search/beforeSync'
 
 import { Page, Post } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
+import { autoDescriptionFromBlocks, autoImageFromBlocks } from '@/utilities/autoSEO'
+import { excerpt } from '@/utilities/textExcerpt'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title
@@ -23,6 +26,30 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   const url = getServerSideURL()
 
   return doc?.slug ? `${url}/${doc.slug}` : url
+}
+
+// Powers the "auto-generate" wand next to the Meta Description/Image fields
+// in the admin SEO tab — most admins won't click it (the frontend already
+// falls back to this same logic on its own), but it should still work.
+const generateDescription: GenerateDescription<Post | Page> = ({ doc }) => {
+  if (doc && 'layout' in doc) {
+    return autoDescriptionFromBlocks(doc.layout) ?? ''
+  }
+  if (doc && 'content' in doc && doc.content) {
+    return excerpt(convertLexicalToPlaintext({ data: doc.content }).replace(/\s+/g, ' ').trim(), 155)
+  }
+  return ''
+}
+
+const generateImage: GenerateImage<Post | Page> = ({ doc }) => {
+  if (doc && 'layout' in doc) {
+    const image = autoImageFromBlocks(doc.layout)
+    if (image) return { id: image.id }
+  }
+  if (doc && 'heroImage' in doc && doc.heroImage && typeof doc.heroImage === 'object') {
+    return { id: doc.heroImage.id }
+  }
+  return ''
 }
 
 export const plugins: Plugin[] = [
@@ -58,6 +85,8 @@ export const plugins: Plugin[] = [
   seoPlugin({
     generateTitle,
     generateURL,
+    generateDescription,
+    generateImage,
   }),
   formBuilderPlugin({
     fields: {

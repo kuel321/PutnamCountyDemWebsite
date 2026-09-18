@@ -52,6 +52,13 @@ export function withActivityLogging(collections: CollectionConfig[]): Collection
         afterChange: [
           ...(collection.hooks?.afterChange ?? []),
           async ({ doc, req, operation }) => {
+            // Payload's autosave (fires automatically every few seconds while
+            // an editor has a draft open) hits this same afterChange hook —
+            // only log real activity: an explicit Save/Publish click, or a
+            // create. req.query.autosave is the same flag Payload's own
+            // endpoints use to tell autosave apart from a real save.
+            if (req.query?.autosave === true) return doc
+
             if (operation === 'create' || operation === 'update') {
               const item = docLabel(doc)
               await writeLogEntry(req, {
