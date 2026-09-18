@@ -13,6 +13,7 @@ import { PresidentMessage } from '@/blocks/PresidentMessage/config'
 import { MediaContent } from '@/blocks/MediaContent/config'
 import { FindDistrict } from '@/blocks/FindDistrict/config'
 import { MediaGrid } from '@/blocks/MediaGrid/config'
+import { FormBlock } from '@/blocks/Form/config'
 
 import {
   MetaDescriptionField,
@@ -78,6 +79,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MediaContent,
                 FindDistrict,
                 MediaGrid,
+                FormBlock,
               ],
               label: false,
             },

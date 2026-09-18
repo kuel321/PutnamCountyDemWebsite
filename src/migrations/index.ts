@@ -19,6 +19,7 @@ import * as migration_20260917_162000_candidate_pages_global from './20260917_16
 import * as migration_20260917_170500_activity_log from './20260917_170500_activity_log';
 import * as migration_20260917_180000_locked_docs_activity_log from './20260917_180000_locked_docs_activity_log';
 import * as migration_20260917_183000_fix_media_grid_items_version_ids from './20260917_183000_fix_media_grid_items_version_ids';
+import * as migration_20260918_150000_form_block_and_media_grid_credit from './20260918_150000_form_block_and_media_grid_credit';
 
 export const migrations = [
   {
@@ -125,5 +126,10 @@ export const migrations = [
     up: migration_20260917_183000_fix_media_grid_items_version_ids.up,
     down: migration_20260917_183000_fix_media_grid_items_version_ids.down,
     name: '20260917_183000_fix_media_grid_items_version_ids'
+  },
+  {
+    up: migration_20260918_150000_form_block_and_media_grid_credit.up,
+    down: migration_20260918_150000_form_block_and_media_grid_credit.down,
+    name: '20260918_150000_form_block_and_media_grid_credit'
   },
 ];

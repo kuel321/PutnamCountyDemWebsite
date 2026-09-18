@@ -45,6 +45,7 @@ The menu on the left is divided into a few groups:
 | **Candidates** | Candidates, Districts, and content shared across candidate pages |
 | **Club Members** | Member accounts and submitted meeting minutes |
 | **Site-wide** | Header and Footer settings |
+| **Forms** | Forms you've built and the submissions people have sent in |
 | **Admin** | Staff user accounts and the activity log |
 
 Select an item to see everything already saved in that section. From there, choose an existing item to edit it or select **Create New** in the upper-right corner.
@@ -96,6 +97,30 @@ This pulls in the candidate roster and organizes it by candidate type and distri
 ### President's Message
 
 This displays the currently active President's Message. Since messages can already be shown across the whole site, you'll generally only use this block when you want the message to appear inside a specific page.
+
+### Find Your District (Map)
+
+This lets a visitor type in their home address and see their Magisterial, WV House, WV Senate, and US Congressional districts on a map. You can change the heading and intro text; there's nothing else to configure — it works automatically once it's added to a page.
+
+### Photo Grid (3-Wide)
+
+This displays a set of photos in a three-across grid. You can change the heading, and for each photo:
+
+- **Media:** The image itself.
+- **Caption:** Optional text shown below the photo.
+- **Courtesy of:** Optional photo credit, shown as a small label in the bottom-right corner of the image itself (for example, entering "Jane Doe" shows "Courtesy of Jane Doe" over the photo).
+
+**Quick way to add an image:** Copy the image, click inside the Media field, and press **Ctrl+V** on Windows or **Cmd+V** on a Mac, the same as the Media + Content block above.
+
+### Form
+
+This displays a form you've built for visitors to fill out and submit — a contact form, volunteer signup, and so on.
+
+1. Build the form first under **Forms → Forms** (not inside the page). Add whatever fields you need, set the text on the submit button, and choose what happens after someone submits: either an on-page confirmation message or a redirect to another page.
+2. Open the form's **Emails** tab to control who gets notified when someone submits it, and what that email says. You can send to a fixed address or pull in whatever the visitor typed (for example, wrapping a field's name in double curly brackets like `{{email}}`).
+3. Add the **Form** block to a page and select the form you built.
+
+Every submission is also saved under **Forms → Form Submissions**, so nothing is lost even if an email fails to send.
 
 ## 5. Photos and files
 
@@ -280,6 +305,10 @@ Some blocks pull information from another part of the admin. For example, Meetin
 ### I couldn't paste an image into the Media + Content block
 
 Make sure you copied the image itself rather than the page link, and click inside the Media field before pasting. If it still doesn't work, save the image to your computer and drag the file into the field.
+
+### A form was submitted but I never got an email
+
+Check **Forms → Form Submissions** first — if the submission is there, the form itself worked and the information isn't lost. Then open the form under **Forms → Forms** and check its **Emails** tab to confirm a recipient address is actually set there; a form with no email configured will accept submissions but never send anything.
 
 ## 17. Getting help
 

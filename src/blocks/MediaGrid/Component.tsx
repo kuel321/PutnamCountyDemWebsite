@@ -19,13 +19,20 @@ export function MediaGridBlock({ heading, items }: MediaGridBlockProps) {
         <div className={`grid grid-cols-1 gap-6 sm:grid-cols-3 ${heading ? 'mt-8' : ''}`}>
           {photos.map((item, index) => (
             <figure key={item.id ?? index}>
-              <img
-                src={getMediaUrl(item.media.url)}
-                alt={item.media.alt || ''}
-                width={item.media.width || undefined}
-                height={item.media.height || undefined}
-                className="w-full"
-              />
+              <div className="relative">
+                <img
+                  src={getMediaUrl(item.media.url)}
+                  alt={item.media.alt || ''}
+                  width={item.media.width || undefined}
+                  height={item.media.height || undefined}
+                  className="w-full"
+                />
+                {item.credit && (
+                  <span className="absolute bottom-2 right-2 rounded bg-black/60 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
+                    Courtesy of {item.credit}
+                  </span>
+                )}
+              </div>
               {item.caption && (
                 <figcaption className="mt-2 text-sm text-gray-500">{item.caption}</figcaption>
               )}

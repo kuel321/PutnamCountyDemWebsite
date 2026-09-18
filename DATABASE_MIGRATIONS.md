@@ -29,7 +29,7 @@ Since this project had zero migration history (everything, including production,
 - It contains a full `CREATE TABLE` for every table in the schema. That's expected — a database that's genuinely empty (a fresh environment) would run this for real and it'd correctly bootstrap everything.
 - For a database that **already has this schema** (our local dev db, via years of push), it's marked as applied without running its SQL — that's the standard way to adopt migrations onto an existing database: you tell Payload "trust me, this one's already done" by inserting a row into the `payload_migrations` table matching the migration's filename (`{name: '20260826_131212_baseline', batch: 1}`). Payload's `migrate` command only checks whether a row with that name exists — it doesn't re-verify the SQL — so this is the sanctioned mechanism, not a hack.
 
-**Production has not gone through this yet** — it's still on the pre-blocks schema (has the old `content` column, no `layout` blocks tables). See "One-time production catch-up" below before its next deploy touches this.
+**Production went through this catch-up on 2026-08-26/27** and has applied every migration since. Verify current state any time with `npx payload migrate:status` run on the VM (see `VM_ACCESS.md`) rather than trusting this doc's word for it — migration state changes with every deploy.
 
 ## Workflow for a normal schema change (adding a field, a collection, etc.)
 
@@ -83,12 +83,22 @@ For anything you're unsure about (especially column drops or renames), test it a
 3. Run `npx payload migrate` against it and confirm the result looks right.
 4. Only then let the real deploy run it against production.
 
-## One-time production catch-up (still pending)
+## One-time production catch-up (completed 2026-08-26/27)
 
-Production's database has not been updated to match the `layout` blocks schema yet — it still has the old `content` field. Do this once, before deploying today's blocks change:
+This happened once, historically, to adopt the baseline migration onto production's pre-existing pre-blocks schema. Left here as a worked example if a similar one-off data-shape migration is ever needed again:
 
 1. `scp` a **fresh** copy of the live production `.db` (not an old snapshot — the site is public and can receive real form submissions at any time, so always pull current data right before doing this).
 2. Run the same content-to-`layout` migration used locally (copies each page's `content` richText into a `layout` Content block; see git history for the script, since it's not kept in the repo permanently — it's meant to be re-created ad hoc for a one-off data move like this).
 3. Manually drop the now-redundant `content` / `_pages_v.version_content` columns, same as was done locally.
 4. Mark `20260826_131212_baseline` as applied on that database (insert `{name: '20260826_131212_baseline', batch: 1}` into `payload_migrations`), so production's migration history matches local's from this point forward.
-5. Deploy the new code. From here on, all future schema changes go through the normal workflow above — no more manual database surgery needed.
+5. Deploy the new code.
+
+## Known issue: the schema snapshot is stale (discovered 2026-09-18)
+
+`migrate:create`'s diff isn't computed against the last *applied* migration — it's computed against the last committed `.json` **snapshot** file. Only the first four migrations (through `20260907_222600_minutes_submissions`) ever got a snapshot committed alongside them; every migration since (16 of them, through `20260917_183000`) only committed its `.ts` file.
+
+The practical effect: running `migrate:create` today diffs your current schema against a snapshot that's over a week and 16 migrations stale. It doesn't know about any of those intervening changes, so it can ask confusing, unrelated questions (e.g. "is `minutes_submissions.file_id` a new column or a rename?" when neither your current change nor that migration have anything to do with each other), and if forced through with a wrong guess on an ambiguous rename, it can silently generate a migration that drops real data.
+
+**Until this is fixed, don't trust `migrate:create`'s interactive prompts blindly.** If it asks about a field you didn't touch, stop — that's this staleness, not a real ambiguity in your change. For an additive-only change (new field, new block, new collection) it's safe to write the migration file by hand instead: copy the exact `CREATE TABLE`/`ALTER TABLE ... ADD` SQL that push mode already generated in your local dev db's schema (`sqlite3 your.db ".schema table_name"`), following the style of any existing migration file. This is exactly what `20260918_150000_form_block_and_media_grid_credit` does — read it as a template.
+
+**The real fix** is to regenerate a fresh snapshot so future `migrate:create` runs have an accurate baseline again. That should happen the next time there's a quiet moment (not bundled into an unrelated feature deploy): run `migrate:create` once purely to produce a current snapshot, confirm the generated migration is a genuine no-op against production's actual schema (it should be, since production is fully caught up — see `migrate:status`), and commit both files. From then on, always commit the `.json` snapshot alongside every migration `.ts` file — that's step 5 of the normal workflow above; it was just being skipped.

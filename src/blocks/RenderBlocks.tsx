@@ -7,6 +7,7 @@ import { PresidentMessageBlock } from '@/blocks/PresidentMessage/Component'
 import { MediaContentBlock } from '@/blocks/MediaContent/Component'
 import { FindDistrictBlock } from '@/blocks/FindDistrict/Component'
 import { MediaGridBlock } from '@/blocks/MediaGrid/Component'
+import { FormBlock } from '@/blocks/Form/Component'
 
 type LayoutBlocks = NonNullable<Page['layout']>
 
@@ -33,6 +34,8 @@ export function RenderBlocks({ blocks }: { blocks?: LayoutBlocks | null }) {
             return <FindDistrictBlock key={block.id ?? index} {...block} />
           case 'mediaGrid':
             return <MediaGridBlock key={block.id ?? index} {...block} />
+          case 'form':
+            return <FormBlock key={block.id ?? index} {...block} />
           default:
             return null
         }

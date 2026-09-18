@@ -41,6 +41,15 @@ export const MediaGrid: Block = {
           name: 'caption',
           type: 'text',
         },
+        {
+          name: 'credit',
+          type: 'text',
+          label: 'Courtesy of',
+          admin: {
+            description:
+              'Optional photo credit. Shown as a small label overlaid on the bottom-right corner of the image (e.g. "Jane Doe" or "Putnam County GOP").',
+          },
+        },
       ],
     },
   ],
