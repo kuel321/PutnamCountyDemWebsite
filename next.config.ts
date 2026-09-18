@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
         pathname: '/media/**',
       },
     ],
-    qualities: [100],
+    qualities: [75],
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL].map((item) => {
         const url = new URL(item)

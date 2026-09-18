@@ -1,31 +1,17 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
+import {
+  PUTNAM_COUNTY_LAT,
+  PUTNAM_COUNTY_LON,
+  formatPhotonAddress,
+  type PhotonProperties,
+} from '@/utilities/geocoding'
 
 export type AddressSuggestion = {
   label: string
   lat: number
   lon: number
-}
-
-type PhotonProperties = {
-  housenumber?: string
-  street?: string
-  name?: string
-  city?: string
-  state?: string
-  postcode?: string
-}
-
-// Biases results toward Putnam County, WV — Photon still returns matches
-// elsewhere, this just ranks nearby ones higher.
-const PUTNAM_COUNTY_LAT = 38.55
-const PUTNAM_COUNTY_LON = -81.87
-
-function formatSuggestion(props: PhotonProperties): string {
-  const line1 = [props.housenumber, props.street].filter(Boolean).join(' ') || props.name || ''
-  const line2 = [props.city, props.state].filter(Boolean).join(', ')
-  return [line1, [line2, props.postcode].filter(Boolean).join(' ')].filter(Boolean).join(', ')
 }
 
 export function AddressAutocomplete({
@@ -79,7 +65,7 @@ export function AddressAutocomplete({
         const results: AddressSuggestion[] = (data.features ?? [])
           .filter((f: { properties?: PhotonProperties }) => f.properties?.street || f.properties?.name)
           .map((f: { properties: PhotonProperties; geometry: { coordinates: [number, number] } }) => ({
-            label: formatSuggestion(f.properties),
+            label: formatPhotonAddress(f.properties),
             lon: f.geometry.coordinates[0],
             lat: f.geometry.coordinates[1],
           }))

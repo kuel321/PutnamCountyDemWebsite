@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
+import { useMediaQuery } from 'react-device-sizes'
 
 const words = [
   'working families.',
@@ -15,6 +16,12 @@ const words = [
 
 export function RotatingWord() {
   const [index, setIndex] = useState(0)
+  const isMobileDevice = useMediaQuery({ maxWidth: 767 })
+  let fontVar = isMobileDevice ? 48 : 72
+
+  if (index === 0) {
+    fontVar = isMobileDevice ? 36 : 72
+  }
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -33,6 +40,7 @@ export function RotatingWord() {
           exit={{ y: '-100%', opacity: 0 }}
           transition={{ duration: 0.35, ease: 'easeInOut' }}
           className="block text-brand-red"
+          style={{ fontSize: fontVar }}
         >
           {words[index]}
         </motion.span>

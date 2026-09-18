@@ -21,7 +21,7 @@ export default async function HomePage() {
         <div
           className="absolute inset-0 bg-cover bg-scroll lg:bg-fixed"
           style={{
-            backgroundImage: 'url(/_next/image?url=%2Fmedia%2Fspruce_knob.jpg&w=1920&q=100)',
+            backgroundImage: 'url(/_next/image?url=%2Fmedia%2Fspruce_knob.jpg&w=1920&q=75)',
             backgroundPosition: 'center 70%',
           }}
         />
@@ -37,7 +37,7 @@ export default async function HomePage() {
             />
           )}
 
-          <h1 className="mt-5 text-5xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 className="mt-5 text-5xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl hero-rotating-container">
             Fighting for
             <br />
             <RotatingWord />

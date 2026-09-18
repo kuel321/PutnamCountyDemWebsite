@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { draftMode } from 'next/headers'
 
 import { RenderBlocks } from '@/blocks/RenderBlocks'
+import { Breadcrumb } from '@/components/Breadcrumb'
 
 type PageProps = {
   params: Promise<{ slug: string }>
@@ -33,6 +34,7 @@ export default async function Page({ params }: PageProps) {
     <>
       <section className="bg-brand-navy px-6 py-12 sm:py-16">
         <div className="mx-auto max-w-4xl">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: page.title }]} className="mb-3" />
           <h1 className="text-3xl font-bold text-white sm:text-4xl">{page.title}</h1>
         </div>
       </section>

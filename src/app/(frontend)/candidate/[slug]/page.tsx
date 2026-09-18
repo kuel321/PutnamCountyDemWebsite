@@ -3,12 +3,16 @@ import { getPayload } from 'payload'
 import { notFound } from 'next/navigation'
 import { pointOnFeature } from '@turf/turf'
 import type { Polygon, MultiPolygon } from 'geojson'
+import { cache } from 'react'
+import type { Metadata } from 'next'
 
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { Media } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { resolveHref } from '@/components/Header/resolveHref'
 import { SocialIcon, socialLinkLabel } from '@/components/SocialIcon'
+import { ShareButton } from '@/components/ShareButton'
+import { Breadcrumb } from '@/components/Breadcrumb'
 import { DistrictPreviewMap } from '@/components/DistrictPreviewMap'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { getGlobal } from '@/utilities/getGlobals'
@@ -20,6 +24,44 @@ type CandidatePageProps = {
 const typeLabels: Record<string, string> = {
   'federal-state': 'Federal / State',
   'putnam-county': 'Putnam County',
+}
+
+// cache() dedupes this so generateMetadata and the page component share one
+// query per request instead of hitting the db twice.
+const getCandidate = cache(async (slug: string) => {
+  const payload = await getPayload({ config })
+  const result = await payload.find({
+    collection: 'candidates',
+    where: { slug: { equals: slug } },
+    depth: 2,
+  })
+  return result.docs[0] ?? null
+})
+
+export async function generateMetadata({ params }: CandidatePageProps): Promise<Metadata> {
+  const { slug } = await params
+  const candidate = await getCandidate(slug)
+  if (!candidate) return {}
+
+  const headshot =
+    candidate.headshot && typeof candidate.headshot === 'object' ? candidate.headshot : null
+
+  return {
+    title: candidate.title,
+    openGraph: {
+      title: candidate.title,
+      images: headshot
+        ? [
+            {
+              url: getMediaUrl(headshot.url),
+              width: headshot.width ?? undefined,
+              height: headshot.height ?? undefined,
+              alt: headshot.alt || candidate.title,
+            },
+          ]
+        : undefined,
+    },
+  }
 }
 
 function PhotoGrid({ images }: { images: { image: Media; id?: string | null }[] }) {
@@ -39,22 +81,12 @@ function PhotoGrid({ images }: { images: { image: Media; id?: string | null }[] 
 
 export default async function CandidatePage({ params }: CandidatePageProps) {
   const { slug } = await params
-  const payload = await getPayload({ config })
 
-  const [result, candidatePages] = await Promise.all([
-    payload.find({
-      collection: 'candidates',
-      where: {
-        slug: {
-          equals: slug,
-        },
-      },
-      depth: 2,
-    }),
+  const [candidate, candidatePages] = await Promise.all([
+    getCandidate(slug),
     getGlobal('candidatePages', 1),
   ])
 
-  const candidate = result.docs[0]
   if (!candidate) {
     notFound()
   }
@@ -101,6 +133,11 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
         {/* Scrim so the centered text stays readable regardless of what the map is doing behind it. */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-navy via-brand-navy/70 to-transparent" />
 
+        <Breadcrumb
+          items={[{ label: 'Home', href: '/' }, { label: candidate.title }]}
+          className="absolute left-6 top-6 z-10 sm:left-10"
+        />
+
         <div className="absolute inset-0 flex items-center justify-center px-6">
           <div className="flex flex-col items-center gap-6 text-center">
             {headshot && (
@@ -117,27 +154,29 @@ export default async function CandidatePage({ params }: CandidatePageProps) {
                 {district && ` · ${district.title}`}
               </p>
 
-              {candidate.links && candidate.links.length > 0 && (
-                <div className="mt-4 flex justify-center gap-3">
-                  {candidate.links.map((item, index) => {
-                    const href = resolveHref(item.link)
-                    if (!href) return null
+              <div className="mt-4 flex justify-center gap-3">
+                {candidate.links?.map((item, index) => {
+                  const href = resolveHref(item.link)
+                  if (!href) return null
 
-                    return (
-                      <a
-                        key={item.id ?? index}
-                        href={href}
-                        target={item.link.newTab ? '_blank' : undefined}
-                        rel={item.link.newTab ? 'noopener noreferrer' : undefined}
-                        aria-label={item.link.label || socialLinkLabel(href)}
-                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-                      >
-                        <SocialIcon url={href} className="h-5 w-5" />
-                      </a>
-                    )
-                  })}
-                </div>
-              )}
+                  return (
+                    <a
+                      key={item.id ?? index}
+                      href={href}
+                      target={item.link.newTab ? '_blank' : undefined}
+                      rel={item.link.newTab ? 'noopener noreferrer' : undefined}
+                      aria-label={item.link.label || socialLinkLabel(href)}
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                    >
+                      <SocialIcon url={href} className="h-5 w-5" />
+                    </a>
+                  )
+                })}
+                <ShareButton
+                  title={candidate.title}
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                />
+              </div>
             </div>
           </div>
         </div>

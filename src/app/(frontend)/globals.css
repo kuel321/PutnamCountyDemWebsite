@@ -37,3 +37,12 @@ header {
 .leaflet-container img.leaflet-tile {
   mix-blend-mode: normal !important;
 }
+@media (max-width: 1200px) {
+  /* .text-brand-red {
+    font-size: 38px;
+  } */
+
+  .hero-rotating-container {
+    height: 100px;
+  }
+}

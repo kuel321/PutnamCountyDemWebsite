@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 
 import type { Meeting, Media } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { ShareButton } from '@/components/ShareButton'
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('en-US', {
@@ -12,14 +13,17 @@ function formatDate(date: string) {
   })
 }
 
-function MeetingListItem({ meeting }: { meeting: Meeting }) {
+function MeetingListItem({ meeting, showShare }: { meeting: Meeting; showShare?: boolean }) {
   const photos = (meeting.photos ?? []).filter(
     (photo): photo is { image: Media; id?: string | null } =>
       Boolean(photo.image) && typeof photo.image === 'object' && !photo.hideFromPublic,
   )
 
   return (
-    <li className="flex flex-col gap-4 p-5 sm:flex-row sm:items-start">
+    <li
+      id={`meeting-${meeting.id}`}
+      className="scroll-mt-24 flex flex-col gap-4 p-5 sm:flex-row sm:items-start"
+    >
       {photos.length > 0 && (
         <div className="flex shrink-0 flex-wrap gap-2 sm:w-40">
           {photos.map((photo, index) => (
@@ -34,14 +38,24 @@ function MeetingListItem({ meeting }: { meeting: Meeting }) {
         </div>
       )}
 
-      <div>
-        <div className="font-semibold text-brand-navy">
-          {formatDate(meeting.date)}
-          {meeting.time ? ` · ${meeting.time}` : ''}
+      <div className="flex flex-1 items-start justify-between gap-3">
+        <div>
+          <div className="font-semibold text-brand-navy">
+            {formatDate(meeting.date)}
+            {meeting.time ? ` · ${meeting.time}` : ''}
+          </div>
+          <p className="mt-1 font-medium text-gray-900">{meeting.title}</p>
+          {meeting.location && <p className="text-sm text-gray-500">{meeting.location}</p>}
+          {meeting.notes && <p className="mt-1 text-sm text-gray-500">{meeting.notes}</p>}
         </div>
-        <p className="mt-1 font-medium text-gray-900">{meeting.title}</p>
-        {meeting.location && <p className="text-sm text-gray-500">{meeting.location}</p>}
-        {meeting.notes && <p className="mt-1 text-sm text-gray-500">{meeting.notes}</p>}
+
+        {showShare && (
+          <ShareButton
+            title={meeting.title}
+            url={`/meeting-dates-location#meeting-${meeting.id}`}
+            className="shrink-0 text-gray-400 transition-colors hover:text-brand-red"
+          />
+        )}
       </div>
     </li>
   )
@@ -86,7 +100,7 @@ export async function MeetingInfoBlock() {
           ) : (
             <ul className="mt-6 divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
               {upcomingMeetings.map((meeting) => (
-                <MeetingListItem key={meeting.id} meeting={meeting} />
+                <MeetingListItem key={meeting.id} meeting={meeting} showShare />
               ))}
             </ul>
           )}

@@ -9,8 +9,10 @@ build
 # Local Claude Code settings
 .claude/
 
-# SQLite database files (local dev data, never commit)
+# SQLite database files (local dev data, never commit) — the second
+# pattern also catches timestamped backup copies like foo.db.pre-deploy-...
 *.db
+*.db.*
 *.db-journal
 
 next-env.d.ts
@@ -19,7 +21,7 @@ tsconfig.tsbuildinfo
 *.log
 
 # Payload default media upload directory
-
+public/media
 
 public/robots.txt
 public/sitemap*.xml
