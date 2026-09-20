@@ -57,6 +57,32 @@ const nextConfig: NextConfig = {
 
   reactStrictMode: true,
   redirects,
+
+  // Deliberately not adding a Content-Security-Policy here yet — this app
+  // pulls in the Leaflet tile server, the Census/Photon geocoders, Payload
+  // admin's own inline styles/scripts, and (once configured) Google
+  // reCAPTCHA, and a CSP written blind without testing every page against
+  // it risks silently breaking one of those rather than actually being
+  // more secure. The headers below are safe regardless of what the page
+  // loads.
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          // SAMEORIGIN (not DENY) — Payload admin's own Live Preview embeds
+          // this site's frontend in an iframe from the same origin.
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          // Browsers only honor this over an actual HTTPS connection, so
+          // it's harmless to always send even though nginx (not this app)
+          // terminates TLS.
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains' },
+        ],
+      },
+    ]
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

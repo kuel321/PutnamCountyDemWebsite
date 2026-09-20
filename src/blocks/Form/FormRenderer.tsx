@@ -5,6 +5,12 @@ import { useRouter } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import type { Form } from '@/payload-types'
+import { Recaptcha } from './Recaptcha'
+
+// Field names the beforeValidate hook on form-submissions (src/plugins/index.ts)
+// looks for and strips before saving — keep these two in sync.
+const HONEYPOT_FIELD = '_hp'
+const RECAPTCHA_FIELD = '_recaptcha'
 
 type FormField = NonNullable<Form['fields']>[number]
 
@@ -101,6 +107,8 @@ export function FormRenderer({ form }: { form: Form }) {
   const router = useRouter()
   const [values, setValues] = useState<Record<string, string | boolean>>(() => getInitialValues(form))
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+  const [honeypot, setHoneypot] = useState('')
+  const [recaptchaToken, setRecaptchaToken] = useState('')
 
   function handleChange(name: string, value: string | boolean) {
     setValues((prev) => ({ ...prev, [name]: value }))
@@ -116,10 +124,14 @@ export function FormRenderer({ form }: { form: Form }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           form: form.id,
-          submissionData: Object.entries(values).map(([field, value]) => ({
-            field,
-            value: String(value),
-          })),
+          submissionData: [
+            ...Object.entries(values).map(([field, value]) => ({
+              field,
+              value: String(value),
+            })),
+            { field: HONEYPOT_FIELD, value: honeypot },
+            { field: RECAPTCHA_FIELD, value: recaptchaToken },
+          ],
         }),
       })
 
@@ -154,6 +166,21 @@ export function FormRenderer({ form }: { form: Form }) {
           onChange={handleChange}
         />
       ))}
+
+      {/* Honeypot — invisible to real visitors, real spam bots fill every field they can find. */}
+      <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+        <label htmlFor="website">Leave this field blank</label>
+        <input
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
+
+      <Recaptcha onChange={setRecaptchaToken} />
 
       {status === 'error' && (
         <p className="text-sm text-brand-red">

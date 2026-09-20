@@ -3,7 +3,7 @@ import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
-import { Plugin } from 'payload'
+import { CollectionBeforeValidateHook, Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 import { GenerateDescription, GenerateImage, GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -50,6 +50,43 @@ const generateImage: GenerateImage<Post | Page> = ({ doc }) => {
     return { id: doc.heroImage.id }
   }
   return ''
+}
+
+// FormRenderer (src/blocks/Form/FormRenderer.tsx) always submits these two
+// extra fields alongside whatever the admin actually configured on the
+// form. Reject obvious bot submissions, then strip both before saving so
+// real submissions stay clean.
+const rejectSpamSubmissions: CollectionBeforeValidateHook = async ({ data }) => {
+  const submissionData = data?.submissionData as { field: string; value: string }[] | undefined
+  if (!submissionData) return data
+
+  const honeypot = submissionData.find((f) => f.field === '_hp')?.value
+  if (honeypot) {
+    throw new Error('Spam detected.')
+  }
+
+  // Inert until RECAPTCHA_SECRET_KEY is actually set — see Recaptcha.tsx.
+  if (process.env.RECAPTCHA_SECRET_KEY) {
+    const token = submissionData.find((f) => f.field === '_recaptcha')?.value
+    if (!token) {
+      throw new Error('reCAPTCHA verification failed.')
+    }
+
+    const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ secret: process.env.RECAPTCHA_SECRET_KEY, response: token }),
+    })
+    const verifyData = await verifyRes.json()
+    if (!verifyData.success) {
+      throw new Error('reCAPTCHA verification failed.')
+    }
+  }
+
+  return {
+    ...data,
+    submissionData: submissionData.filter((f) => f.field !== '_hp' && f.field !== '_recaptcha'),
+  }
 }
 
 export const plugins: Plugin[] = [
@@ -119,6 +156,9 @@ export const plugins: Plugin[] = [
     formSubmissionOverrides: {
       admin: {
         group: 'Forms',
+      },
+      hooks: {
+        beforeValidate: [rejectSpamSubmissions],
       },
     },
   }),
