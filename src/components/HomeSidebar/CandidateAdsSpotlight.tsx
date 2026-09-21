@@ -13,6 +13,7 @@ export async function CandidateAdsSpotlight() {
     collection: 'candidates',
     depth: 1,
     limit: 100,
+    sort: 'order',
   })
 
   const ads = candidates.flatMap((candidate) =>

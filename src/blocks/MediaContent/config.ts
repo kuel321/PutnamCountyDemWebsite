@@ -23,7 +23,7 @@ export const MediaContent: Block = {
       required: true,
       admin: {
         description:
-          'Click into this field and paste (Ctrl+V / Cmd+V) an image copied from Facebook or another site to upload it directly — no trip to the Media Library required. Drag-and-drop and browsing existing media still work as usual.',
+          'Click into this field and paste (Ctrl+V / Cmd+V) an image copied from Facebook or another site to upload it directly — no trip to the Media Library required. Drag-and-drop and browsing existing media still work as usual. A PDF can be uploaded here too — it will show as a downloadable document instead of a photo.',
         components: {
           Field: '@/blocks/MediaContent/PasteImageField',
         },

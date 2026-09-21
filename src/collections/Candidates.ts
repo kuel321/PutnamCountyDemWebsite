@@ -28,15 +28,23 @@ export const Candidates: CollectionConfig = {
   admin: {
     group: 'Candidates',
     useAsTitle: 'title',
-    defaultColumns: ['title', 'type', 'district', 'slug'],
+    defaultColumns: ['order', 'title', 'type', 'district', 'slug'],
   },
-  defaultSort: 'title',
+  defaultSort: 'order',
   fields: [
     {
       name: 'title',
       type: 'text',
       required: true,
       label: 'Candidate Name',
+    },
+    {
+      name: 'order',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        description: 'Lower numbers appear first in candidate listings.',
+      },
     },
     {
       name: 'type',

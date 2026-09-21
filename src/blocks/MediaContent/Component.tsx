@@ -1,30 +1,24 @@
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import type { MediaContentBlock as MediaContentBlockProps } from '@/payload-types'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { MediaThumbnail, isPdfMedia } from '@/components/MediaThumbnail'
 
 export function MediaContentBlock({ media, externalLink, content }: MediaContentBlockProps) {
   const image = media && typeof media === 'object' ? media : null
   if (!image) return null
 
-  const photo = (
-    <img
-      src={getMediaUrl(image.url)}
-      alt={image.alt || ''}
-      className="w-full rounded-lg object-cover"
-    />
-  )
+  const thumbnail = <MediaThumbnail media={image} className="w-full rounded-lg object-cover" />
 
   return (
     <section className="px-6 py-10 sm:py-12">
       <div className="mx-auto grid max-w-4xl gap-8 sm:grid-cols-2 sm:items-center">
         <div>
-          {externalLink ? (
+          {externalLink && !isPdfMedia(image) ? (
             <a href={externalLink} target="_blank" rel="noopener noreferrer">
-              {photo}
+              {thumbnail}
             </a>
           ) : (
-            photo
+            thumbnail
           )}
         </div>
 

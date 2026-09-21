@@ -12,7 +12,7 @@ export async function CandidatesBlock({ heading }: CandidatesBlockProps) {
     collection: 'candidates',
     depth: 1,
     limit: 200,
-    sort: 'title',
+    sort: 'order',
   })
 
   if (candidates.length === 0) return null

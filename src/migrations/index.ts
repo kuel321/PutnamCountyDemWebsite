@@ -21,6 +21,7 @@ import * as migration_20260917_180000_locked_docs_activity_log from './20260917_
 import * as migration_20260917_183000_fix_media_grid_items_version_ids from './20260917_183000_fix_media_grid_items_version_ids';
 import * as migration_20260918_150000_form_block_and_media_grid_credit from './20260918_150000_form_block_and_media_grid_credit';
 import * as migration_20260920_153500_reset_password_requested_at from './20260920_153500_reset_password_requested_at';
+import * as migration_20260921_133000_candidate_order from './20260921_133000_candidate_order';
 
 export const migrations = [
   {
@@ -137,5 +138,10 @@ export const migrations = [
     up: migration_20260920_153500_reset_password_requested_at.up,
     down: migration_20260920_153500_reset_password_requested_at.down,
     name: '20260920_153500_reset_password_requested_at'
+  },
+  {
+    up: migration_20260921_133000_candidate_order.up,
+    down: migration_20260921_133000_candidate_order.down,
+    name: '20260921_133000_candidate_order'
   },
 ];

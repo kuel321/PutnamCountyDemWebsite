@@ -1,5 +1,5 @@
 import type { MediaGridBlock as MediaGridBlockProps, Media } from '@/payload-types'
-import { getMediaUrl } from '@/utilities/getMediaUrl'
+import { MediaThumbnail, isPdfMedia } from '@/components/MediaThumbnail'
 
 export function MediaGridBlock({ heading, items }: MediaGridBlockProps) {
   const photos = (items ?? []).filter(
@@ -20,14 +20,8 @@ export function MediaGridBlock({ heading, items }: MediaGridBlockProps) {
           {photos.map((item, index) => (
             <figure key={item.id ?? index}>
               <div className="relative">
-                <img
-                  src={getMediaUrl(item.media.url)}
-                  alt={item.media.alt || ''}
-                  width={item.media.width || undefined}
-                  height={item.media.height || undefined}
-                  className="w-full"
-                />
-                {item.credit && (
+                <MediaThumbnail media={item.media} className="w-full" />
+                {item.credit && !isPdfMedia(item.media) && (
                   <span className="absolute bottom-2 right-2 rounded bg-black/60 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-white">
                     Courtesy of {item.credit}
                   </span>

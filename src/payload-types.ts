@@ -285,7 +285,7 @@ export interface PresidentMessageBlock {
  */
 export interface MediaContentBlock {
   /**
-   * Click into this field and paste (Ctrl+V / Cmd+V) an image copied from Facebook or another site to upload it directly — no trip to the Media Library required. Drag-and-drop and browsing existing media still work as usual.
+   * Click into this field and paste (Ctrl+V / Cmd+V) an image copied from Facebook or another site to upload it directly — no trip to the Media Library required. Drag-and-drop and browsing existing media still work as usual. A PDF can be uploaded here too — it will show as a downloadable document instead of a photo.
    */
   media: number | Media;
   /**
@@ -450,7 +450,7 @@ export interface MediaGridBlock {
   items?:
     | {
         /**
-         * Click into this field and paste (Ctrl+V / Cmd+V) an image to upload it directly — no trip to the Media Library required. Drag-and-drop and browsing existing media still work as usual.
+         * Click into this field and paste (Ctrl+V / Cmd+V) an image to upload it directly — no trip to the Media Library required. Drag-and-drop and browsing existing media still work as usual. A PDF can be uploaded here too — it will show as a downloadable document instead of a photo.
          */
         media: number | Media;
         caption?: string | null;
@@ -820,6 +820,10 @@ export interface MeetingMinute {
 export interface Candidate {
   id: number;
   title: string;
+  /**
+   * Lower numbers appear first in candidate listings.
+   */
+  order?: number | null;
   type: 'federal-state' | 'putnam-county';
   /**
    * Putnam Co. voting district this candidate is running in.
@@ -1697,6 +1701,7 @@ export interface MeetingMinutesSelect<T extends boolean = true> {
  */
 export interface CandidatesSelect<T extends boolean = true> {
   title?: T;
+  order?: T;
   type?: T;
   district?: T;
   office?: T;
