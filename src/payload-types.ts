@@ -81,6 +81,7 @@ export interface Config {
     users: User;
     'club-members': ClubMember;
     'president-messages': PresidentMessage;
+    'treasury-reports': TreasuryReport;
     'activity-log': ActivityLog;
     redirects: Redirect;
     forms: Form;
@@ -112,6 +113,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     'club-members': ClubMembersSelect<false> | ClubMembersSelect<true>;
     'president-messages': PresidentMessagesSelect<false> | PresidentMessagesSelect<true>;
+    'treasury-reports': TreasuryReportsSelect<false> | TreasuryReportsSelect<true>;
     'activity-log': ActivityLogSelect<false> | ActivityLogSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -1059,6 +1061,24 @@ export interface PresidentMessage {
   createdAt: string;
 }
 /**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "treasury-reports".
+ */
+export interface TreasuryReport {
+  id: number;
+  title: string;
+  date: string;
+  fiscalYear?: number | null;
+  period?: ('q1' | 'q2' | 'q3' | 'q4' | 'annual') | null;
+  notes?: string | null;
+  /**
+   * The Excel (.xlsx) report file.
+   */
+  file: number | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Automatic record of who changed what, and when. Written by the system — nothing here is entered by hand.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1326,6 +1346,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'president-messages';
         value: number | PresidentMessage;
+      } | null)
+    | ({
+        relationTo: 'treasury-reports';
+        value: number | TreasuryReport;
       } | null)
     | ({
         relationTo: 'activity-log';
@@ -1845,6 +1869,20 @@ export interface PresidentMessagesSelect<T extends boolean = true> {
   displayDate?: T;
   archiveDate?: T;
   placement?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "treasury-reports_select".
+ */
+export interface TreasuryReportsSelect<T extends boolean = true> {
+  title?: T;
+  date?: T;
+  fiscalYear?: T;
+  period?: T;
+  notes?: T;
+  file?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -18,6 +18,7 @@ import { MinutesSubmissions } from './collections/MinutesSubmissions'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { PresidentMessages } from './collections/PresidentMessages'
+import { TreasuryReports } from './collections/TreasuryReports'
 import { Users } from './collections/Users'
 import { Footer } from './globals/Footer'
 import { Header } from './globals/Header'
@@ -114,6 +115,7 @@ export default buildConfig({
     Users,
     ClubMembers,
     PresidentMessages,
+    TreasuryReports,
     ActivityLog,
   ]),
   cors: [getServerSideURL()].filter(Boolean),
