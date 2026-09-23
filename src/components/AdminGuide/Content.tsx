@@ -118,6 +118,7 @@ const toc = [
   ['users', 'Staff Accounts (Users)'],
   ['seo', 'SEO Settings'],
   ['faq', 'Troubleshooting / FAQ'],
+  ['treasury', 'Treasury Reports'],
   ['help', 'Getting Help'],
 ] as const
 
@@ -280,6 +281,10 @@ export function AdminGuideContent() {
                   <tr>
                     <td style={tdStyle}><strong>Club Members</strong></td>
                     <td style={tdStyle}>Club Members (member accounts), Minutes Submissions</td>
+                  </tr>
+                  <tr>
+                    <td style={tdStyle}><strong>Treasury</strong></td>
+                    <td style={tdStyle}>Treasury Reports (Excel uploads)</td>
                   </tr>
                   <tr>
                     <td style={tdStyle}><strong>Site-wide</strong></td>
@@ -985,9 +990,28 @@ export function AdminGuideContent() {
             </details>
           </section>
 
-          {/* 17. Help */}
+          {/* 17. Treasury Reports */}
+          <section id="treasury" style={sectionStyle}>
+            <h2 style={h2Style}>17. Treasury Reports</h2>
+            <p style={pStyle}>
+              Sidebar → <strong>Treasury → Treasury Reports</strong>. Internal record-keeping for
+              quarterly/annual treasury reports — not shown anywhere on the public website.
+            </p>
+            <ol style={ulStyle}>
+              <li>Create New → fill in a Title, the report Date, Fiscal Year, and Period (Q1–Q4 or Annual).</li>
+              <li>Upload the report as an Excel (.xlsx) file.</li>
+              <li>Optionally add Notes.</li>
+              <li>Save.</li>
+            </ol>
+            <p style={pStyle}>
+              Only staff accounts (Users) can see or manage this collection — Club Members do not
+              have access.
+            </p>
+          </section>
+
+          {/* 18. Help */}
           <section id="help" style={sectionStyle}>
-            <h2 style={h2Style}>17. Getting Help</h2>
+            <h2 style={h2Style}>18. Getting Help</h2>
             <p style={pStyle}>
               For anything not covered here, or if something looks broken rather than just
               unfamiliar, reach out to Luke (site developer) rather than guessing — some things
