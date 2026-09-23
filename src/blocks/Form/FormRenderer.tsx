@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import type { Form } from '@/payload-types'
-import { Recaptcha } from './Recaptcha'
+import { useRecaptchaToken } from './Recaptcha'
 
 // Field names the beforeValidate hook on form-submissions (src/plugins/index.ts)
 // looks for and strips before saving — keep these two in sync.
@@ -108,7 +108,7 @@ export function FormRenderer({ form }: { form: Form }) {
   const [values, setValues] = useState<Record<string, string | boolean>>(() => getInitialValues(form))
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
   const [honeypot, setHoneypot] = useState('')
-  const [recaptchaToken, setRecaptchaToken] = useState('')
+  const getRecaptchaToken = useRecaptchaToken()
 
   function handleChange(name: string, value: string | boolean) {
     setValues((prev) => ({ ...prev, [name]: value }))
@@ -119,6 +119,10 @@ export function FormRenderer({ form }: { form: Form }) {
     setStatus('submitting')
 
     try {
+      // Fetched fresh right before submitting, not earlier — Google expires
+      // the token after 2 minutes, easy to blow past while filling out a form.
+      const recaptchaToken = await getRecaptchaToken('submit')
+
       const res = await fetch('/api/form-submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -179,8 +183,6 @@ export function FormRenderer({ form }: { form: Form }) {
           onChange={(e) => setHoneypot(e.target.value)}
         />
       </div>
-
-      <Recaptcha onChange={setRecaptchaToken} />
 
       {status === 'error' && (
         <p className="text-sm text-brand-red">

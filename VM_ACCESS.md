@@ -39,6 +39,14 @@ scp luke@chasingachance.com:/opt/services/clients/putnamcountydemocratclubofwv/P
 
 Then restart the local dev server so it reopens the file instead of holding a stale connection.
 
+**Expect one specific error on first restart after a sync**, every time: local push-mode tries to recreate an index that the freshly-synced db already has (`payload_locked_documents_rels_order_idx`) and 500s on it — seen on `/admin`, `/members/login`, or whatever route gets hit first. It's harmless (indexes carry no data) and always the same fix:
+
+```bash
+sqlite3 putnam-county-dem-club-prod.db "DROP INDEX IF EXISTS payload_locked_documents_rels_order_idx;"
+```
+
+Then just reload — no restart needed. This has recurred on every single sync so far; if a *different* index starts showing the same "already exists" error, drop that one the same way.
+
 ### Media files
 
 The db references uploads by filename, so after refreshing the db, missing media will 500. Pull the VM's `public/media` down with `rsync` (not a flat `scp`) so it only fetches new/changed files and never deletes anything local-only:
@@ -48,3 +56,19 @@ rsync -avz -e ssh luke@chasingachance.com:/opt/services/clients/putnamcountydemo
 ```
 
 This only pulls data one direction (VM → laptop). Never scp/rsync in the other direction — real content should still be authored directly in the VM's admin panel.
+
+## Domains (as of 2026-09-22)
+
+Both nginx server blocks point at the same app (port 3007) and share one Payload/db backend — there's no separate "prod" vs "dev" deployment yet, just two hostnames in front of the same running instance.
+
+- **`putnamdemswv.com`** — the real production domain, behind Cloudflare (proxied DNS). Canonical is the root domain; `www` and plain HTTP both 301 to `https://putnamdemswv.com`. Cert via `certbot --nginx -d putnamdemswv.com -d www.putnamdemswv.com`, covers both names.
+- **`putnamcountydemocratclubofwv.chasingachance.com`** — the original subdomain. Password-protected as of 2026-09-22 (decided this should become a separate dev/staging environment later, not stay public once the real domain was live) via HTTP Basic Auth:
+  - Credentials: `putnamdev` / `41B9HZAHx4J2Jk+pZ+HyeJ4K`
+  - Password file: `/etc/nginx/.htpasswd-putnamdemswv-dev` (dedicated to this — not the same file `access.lukeshort.dev` uses)
+  - Still fully functional, just gated — useful for previewing before the real dev/staging split happens.
+
+**Origin locked to Cloudflare (done 2026-09-22)**: `putnamdemswv.com`'s three server blocks (content, `www` redirect, HTTP redirect) each `include /etc/nginx/cloudflare-ips.conf` — an allowlist of Cloudflare's published ranges (https://www.cloudflare.com/ips/) ending in `deny all;`. Direct requests to the origin IP now get a 403; only Cloudflare-proxied traffic reaches the app. Verified this doesn't affect any other domain on the box (each has its own server block, no shared restriction). If Cloudflare adds/retires IP ranges, update `/etc/nginx/cloudflare-ips.conf` — every server block referencing it picks up the change on the next `nginx -t && systemctl reload nginx`, no need to touch the per-domain files.
+
+Also added `proxy_set_header CF-Connecting-IP $http_cf_connecting_ip;` to the content block so the real visitor IP is available to the app if anything ever needs it (activity log, future rate limiting) — nothing reads it yet, this is just forward-looking.
+
+**`NEXT_PUBLIC_SERVER_URL` note**: this env var is baked into the build (not just read at runtime) — it feeds `next.config.ts`'s image `remotePatterns` and Payload's `serverURL` (which is what gets prepended to every `/api/media/file/*` URL). Changing it always requires a rebuild + `pm2 restart`, not just an env edit. Got bitten by this once already on 2026-09-22 — images briefly pointed at the old subdomain after the domain cutover until the rebuild caught up.

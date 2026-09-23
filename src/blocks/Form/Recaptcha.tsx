@@ -1,60 +1,83 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import Script from 'next/script'
+import { useCallback, useEffect, useRef } from 'react'
 
 declare global {
   interface Window {
     grecaptcha?: {
-      render: (
-        container: HTMLElement,
-        params: {
-          sitekey: string
-          callback: (token: string) => void
-          'expired-callback'?: () => void
-        },
-      ) => number
+      enterprise: {
+        ready: (callback: () => void) => void
+        execute: (siteKey: string, options: { action: string }) => Promise<string>
+      }
     }
   }
 }
 
-// Set NEXT_PUBLIC_RECAPTCHA_SITE_KEY (and RECAPTCHA_SECRET_KEY, used
-// server-side in src/plugins/index.ts) to turn this on — until then it
-// shows a placeholder and forms submit normally without it. Google
-// reCAPTCHA v2/v3 is free up to a generous monthly quota; check current
-// terms on Google's reCAPTCHA page when you actually sign up for keys.
+// Set NEXT_PUBLIC_RECAPTCHA_SITE_KEY (and RECAPTCHA_API_KEY +
+// RECAPTCHA_PROJECT_ID, used server-side in src/plugins/index.ts) to turn
+// this on — until then getRecaptchaToken() resolves to an empty string and
+// forms submit normally without it.
+//
+// This is reCAPTCHA Enterprise, score-based (v3) — fully invisible, no
+// checkbox to render. A token has to be fetched fresh right before
+// submitting (not on page load): Google expires it after 2 minutes, and a
+// visitor can easily take longer than that to fill out a form.
 const SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+const SCRIPT_ID = 'recaptcha-enterprise-script'
 
-export function Recaptcha({ onChange }: { onChange: (token: string) => void }) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [scriptLoaded, setScriptLoaded] = useState(false)
+function loadScript(): Promise<void> {
+  return new Promise((resolve) => {
+    if (!SITE_KEY) {
+      resolve()
+      return
+    }
+    const existing = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null
+    if (existing) {
+      if (window.grecaptcha?.enterprise) resolve()
+      else existing.addEventListener('load', () => resolve())
+      return
+    }
+    const script = document.createElement('script')
+    script.id = SCRIPT_ID
+    script.src = `https://www.google.com/recaptcha/enterprise.js?render=${SITE_KEY}`
+    script.onload = () => resolve()
+    document.head.appendChild(script)
+  })
+}
+
+/**
+ * Returns a getToken(action) function. Call it right before submitting —
+ * resolves to '' (inert) if reCAPTCHA isn't configured, so forms keep
+ * working normally either way.
+ */
+export function useRecaptchaToken() {
+  const scriptReady = useRef<Promise<void> | null>(null)
 
   useEffect(() => {
-    if (!scriptLoaded || !SITE_KEY || !containerRef.current || !window.grecaptcha) return
+    if (SITE_KEY && !scriptReady.current) {
+      scriptReady.current = loadScript()
+    }
+  }, [])
 
-    window.grecaptcha.render(containerRef.current, {
-      sitekey: SITE_KEY,
-      callback: onChange,
-      'expired-callback': () => onChange(''),
+  const getToken = useCallback(async (action: string): Promise<string> => {
+    if (!SITE_KEY) return ''
+
+    if (!scriptReady.current) scriptReady.current = loadScript()
+    await scriptReady.current
+
+    if (!window.grecaptcha?.enterprise) return ''
+
+    return new Promise((resolve) => {
+      window.grecaptcha!.enterprise.ready(async () => {
+        try {
+          const token = await window.grecaptcha!.enterprise.execute(SITE_KEY!, { action })
+          resolve(token)
+        } catch {
+          resolve('')
+        }
+      })
     })
-    // Only run once per mount — grecaptcha.render throws if called twice
-    // on the same container, and onChange is stable enough in practice here.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scriptLoaded])
+  }, [])
 
-  if (!SITE_KEY) {
-    return (
-      <div className="rounded-md border border-dashed border-gray-300 bg-gray-50 px-4 py-3 text-xs text-gray-500">
-        reCAPTCHA placeholder — set <code>NEXT_PUBLIC_RECAPTCHA_SITE_KEY</code> and{' '}
-        <code>RECAPTCHA_SECRET_KEY</code> to enable spam protection on this form.
-      </div>
-    )
-  }
-
-  return (
-    <>
-      <Script src="https://www.google.com/recaptcha/api.js" onLoad={() => setScriptLoaded(true)} />
-      <div ref={containerRef} />
-    </>
-  )
+  return getToken
 }

@@ -65,20 +65,42 @@ const rejectSpamSubmissions: CollectionBeforeValidateHook = async ({ data }) => 
     throw new Error('Spam detected.')
   }
 
-  // Inert until RECAPTCHA_SECRET_KEY is actually set — see Recaptcha.tsx.
-  if (process.env.RECAPTCHA_SECRET_KEY) {
+  // Inert until RECAPTCHA_API_KEY is actually set — see Recaptcha.tsx.
+  // This is reCAPTCHA Enterprise (score-based/v3), not classic reCAPTCHA —
+  // verification goes through Google Cloud's Assessment API (project +
+  // API key), not the old shared-secret siteverify endpoint.
+  if (process.env.RECAPTCHA_API_KEY) {
     const token = submissionData.find((f) => f.field === '_recaptcha')?.value
     if (!token) {
       throw new Error('reCAPTCHA verification failed.')
     }
 
-    const verifyRes = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ secret: process.env.RECAPTCHA_SECRET_KEY, response: token }),
-    })
-    const verifyData = await verifyRes.json()
-    if (!verifyData.success) {
+    const projectId = process.env.RECAPTCHA_PROJECT_ID || 'wv-cam-auth'
+    const assessRes = await fetch(
+      `https://recaptchaenterprise.googleapis.com/v1/projects/${projectId}/assessments?key=${process.env.RECAPTCHA_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: {
+            token,
+            siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
+            expectedAction: 'submit',
+          },
+        }),
+      },
+    )
+    const assessData = await assessRes.json()
+
+    const valid = assessData?.tokenProperties?.valid
+    const actionMatches = assessData?.tokenProperties?.action === 'submit'
+    // 0.5 is Google's own suggested starting threshold (1.0 = very likely
+    // legitimate, 0.0 = very likely a bot) — worth revisiting once there's
+    // real submission volume to calibrate against.
+    const score = assessData?.riskAnalysis?.score
+    const scoreOk = typeof score === 'number' && score >= 0.5
+
+    if (!valid || !actionMatches || !scoreOk) {
       throw new Error('reCAPTCHA verification failed.')
     }
   }
