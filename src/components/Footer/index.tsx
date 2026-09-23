@@ -92,7 +92,7 @@ export function Footer({
         <div className="mx-auto flex max-w-[1800px] flex-col items-center gap-3 sm:flex-row sm:justify-between">
           <p className="text-center text-xs text-white/50 sm:text-left">
             &copy; {year} Putnam County Democratic Party. Paid for by the Putnam County Democratic
-            Party.
+            Party. <a href="/privacy-policy" className="underline hover:text-white">Privacy Policy</a>
           </p>
           <a
             href={data.chasingAChanceUrl || 'https://chasingachance.com'}
