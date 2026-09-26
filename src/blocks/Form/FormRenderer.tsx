@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { RichText } from '@/components/RichText'
 
 import type { Form } from '@/payload-types'
 import { useRecaptchaToken } from './Recaptcha'

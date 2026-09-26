@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { RichText } from '@/components/RichText'
 
 import type { Candidate } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'

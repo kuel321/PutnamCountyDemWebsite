@@ -1,4 +1,4 @@
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { RichText } from '@/components/RichText'
 
 import type { MediaContentBlock as MediaContentBlockProps } from '@/payload-types'
 import { MediaThumbnail, isPdfMedia } from '@/components/MediaThumbnail'

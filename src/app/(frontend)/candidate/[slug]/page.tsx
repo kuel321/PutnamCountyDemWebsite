@@ -6,7 +6,7 @@ import type { Polygon, MultiPolygon } from 'geojson'
 import { cache } from 'react'
 import type { Metadata } from 'next'
 
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import { RichText } from '@/components/RichText'
 import { convertLexicalToPlaintext } from '@payloadcms/richtext-lexical/plaintext'
 import type { Media } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
