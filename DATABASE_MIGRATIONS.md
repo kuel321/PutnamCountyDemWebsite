@@ -33,7 +33,7 @@ Since this project had zero migration history (everything, including production,
 
 ## Workflow for a normal schema change (adding a field, a collection, etc.)
 
-1. Make the change in your collection/global/block config as usual.
+1. Make the change in your collection/global/block config as usual. See `ADDING_FIELDS.md` for field type syntax and examples if you're adding a new field.
 2. Confirm it looks right locally — `npm run dev` will push it to your local db automatically.
 3. Generate the migration file:
    ```
