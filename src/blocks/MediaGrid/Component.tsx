@@ -18,7 +18,7 @@ export function MediaGridBlock({ heading, items, anchorId }: MediaGridBlockProps
 
         <div className={`grid grid-cols-1 gap-6 sm:grid-cols-3 ${heading ? 'mt-8' : ''}`}>
           {photos.map((item, index) => (
-            <figure key={item.id ?? index}>
+            <figure key={item.id ?? index} id={item.anchorId || undefined} className="scroll-mt-24">
               <div className="relative">
                 <MediaThumbnail media={item.media} className="w-full" />
                 {item.credit && !isPdfMedia(item.media) && (

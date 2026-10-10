@@ -38,7 +38,11 @@ export async function PublishedMinutesAccordion() {
         )
 
         return (
-          <details key={entry.id} className="group p-5">
+          <details
+            key={entry.id}
+            id={entry.anchorId || `minutes-${entry.id}`}
+            className="group scroll-mt-24 p-5"
+          >
             <summary className="flex cursor-pointer list-none items-center justify-between gap-4">
               <div>
                 <p className="font-medium text-gray-900">{entry.title}</p>

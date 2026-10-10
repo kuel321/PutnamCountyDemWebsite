@@ -11,6 +11,7 @@ import {
 import { slugField } from 'payload'
 
 import { linkGroup } from '@/fields/linkGroup'
+import { anchorIdField } from '@/fields/anchorId'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { NumberedList } from '@/blocks/NumberedList/config'
@@ -151,6 +152,7 @@ export const Candidates: CollectionConfig = {
           "Extra blocks shown at the bottom of this candidate's profile page, below their bio, photos, and ads. The profile page itself always exists as long as this candidate record does — these blocks just add to it.",
       },
     },
+    anchorIdField,
     slugField(),
   ],
 }

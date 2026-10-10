@@ -8,6 +8,7 @@ import {
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { anchorIdField } from '@/fields/anchorId'
 
 export const Highlights: CollectionConfig = {
   slug: 'highlights',
@@ -47,5 +48,6 @@ export const Highlights: CollectionConfig = {
         },
       }),
     },
+    anchorIdField,
   ],
 }

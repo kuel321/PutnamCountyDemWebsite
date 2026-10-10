@@ -18,7 +18,7 @@ function CandidateItem({ candidate }: { candidate: Candidate }) {
     candidate.headshot && typeof candidate.headshot === 'object' ? candidate.headshot : null
 
   return (
-    <details className="group p-5">
+    <details id={candidate.anchorId || `candidate-${candidate.id}`} className="group scroll-mt-24 p-5">
       <summary className="flex cursor-pointer list-none items-center gap-4">
         <div className="flex min-w-0 flex-1 items-center gap-4 group-open:hidden">
           {headshot ? (

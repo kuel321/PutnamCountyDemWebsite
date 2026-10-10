@@ -23,7 +23,7 @@ export async function NewsReel() {
         <AutoCarousel
           intervalMs={7000}
           items={highlights.map((highlight) => (
-            <div key={highlight.id}>
+            <div key={highlight.id} id={highlight.anchorId || `highlight-${highlight.id}`}>
               <p className="font-medium text-gray-900">{highlight.title}</p>
               {highlight.content && (
                 <RichText

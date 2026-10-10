@@ -251,7 +251,7 @@ export interface ContentBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
    */
   anchorId?: string | null;
   id?: string | null;
@@ -264,7 +264,7 @@ export interface ContentBlock {
  */
 export interface MeetingInfoBlock {
   /**
-   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
    */
   anchorId?: string | null;
   id?: string | null;
@@ -278,7 +278,7 @@ export interface MeetingInfoBlock {
 export interface CandidatesBlock {
   heading?: string | null;
   /**
-   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
    */
   anchorId?: string | null;
   id?: string | null;
@@ -291,7 +291,7 @@ export interface CandidatesBlock {
  */
 export interface PresidentMessageBlock {
   /**
-   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
    */
   anchorId?: string | null;
   id?: string | null;
@@ -327,7 +327,7 @@ export interface MediaContentBlock {
     [k: string]: unknown;
   } | null;
   /**
-   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
    */
   anchorId?: string | null;
   id?: string | null;
@@ -461,7 +461,7 @@ export interface FindDistrictBlock {
   heading?: string | null;
   intro?: string | null;
   /**
-   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
    */
   anchorId?: string | null;
   id?: string | null;
@@ -485,11 +485,15 @@ export interface MediaGridBlock {
          * Optional photo credit. Shown as a small label overlaid on the bottom-right corner of the image (e.g. "Jane Doe" or "Putnam County GOP").
          */
         credit?: string | null;
+        /**
+         * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+         */
+        anchorId?: string | null;
         id?: string | null;
       }[]
     | null;
   /**
-   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
    */
   anchorId?: string | null;
   id?: string | null;
@@ -506,7 +510,7 @@ export interface FormBlock {
    */
   form: number | Form;
   /**
-   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
    */
   anchorId?: string | null;
   id?: string | null;
@@ -709,7 +713,7 @@ export interface NumberedListBlock {
       }[]
     | null;
   /**
-   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
    */
   anchorId?: string | null;
   id?: string | null;
@@ -848,6 +852,10 @@ export interface Meeting {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -882,6 +890,10 @@ export interface MeetingMinute {
    * The original PDF or Word document, if one was submitted.
    */
   file?: (number | null) | Media;
+  /**
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -972,6 +984,10 @@ export interface Candidate {
    */
   layout?: (ContentBlock | MediaContentBlock | MediaGridBlock | NumberedListBlock)[] | null;
   /**
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
+  /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
@@ -1034,6 +1050,10 @@ export interface Highlight {
     };
     [k: string]: unknown;
   };
+  /**
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1604,6 +1624,7 @@ export interface MediaGridBlockSelect<T extends boolean = true> {
         media?: T;
         caption?: T;
         credit?: T;
+        anchorId?: T;
         id?: T;
       };
   anchorId?: T;
@@ -1799,6 +1820,7 @@ export interface MeetingsSelect<T extends boolean = true> {
         hideFromPublic?: T;
         id?: T;
       };
+  anchorId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1812,6 +1834,7 @@ export interface MeetingMinutesSelect<T extends boolean = true> {
   meeting?: T;
   content?: T;
   file?: T;
+  anchorId?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1863,6 +1886,7 @@ export interface CandidatesSelect<T extends boolean = true> {
         mediaGrid?: T | MediaGridBlockSelect<T>;
         numberedList?: T | NumberedListBlockSelect<T>;
       };
+  anchorId?: T;
   generateSlug?: T;
   slug?: T;
   updatedAt?: T;
@@ -1887,6 +1911,7 @@ export interface HighlightsSelect<T extends boolean = true> {
   title?: T;
   order?: T;
   content?: T;
+  anchorId?: T;
   updatedAt?: T;
   createdAt?: T;
 }

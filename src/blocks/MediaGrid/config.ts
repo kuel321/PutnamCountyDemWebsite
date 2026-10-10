@@ -52,6 +52,7 @@ export const MediaGrid: Block = {
               'Optional photo credit. Shown as a small label overlaid on the bottom-right corner of the image (e.g. "Jane Doe" or "Putnam County GOP").',
           },
         },
+        anchorIdField,
       ],
     },
     anchorIdField,

@@ -13,6 +13,10 @@ function formatDate(date: string) {
   })
 }
 
+function meetingAnchor(meeting: Meeting) {
+  return meeting.anchorId || `meeting-${meeting.id}`
+}
+
 function MeetingListItem({ meeting, showShare }: { meeting: Meeting; showShare?: boolean }) {
   const photos = (meeting.photos ?? []).filter(
     (photo): photo is { image: Media; id?: string | null } =>
@@ -21,7 +25,7 @@ function MeetingListItem({ meeting, showShare }: { meeting: Meeting; showShare?:
 
   return (
     <li
-      id={`meeting-${meeting.id}`}
+      id={meetingAnchor(meeting)}
       className="scroll-mt-24 flex flex-col gap-4 p-5 sm:flex-row sm:items-start"
     >
       {photos.length > 0 && (
@@ -52,7 +56,7 @@ function MeetingListItem({ meeting, showShare }: { meeting: Meeting; showShare?:
         {showShare && (
           <ShareButton
             title={meeting.title}
-            url={`/meeting-dates-location#meeting-${meeting.id}`}
+            url={`/meeting-dates-location#${meetingAnchor(meeting)}`}
             className="shrink-0 text-gray-400 transition-colors hover:text-brand-red"
           />
         )}

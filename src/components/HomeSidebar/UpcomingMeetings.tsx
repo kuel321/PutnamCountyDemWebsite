@@ -10,6 +10,10 @@ function formatDate(date: string) {
   })
 }
 
+function meetingAnchor(meeting: { id: number | string; anchorId?: string | null }) {
+  return meeting.anchorId || `meeting-${meeting.id}`
+}
+
 export async function UpcomingMeetings() {
   const payload = await getPayload({ config })
 
@@ -29,7 +33,11 @@ export async function UpcomingMeetings() {
       <h2 className="text-xl font-bold text-brand-navy sm:text-2xl">Upcoming Meetings</h2>
       <ul className="mt-4 divide-y divide-gray-100">
         {meetings.map((meeting) => (
-          <li key={meeting.id} className="flex items-start gap-3 py-2.5 first:pt-0 last:pb-0">
+          <li
+            key={meeting.id}
+            id={meetingAnchor(meeting)}
+            className="scroll-mt-24 flex items-start gap-3 py-2.5 first:pt-0 last:pb-0"
+          >
             <div className="w-14 shrink-0 text-sm font-semibold text-brand-red">
               {formatDate(meeting.date)}
             </div>
@@ -39,7 +47,7 @@ export async function UpcomingMeetings() {
             </div>
             <ShareButton
               title={meeting.title}
-              url={`/meeting-dates-location#meeting-${meeting.id}`}
+              url={`/meeting-dates-location#${meetingAnchor(meeting)}`}
               className="shrink-0 text-gray-400 transition-colors hover:text-brand-red"
             />
           </li>

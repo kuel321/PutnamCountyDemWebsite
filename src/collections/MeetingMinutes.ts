@@ -10,6 +10,7 @@ import {
 
 import { authenticated } from '../access/authenticated'
 import { authenticatedOrPublished } from '../access/authenticatedOrPublished'
+import { anchorIdField } from '@/fields/anchorId'
 import {
   revalidateMeetingContent,
   revalidateMeetingContentDelete,
@@ -84,5 +85,6 @@ export const MeetingMinutes: CollectionConfig = {
         description: 'The original PDF or Word document, if one was submitted.',
       },
     },
+    anchorIdField,
   ],
 }
