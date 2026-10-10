@@ -686,6 +686,9 @@ export interface AccordionBlock {
   items?:
     | {
         heading: string;
+        /**
+         * * A "Read more" link appears automatically once this runs long (roughly 150+ characters) — short entries show in full with no link, so there's nothing to configure here.
+         */
         content?: {
           root: {
             type: string;
