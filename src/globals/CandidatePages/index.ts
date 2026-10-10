@@ -2,7 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 import { anyone } from '../../access/anyone'
 import { authenticated } from '../../access/authenticated'
-import { Accordion } from '@/blocks/Accordion/config'
+import { NumberedList } from '@/blocks/NumberedList/config'
 import { Content } from '@/blocks/Content/config'
 import { MediaContent } from '@/blocks/MediaContent/config'
 import { MediaGrid } from '@/blocks/MediaGrid/config'
@@ -24,7 +24,7 @@ export const CandidatePages: GlobalConfig = {
       name: 'layout',
       label: 'Blocks Shown on Every Candidate Page',
       type: 'blocks',
-      blocks: [FindDistrict, Content, MediaContent, MediaGrid, Accordion],
+      blocks: [FindDistrict, Content, MediaContent, MediaGrid, NumberedList],
       admin: {
         initCollapsed: true,
         description:

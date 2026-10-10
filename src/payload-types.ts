@@ -209,7 +209,7 @@ export interface Page {
         | FindDistrictBlock
         | MediaGridBlock
         | FormBlock
-        | AccordionBlock
+        | NumberedListBlock
       )[]
     | null;
   meta?: {
@@ -680,15 +680,12 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AccordionBlock".
+ * via the `definition` "NumberedListBlock".
  */
-export interface AccordionBlock {
+export interface NumberedListBlock {
   items?:
     | {
         heading: string;
-        /**
-         * * A "Read more" link appears automatically once this runs long (roughly 150+ characters) — short entries show in full with no link, so there's nothing to configure here.
-         */
         content?: {
           root: {
             type: string;
@@ -705,7 +702,7 @@ export interface AccordionBlock {
           [k: string]: unknown;
         } | null;
         /**
-         * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+         * If set, this item shows a "Read more" link that jumps to that anchor elsewhere on this page — e.g. a Content block further down whose own Anchor ID field is set to the same value. Leave blank to show this item with no link.
          */
         anchorId?: string | null;
         id?: string | null;
@@ -717,7 +714,7 @@ export interface AccordionBlock {
   anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'accordion';
+  blockType: 'numberedList';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -973,7 +970,7 @@ export interface Candidate {
   /**
    * Extra blocks shown at the bottom of this candidate's profile page, below their bio, photos, and ads. The profile page itself always exists as long as this candidate record does — these blocks just add to it.
    */
-  layout?: (ContentBlock | MediaContentBlock | MediaGridBlock | AccordionBlock)[] | null;
+  layout?: (ContentBlock | MediaContentBlock | MediaGridBlock | NumberedListBlock)[] | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1518,7 +1515,7 @@ export interface PagesSelect<T extends boolean = true> {
         findDistrict?: T | FindDistrictBlockSelect<T>;
         mediaGrid?: T | MediaGridBlockSelect<T>;
         form?: T | FormBlockSelect<T>;
-        accordion?: T | AccordionBlockSelect<T>;
+        numberedList?: T | NumberedListBlockSelect<T>;
       };
   meta?:
     | T
@@ -1625,9 +1622,9 @@ export interface FormBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "AccordionBlock_select".
+ * via the `definition` "NumberedListBlock_select".
  */
-export interface AccordionBlockSelect<T extends boolean = true> {
+export interface NumberedListBlockSelect<T extends boolean = true> {
   items?:
     | T
     | {
@@ -1864,7 +1861,7 @@ export interface CandidatesSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaContent?: T | MediaContentBlockSelect<T>;
         mediaGrid?: T | MediaGridBlockSelect<T>;
-        accordion?: T | AccordionBlockSelect<T>;
+        numberedList?: T | NumberedListBlockSelect<T>;
       };
   generateSlug?: T;
   slug?: T;
@@ -2362,7 +2359,7 @@ export interface CandidatePage {
   /**
    * Shown on every candidate's profile page (below their bio/photos/ads, above that candidate's own Additional Content Blocks). Use this for things like the district finder that should appear everywhere, instead of adding it to each candidate one by one.
    */
-  layout?: (FindDistrictBlock | ContentBlock | MediaContentBlock | MediaGridBlock | AccordionBlock)[] | null;
+  layout?: (FindDistrictBlock | ContentBlock | MediaContentBlock | MediaGridBlock | NumberedListBlock)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2445,7 +2442,7 @@ export interface CandidatePagesSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaContent?: T | MediaContentBlockSelect<T>;
         mediaGrid?: T | MediaGridBlockSelect<T>;
-        accordion?: T | AccordionBlockSelect<T>;
+        numberedList?: T | NumberedListBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

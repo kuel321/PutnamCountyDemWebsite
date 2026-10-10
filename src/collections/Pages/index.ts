@@ -6,7 +6,7 @@ import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
-import { Accordion } from '@/blocks/Accordion/config'
+import { NumberedList } from '@/blocks/NumberedList/config'
 import { Content } from '@/blocks/Content/config'
 import { MeetingInfo } from '@/blocks/MeetingInfo/config'
 import { Candidates } from '@/blocks/Candidates/config'
@@ -81,7 +81,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 FindDistrict,
                 MediaGrid,
                 FormBlock,
-                Accordion,
+                NumberedList,
               ],
               label: false,
             },

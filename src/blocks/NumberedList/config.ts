@@ -4,12 +4,12 @@ import { FixedToolbarFeature, InlineToolbarFeature, lexicalEditor } from '@paylo
 
 import { anchorIdField } from '@/fields/anchorId'
 
-export const Accordion: Block = {
-  slug: 'accordion',
-  interfaceName: 'AccordionBlock',
+export const NumberedList: Block = {
+  slug: 'numberedList',
+  interfaceName: 'NumberedListBlock',
   labels: {
-    singular: 'Numbered Accordion',
-    plural: 'Numbered Accordion Blocks',
+    singular: 'Numbered List',
+    plural: 'Numbered List Blocks',
   },
   fields: [
     {
@@ -37,12 +37,16 @@ export const Accordion: Block = {
               return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
             },
           }),
+        },
+        {
+          name: 'anchorId',
+          type: 'text',
+          label: 'Read More Target (optional)',
           admin: {
             description:
-              "* A \"Read more\" link appears automatically once this runs long (roughly 150+ characters) — short entries show in full with no link, so there's nothing to configure here.",
+              'If set, this item shows a "Read more" link that jumps to that anchor elsewhere on this page — e.g. a Content block further down whose own Anchor ID field is set to the same value. Leave blank to show this item with no link.',
           },
         },
-        anchorIdField,
       ],
     },
     anchorIdField,

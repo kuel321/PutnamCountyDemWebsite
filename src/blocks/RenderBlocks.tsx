@@ -1,6 +1,6 @@
 import type { Page } from '@/payload-types'
 
-import { AccordionBlock } from '@/blocks/Accordion/Component'
+import { NumberedListBlock } from '@/blocks/NumberedList/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { MeetingInfoBlock } from '@/blocks/MeetingInfo/Component'
 import { CandidatesBlock } from '@/blocks/Candidates/Component'
@@ -37,8 +37,8 @@ export function RenderBlocks({ blocks }: { blocks?: LayoutBlocks | null }) {
             return <MediaGridBlock key={block.id ?? index} {...block} />
           case 'form':
             return <FormBlock key={block.id ?? index} {...block} />
-          case 'accordion':
-            return <AccordionBlock key={block.id ?? index} {...block} />
+          case 'numberedList':
+            return <NumberedListBlock key={block.id ?? index} {...block} />
           default:
             return null
         }
