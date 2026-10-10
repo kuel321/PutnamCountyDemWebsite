@@ -209,6 +209,7 @@ export interface Page {
         | FindDistrictBlock
         | MediaGridBlock
         | FormBlock
+        | AccordionBlock
       )[]
     | null;
   meta?: {
@@ -249,6 +250,10 @@ export interface ContentBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
@@ -258,6 +263,10 @@ export interface ContentBlock {
  * via the `definition` "MeetingInfoBlock".
  */
 export interface MeetingInfoBlock {
+  /**
+   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'meetingInfo';
@@ -268,6 +277,10 @@ export interface MeetingInfoBlock {
  */
 export interface CandidatesBlock {
   heading?: string | null;
+  /**
+   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'candidates';
@@ -277,6 +290,10 @@ export interface CandidatesBlock {
  * via the `definition` "PresidentMessageBlock".
  */
 export interface PresidentMessageBlock {
+  /**
+   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'presidentMessage';
@@ -309,6 +326,10 @@ export interface MediaContentBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaContent';
@@ -439,6 +460,10 @@ export interface FolderInterface {
 export interface FindDistrictBlock {
   heading?: string | null;
   intro?: string | null;
+  /**
+   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'findDistrict';
@@ -463,6 +488,10 @@ export interface MediaGridBlock {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaGrid';
@@ -476,6 +505,10 @@ export interface FormBlock {
    * Build the form itself under Forms in the admin sidebar, then pick it here.
    */
   form: number | Form;
+  /**
+   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'form';
@@ -644,6 +677,40 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock".
+ */
+export interface AccordionBlock {
+  items?:
+    | {
+        heading: string;
+        content?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'accordion';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -899,7 +966,7 @@ export interface Candidate {
   /**
    * Extra blocks shown at the bottom of this candidate's profile page, below their bio, photos, and ads. The profile page itself always exists as long as this candidate record does — these blocks just add to it.
    */
-  layout?: (ContentBlock | MediaContentBlock | MediaGridBlock)[] | null;
+  layout?: (ContentBlock | MediaContentBlock | MediaGridBlock | AccordionBlock)[] | null;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
@@ -1444,6 +1511,7 @@ export interface PagesSelect<T extends boolean = true> {
         findDistrict?: T | FindDistrictBlockSelect<T>;
         mediaGrid?: T | MediaGridBlockSelect<T>;
         form?: T | FormBlockSelect<T>;
+        accordion?: T | AccordionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1465,6 +1533,7 @@ export interface PagesSelect<T extends boolean = true> {
  */
 export interface ContentBlockSelect<T extends boolean = true> {
   richText?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -1473,6 +1542,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
  * via the `definition` "MeetingInfoBlock_select".
  */
 export interface MeetingInfoBlockSelect<T extends boolean = true> {
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -1482,6 +1552,7 @@ export interface MeetingInfoBlockSelect<T extends boolean = true> {
  */
 export interface CandidatesBlockSelect<T extends boolean = true> {
   heading?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -1490,6 +1561,7 @@ export interface CandidatesBlockSelect<T extends boolean = true> {
  * via the `definition` "PresidentMessageBlock_select".
  */
 export interface PresidentMessageBlockSelect<T extends boolean = true> {
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -1501,6 +1573,7 @@ export interface MediaContentBlockSelect<T extends boolean = true> {
   media?: T;
   externalLink?: T;
   content?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -1511,6 +1584,7 @@ export interface MediaContentBlockSelect<T extends boolean = true> {
 export interface FindDistrictBlockSelect<T extends boolean = true> {
   heading?: T;
   intro?: T;
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -1528,6 +1602,7 @@ export interface MediaGridBlockSelect<T extends boolean = true> {
         credit?: T;
         id?: T;
       };
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -1537,6 +1612,23 @@ export interface MediaGridBlockSelect<T extends boolean = true> {
  */
 export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
+  anchorId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "AccordionBlock_select".
+ */
+export interface AccordionBlockSelect<T extends boolean = true> {
+  items?:
+    | T
+    | {
+        heading?: T;
+        content?: T;
+        id?: T;
+      };
+  anchorId?: T;
   id?: T;
   blockName?: T;
 }
@@ -1764,6 +1856,7 @@ export interface CandidatesSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaContent?: T | MediaContentBlockSelect<T>;
         mediaGrid?: T | MediaGridBlockSelect<T>;
+        accordion?: T | AccordionBlockSelect<T>;
       };
   generateSlug?: T;
   slug?: T;
@@ -2261,7 +2354,7 @@ export interface CandidatePage {
   /**
    * Shown on every candidate's profile page (below their bio/photos/ads, above that candidate's own Additional Content Blocks). Use this for things like the district finder that should appear everywhere, instead of adding it to each candidate one by one.
    */
-  layout?: (FindDistrictBlock | ContentBlock | MediaContentBlock | MediaGridBlock)[] | null;
+  layout?: (FindDistrictBlock | ContentBlock | MediaContentBlock | MediaGridBlock | AccordionBlock)[] | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2344,6 +2437,7 @@ export interface CandidatePagesSelect<T extends boolean = true> {
         content?: T | ContentBlockSelect<T>;
         mediaContent?: T | MediaContentBlockSelect<T>;
         mediaGrid?: T | MediaGridBlockSelect<T>;
+        accordion?: T | AccordionBlockSelect<T>;
       };
   updatedAt?: T;
   createdAt?: T;

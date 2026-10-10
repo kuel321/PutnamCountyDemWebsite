@@ -13,6 +13,7 @@ import { slugField } from 'payload'
 import { linkGroup } from '@/fields/linkGroup'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { Accordion } from '@/blocks/Accordion/config'
 import { Content } from '@/blocks/Content/config'
 import { MediaContent } from '@/blocks/MediaContent/config'
 import { MediaGrid } from '@/blocks/MediaGrid/config'
@@ -143,7 +144,7 @@ export const Candidates: CollectionConfig = {
       name: 'layout',
       label: 'Additional Content Blocks',
       type: 'blocks',
-      blocks: [Content, MediaContent, MediaGrid],
+      blocks: [Content, MediaContent, MediaGrid, Accordion],
       admin: {
         initCollapsed: true,
         description:

@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { anchorIdField } from '@/fields/anchorId'
+
 export const Candidates: Block = {
   slug: 'candidates',
   interfaceName: 'CandidatesBlock',
@@ -13,5 +15,6 @@ export const Candidates: Block = {
       type: 'text',
       defaultValue: 'Meet Our Candidates',
     },
+    anchorIdField,
   ],
 }

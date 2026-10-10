@@ -1,7 +1,7 @@
 import config from '@payload-config'
 import { getPayload } from 'payload'
 
-import type { Meeting, Media } from '@/payload-types'
+import type { Meeting, Media, MeetingInfoBlock as MeetingInfoBlockProps } from '@/payload-types'
 import { getMediaUrl } from '@/utilities/getMediaUrl'
 import { ShareButton } from '@/components/ShareButton'
 
@@ -61,7 +61,7 @@ function MeetingListItem({ meeting, showShare }: { meeting: Meeting; showShare?:
   )
 }
 
-export async function MeetingInfoBlock() {
+export async function MeetingInfoBlock({ anchorId }: MeetingInfoBlockProps) {
   const payload = await getPayload({ config })
   const today = new Date(new Date().toDateString()).toISOString()
 
@@ -90,7 +90,7 @@ export async function MeetingInfoBlock() {
   const pastMeetings = pastResult.docs
 
   return (
-    <>
+    <div id={anchorId || undefined} className="scroll-mt-24">
       <section className="bg-gray-50 px-6 py-12 sm:py-16">
         <div className="mx-auto max-w-4xl">
           <h2 className="text-2xl font-bold text-brand-navy">Upcoming Meetings & Events</h2>
@@ -122,6 +122,6 @@ export async function MeetingInfoBlock() {
           )}
         </div>
       </section>
-    </>
+    </div>
   )
 }

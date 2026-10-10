@@ -2,13 +2,13 @@ import { RichText } from '@/components/RichText'
 
 import type { ContentBlock as ContentBlockProps } from '@/payload-types'
 
-export function ContentBlock({ richText }: ContentBlockProps) {
+export function ContentBlock({ richText, anchorId }: ContentBlockProps) {
   if (!richText) {
     return null
   }
 
   return (
-    <section className="px-6 py-12 sm:py-16">
+    <section id={anchorId || undefined} className="scroll-mt-24 px-6 py-12 sm:py-16">
       <div className="mx-auto max-w-4xl">
         <RichText
           data={richText}

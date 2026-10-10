@@ -8,6 +8,8 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
+import { anchorIdField } from '@/fields/anchorId'
+
 export const Content: Block = {
   slug: 'content',
   interfaceName: 'ContentBlock',
@@ -32,5 +34,6 @@ export const Content: Block = {
       }),
       label: false,
     },
+    anchorIdField,
   ],
 }

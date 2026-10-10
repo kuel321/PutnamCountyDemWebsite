@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { anchorIdField } from '@/fields/anchorId'
+
 export const MediaGrid: Block = {
   slug: 'mediaGrid',
   interfaceName: 'MediaGridBlock',
@@ -52,5 +54,6 @@ export const MediaGrid: Block = {
         },
       ],
     },
+    anchorIdField,
   ],
 }

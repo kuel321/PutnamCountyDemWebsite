@@ -23,6 +23,7 @@ import * as migration_20260918_150000_form_block_and_media_grid_credit from './2
 import * as migration_20260920_153500_reset_password_requested_at from './20260920_153500_reset_password_requested_at';
 import * as migration_20260921_133000_candidate_order from './20260921_133000_candidate_order';
 import * as migration_20260923_140000_treasury_reports from './20260923_140000_treasury_reports';
+import * as migration_20261009_200000_accordion_block_and_anchor_ids from './20261009_200000_accordion_block_and_anchor_ids';
 
 export const migrations = [
   {
@@ -149,5 +150,10 @@ export const migrations = [
     up: migration_20260923_140000_treasury_reports.up,
     down: migration_20260923_140000_treasury_reports.down,
     name: '20260923_140000_treasury_reports'
+  },
+  {
+    up: migration_20261009_200000_accordion_block_and_anchor_ids.up,
+    down: migration_20261009_200000_accordion_block_and_anchor_ids.down,
+    name: '20261009_200000_accordion_block_and_anchor_ids'
   },
 ];

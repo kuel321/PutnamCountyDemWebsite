@@ -1,7 +1,7 @@
 import type { MediaGridBlock as MediaGridBlockProps, Media } from '@/payload-types'
 import { MediaThumbnail, isPdfMedia } from '@/components/MediaThumbnail'
 
-export function MediaGridBlock({ heading, items }: MediaGridBlockProps) {
+export function MediaGridBlock({ heading, items, anchorId }: MediaGridBlockProps) {
   const photos = (items ?? []).filter(
     (item): item is typeof item & { media: Media } =>
       Boolean(item.media) && typeof item.media === 'object',
@@ -10,7 +10,7 @@ export function MediaGridBlock({ heading, items }: MediaGridBlockProps) {
   if (photos.length === 0) return null
 
   return (
-    <section className="px-6 py-10 sm:py-12">
+    <section id={anchorId || undefined} className="scroll-mt-24 px-6 py-10 sm:py-12">
       <div className="mx-auto max-w-5xl">
         {heading && (
           <h2 className="text-2xl font-bold text-brand-navy sm:text-3xl">{heading}</h2>

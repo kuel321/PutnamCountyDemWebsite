@@ -1,5 +1,6 @@
 import type { Page } from '@/payload-types'
 
+import { AccordionBlock } from '@/blocks/Accordion/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { MeetingInfoBlock } from '@/blocks/MeetingInfo/Component'
 import { CandidatesBlock } from '@/blocks/Candidates/Component'
@@ -23,11 +24,11 @@ export function RenderBlocks({ blocks }: { blocks?: LayoutBlocks | null }) {
           case 'content':
             return <ContentBlock key={block.id ?? index} {...block} />
           case 'meetingInfo':
-            return <MeetingInfoBlock key={block.id ?? index} />
+            return <MeetingInfoBlock key={block.id ?? index} {...block} />
           case 'candidates':
             return <CandidatesBlock key={block.id ?? index} {...block} />
           case 'presidentMessage':
-            return <PresidentMessageBlock key={block.id ?? index} />
+            return <PresidentMessageBlock key={block.id ?? index} {...block} />
           case 'mediaContent':
             return <MediaContentBlock key={block.id ?? index} {...block} />
           case 'findDistrict':
@@ -36,6 +37,8 @@ export function RenderBlocks({ blocks }: { blocks?: LayoutBlocks | null }) {
             return <MediaGridBlock key={block.id ?? index} {...block} />
           case 'form':
             return <FormBlock key={block.id ?? index} {...block} />
+          case 'accordion':
+            return <AccordionBlock key={block.id ?? index} {...block} />
           default:
             return null
         }

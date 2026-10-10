@@ -8,6 +8,8 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
+import { anchorIdField } from '@/fields/anchorId'
+
 export const MediaContent: Block = {
   slug: 'mediaContent',
   interfaceName: 'MediaContentBlock',
@@ -54,5 +56,6 @@ export const MediaContent: Block = {
         },
       }),
     },
+    anchorIdField,
   ],
 }

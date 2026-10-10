@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { anchorIdField } from '@/fields/anchorId'
+
 export const FindDistrict: Block = {
   slug: 'findDistrict',
   interfaceName: 'FindDistrictBlock',
@@ -20,5 +22,6 @@ export const FindDistrict: Block = {
       defaultValue:
         'Enter your home address to see your Magisterial, WV House, WV Senate, and US Congressional districts.',
     },
+    anchorIdField,
   ],
 }

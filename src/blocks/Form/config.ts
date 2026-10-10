@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { anchorIdField } from '@/fields/anchorId'
+
 export const FormBlock: Block = {
   slug: 'form',
   interfaceName: 'FormBlock',
@@ -17,5 +19,6 @@ export const FormBlock: Block = {
         description: 'Build the form itself under Forms in the admin sidebar, then pick it here.',
       },
     },
+    anchorIdField,
   ],
 }

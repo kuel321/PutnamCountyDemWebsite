@@ -3,14 +3,14 @@ import { RichText } from '@/components/RichText'
 import type { MediaContentBlock as MediaContentBlockProps } from '@/payload-types'
 import { MediaThumbnail, isPdfMedia } from '@/components/MediaThumbnail'
 
-export function MediaContentBlock({ media, externalLink, content }: MediaContentBlockProps) {
+export function MediaContentBlock({ media, externalLink, content, anchorId }: MediaContentBlockProps) {
   const image = media && typeof media === 'object' ? media : null
   if (!image) return null
 
   const thumbnail = <MediaThumbnail media={image} className="w-full rounded-lg object-cover" />
 
   return (
-    <section className="px-6 py-10 sm:py-12">
+    <section id={anchorId || undefined} className="scroll-mt-24 px-6 py-10 sm:py-12">
       <div className="mx-auto grid max-w-4xl gap-8 sm:grid-cols-2 sm:items-center">
         <div>
           {externalLink && !isPdfMedia(image) ? (
