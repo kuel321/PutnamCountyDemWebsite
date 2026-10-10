@@ -383,6 +383,14 @@ export function AdminGuideContent() {
               horizontal dividers. Use this for ordinary body text. There&apos;s a formatting
               toolbar at the top of the text area.
             </p>
+            <p style={pStyle}>
+              Every heading you type anywhere in rich text — in this block, a candidate bio,
+              meeting minutes, anywhere — automatically becomes a link target based on its own
+              text. A heading that says &ldquo;Our History&rdquo; can be linked to directly as{' '}
+              <code style={codeStyle}>#our-history</code> added to the end of that page&apos;s
+              URL. Nothing to turn on — it just works. (If two headings on the same page have the
+              exact same text, only the first one is reachable that way.)
+            </p>
 
             <h3 style={h3Style}>Media + Content (Side-by-Side)</h3>
             <p style={pStyle}>
