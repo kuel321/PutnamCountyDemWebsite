@@ -9,12 +9,18 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-sqlite'
 // frontend, plus MediaGrid's per-photo array items — so any individual
 // candidate, meeting, meeting minutes entry, highlight, or grid photo can
 // be deep-linked to directly, not just whole blocks.
+//
+// Note: `_meeting_minutes_v` is a *document*-level versions table (from
+// MeetingMinutes' `versions.drafts`), and Payload prefixes every top-level
+// field in a document versions table with `version_` — unlike a *block*
+// versions table (e.g. `_pages_v_blocks_content`), which keeps the same
+// column names as its published counterpart. Easy to get backwards by
+// analogy with the block tables from the prior migration.
 
 const TABLES = [
   'candidates',
   'meetings',
   'meeting_minutes',
-  '_meeting_minutes_v',
   'highlights',
   'pages_blocks_media_grid_items',
   '_pages_v_blocks_media_grid_items',
@@ -26,9 +32,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   for (const table of TABLES) {
     await db.run(sql.raw(`ALTER TABLE \`${table}\` ADD \`anchor_id\` text;`))
   }
+  await db.run(sql`ALTER TABLE \`_meeting_minutes_v\` ADD \`version_anchor_id\` text;`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+  await db.run(sql`ALTER TABLE \`_meeting_minutes_v\` DROP COLUMN \`version_anchor_id\`;`)
   for (const table of TABLES) {
     await db.run(sql.raw(`ALTER TABLE \`${table}\` DROP COLUMN \`anchor_id\`;`))
   }
