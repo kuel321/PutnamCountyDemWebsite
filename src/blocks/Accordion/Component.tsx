@@ -8,7 +8,9 @@ import { excerpt } from '@/utilities/textExcerpt'
 
 import type { AccordionBlock as AccordionBlockProps } from '@/payload-types'
 
-// Below this, an item's full content shows with no "Read more" at all.
+// Always shown, truncated at this length — "Read more" only appears
+// (and expands to the full rich text) once the plain text is actually
+// longer than this.
 const EXCERPT_LENGTH = 150
 
 type Item = NonNullable<AccordionBlockProps['items']>[number]
@@ -35,7 +37,7 @@ function AccordionItem({ item, index }: { item: Item; index: number }) {
       <h3 className="mt-2 text-xl font-bold text-brand-navy">{item.heading}</h3>
 
       {item.content &&
-        (expanded || !isLong ? (
+        (expanded ? (
           <RichText
             data={item.content}
             className="prose mt-2 max-w-none prose-headings:text-brand-navy prose-a:text-brand-red prose-a:no-underline hover:prose-a:underline"
