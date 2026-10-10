@@ -376,6 +376,16 @@ export function AdminGuideContent() {
               the handle on the left of a block to reorder it, and use the trash icon to remove
               one.
             </p>
+            <p style={pStyle}>
+              Every block also has its own <strong>Anchor ID (optional)</strong> field, usually the
+              last field in its settings. Fill it in (e.g. <code style={codeStyle}>history</code>)
+              and that whole block becomes linkable as{' '}
+              <code style={codeStyle}>#history</code> added to the page&apos;s URL — useful for a
+              block that doesn&apos;t have its own heading for the automatic kind to attach to.
+              This same optional field also shows up on individual Candidates, Meetings, Meeting
+              Minutes, Highlights, and each photo in a Photo Grid, so any one of those can be
+              linked to directly too.
+            </p>
 
             <h3 style={h3Style}>Content</h3>
             <p style={pStyle}>
