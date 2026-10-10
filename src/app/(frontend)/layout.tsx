@@ -5,6 +5,7 @@ import Script from 'next/script'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { SitewidePresidentMessageBanner } from '@/components/PresidentMessageBanner/SitewideBanner'
+import { SmoothAnchorScroll } from '@/components/SmoothAnchorScroll'
 import { getGlobal } from '@/utilities/getGlobals'
 
 import './globals.css'
@@ -53,6 +54,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
+        <SmoothAnchorScroll />
         <Header data={headerData} />
         <SitewidePresidentMessageBanner />
         <main className="flex-1">{children}</main>
