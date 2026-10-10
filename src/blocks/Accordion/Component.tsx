@@ -13,7 +13,8 @@ export function AccordionBlock({ items, anchorId }: AccordionBlockProps) {
         {items.map((item, index) => (
           <details
             key={item.id ?? index}
-            className="group rounded-lg border border-gray-200 bg-white open:shadow-sm"
+            id={item.anchorId || undefined}
+            className="group scroll-mt-24 rounded-lg border border-gray-200 bg-white open:shadow-sm"
           >
             <summary className="flex cursor-pointer list-none items-start gap-4 px-5 py-4 text-lg font-semibold text-brand-navy [&::-webkit-details-marker]:hidden">
               <span className="shrink-0 text-brand-red">{index + 1}.</span>
@@ -33,6 +34,15 @@ export function AccordionBlock({ items, anchorId }: AccordionBlockProps) {
           </details>
         ))}
       </div>
+
+      {/* A <details> doesn't open itself just because it's the URL's scroll
+          target — force it open (and into view) when a link points at it. */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html:
+            "(function(){var h=window.location.hash.slice(1);if(!h)return;var d=document.getElementById(h);if(d&&d.tagName==='DETAILS'){d.open=true;d.scrollIntoView();}})();",
+        }}
+      />
     </section>
   )
 }

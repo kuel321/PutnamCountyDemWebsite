@@ -3,9 +3,16 @@ import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-sqlite'
 // Hand-written for the same reason as prior migrations — see
 // DATABASE_MIGRATIONS.md's "Known issue: the schema snapshot is stale".
 // Two changes bundled together since they touch the same block configs:
-// 1. A new "Numbered Accordion" block (pages, candidates, candidate_pages).
+// 1. A new "Numbered Accordion" block (pages, candidates, candidate_pages),
+//    with anchor IDs on the block itself and on each item.
 // 2. An optional `anchor_id` column added to every existing block type, so
 //    any block on the site can be deep-linked to (e.g. #history).
+//
+// Note: `heading` is a required field in the Payload config, but is NOT
+// NOT NULL at the DB level — Payload's admin autosaves draft state
+// (including a freshly-added, not-yet-filled-in array row) well before
+// publish-time validation runs, so a DB constraint here breaks autosave.
+// Same reason required upload/relationship fields never get NOT NULL.
 
 const PAGES_BLOCK_TABLES = [
   'pages_blocks_content',
@@ -75,8 +82,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       \`_order\` integer NOT NULL,
       \`_parent_id\` text NOT NULL,
       \`id\` text PRIMARY KEY NOT NULL,
-      \`heading\` text NOT NULL,
+      \`heading\` text,
       \`content\` text,
+      \`anchor_id\` text,
       FOREIGN KEY (\`_parent_id\`) REFERENCES \`pages_blocks_accordion\`(\`id\`) ON UPDATE no action ON DELETE cascade
     );
   `)
@@ -105,8 +113,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       \`_order\` integer NOT NULL,
       \`_parent_id\` integer NOT NULL,
       \`id\` integer PRIMARY KEY NOT NULL,
-      \`heading\` text NOT NULL,
+      \`heading\` text,
       \`content\` text,
+      \`anchor_id\` text,
       \`_uuid\` text,
       FOREIGN KEY (\`_parent_id\`) REFERENCES \`_pages_v_blocks_accordion\`(\`id\`) ON UPDATE no action ON DELETE cascade
     );
@@ -135,8 +144,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       \`_order\` integer NOT NULL,
       \`_parent_id\` text NOT NULL,
       \`id\` text PRIMARY KEY NOT NULL,
-      \`heading\` text NOT NULL,
+      \`heading\` text,
       \`content\` text,
+      \`anchor_id\` text,
       FOREIGN KEY (\`_parent_id\`) REFERENCES \`candidates_blocks_accordion\`(\`id\`) ON UPDATE no action ON DELETE cascade
     );
   `)
@@ -164,8 +174,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
       \`_order\` integer NOT NULL,
       \`_parent_id\` text NOT NULL,
       \`id\` text PRIMARY KEY NOT NULL,
-      \`heading\` text NOT NULL,
+      \`heading\` text,
       \`content\` text,
+      \`anchor_id\` text,
       FOREIGN KEY (\`_parent_id\`) REFERENCES \`candidate_pages_blocks_accordion\`(\`id\`) ON UPDATE no action ON DELETE cascade
     );
   `)

@@ -38,6 +38,7 @@ export const Accordion: Block = {
             },
           }),
         },
+        anchorIdField,
       ],
     },
     anchorIdField,

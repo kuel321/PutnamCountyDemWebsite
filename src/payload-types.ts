@@ -701,6 +701,10 @@ export interface AccordionBlock {
           };
           [k: string]: unknown;
         } | null;
+        /**
+         * Lets you link directly to this block, e.g. an anchor ID of "history" makes this block reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+         */
+        anchorId?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1626,6 +1630,7 @@ export interface AccordionBlockSelect<T extends boolean = true> {
     | {
         heading?: T;
         content?: T;
+        anchorId?: T;
         id?: T;
       };
   anchorId?: T;
