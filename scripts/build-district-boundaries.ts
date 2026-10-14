@@ -190,7 +190,7 @@ async function run() {
 
   console.log('\nSyncing the districts collection (Candidate-linked boundaries) from the same data:')
   const houseByNumber = new Map(house.map((h) => [h.district, h.geometry]))
-  for (const num of ['19', '20', '21']) {
+  for (const num of ['18', '19', '20', '21']) {
     await updateDistrictDoc(payload, `District ${num}`, houseByNumber.get(num) ?? null)
   }
   await updateDistrictDoc(payload, 'Countywide', countyGeometry)
