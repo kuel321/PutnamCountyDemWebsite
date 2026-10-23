@@ -1,6 +1,7 @@
 import type { Page } from '@/payload-types'
 
 import { NumberedListBlock } from '@/blocks/NumberedList/Component'
+import { SampleBallotBlock } from '@/blocks/SampleBallot/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { MeetingInfoBlock } from '@/blocks/MeetingInfo/Component'
 import { CandidatesBlock } from '@/blocks/Candidates/Component'
@@ -39,6 +40,8 @@ export function RenderBlocks({ blocks }: { blocks?: LayoutBlocks | null }) {
             return <FormBlock key={block.id ?? index} {...block} />
           case 'numberedList':
             return <NumberedListBlock key={block.id ?? index} {...block} />
+          case 'sampleBallot':
+            return <SampleBallotBlock key={block.id ?? index} {...block} />
           default:
             return null
         }

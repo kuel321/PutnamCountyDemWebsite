@@ -82,6 +82,8 @@ export interface Config {
     'club-members': ClubMember;
     'president-messages': PresidentMessage;
     'treasury-reports': TreasuryReport;
+    'ballot-styles': BallotStyle;
+    'ballot-races': BallotRace;
     'activity-log': ActivityLog;
     redirects: Redirect;
     forms: Form;
@@ -114,6 +116,8 @@ export interface Config {
     'club-members': ClubMembersSelect<false> | ClubMembersSelect<true>;
     'president-messages': PresidentMessagesSelect<false> | PresidentMessagesSelect<true>;
     'treasury-reports': TreasuryReportsSelect<false> | TreasuryReportsSelect<true>;
+    'ballot-styles': BallotStylesSelect<false> | BallotStylesSelect<true>;
+    'ballot-races': BallotRacesSelect<false> | BallotRacesSelect<true>;
     'activity-log': ActivityLogSelect<false> | ActivityLogSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -210,6 +214,7 @@ export interface Page {
         | MediaGridBlock
         | FormBlock
         | NumberedListBlock
+        | SampleBallotBlock
       )[]
     | null;
   meta?: {
@@ -722,6 +727,28 @@ export interface NumberedListBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SampleBallotBlock".
+ */
+export interface SampleBallotBlock {
+  heading?: string | null;
+  /**
+   * Short text shown above the precinct picker.
+   */
+  intro?: string | null;
+  /**
+   * Where to send visitors who don't know their precinct number — e.g. the WV Secretary of State voter lookup page.
+   */
+  precinctLookupUrl?: string | null;
+  /**
+   * Lets you link directly to this — e.g. an anchor ID of "history" makes it reachable at .../page-slug#history. Letters, numbers, and hyphens only — no spaces.
+   */
+  anchorId?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'sampleBallot';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -1170,6 +1197,90 @@ export interface TreasuryReport {
   createdAt: string;
 }
 /**
+ * One entry per version of the county ballot — the county prints a different ballot for each group of precincts.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ballot-styles".
+ */
+export interface BallotStyle {
+  id: number;
+  /**
+   * Shown in the precinct picker, e.g. "Precinct 1 & Town of Buffalo".
+   */
+  name: string;
+  /**
+   * Precinct numbers on this ballot, separated by commas (e.g. "2, 4, 14"). Visitors typing their precinct number are matched against this.
+   */
+  precincts: string;
+  /**
+   * Link to the County Clerk's PDF of this ballot.
+   */
+  officialBallotUrl?: string | null;
+  /**
+   * Lower numbers appear first in the precinct picker.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Every race and question on the sample ballot. The Sample Ballot block shows them in "Order" sequence.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ballot-races".
+ */
+export interface BallotRace {
+  id: number;
+  /**
+   * e.g. "U.S. Senator", "Mayor", "Amendment No. 1".
+   */
+  office: string;
+  /**
+   * e.g. "1st Congressional District", "Town of Buffalo", "Unexpired Term".
+   */
+  subtitle?: string | null;
+  ticket: 'national' | 'state' | 'judicial' | 'county' | 'amendment' | 'municipal';
+  /**
+   * How many choices a voter may pick.
+   */
+  voteFor?: number | null;
+  /**
+   * Lower numbers appear higher on the ballot.
+   */
+  order?: number | null;
+  /**
+   * Optional fine print shown under the race — e.g. "Not more than one resident of any magisterial district may be elected", or an amendment's Summary of Purpose.
+   */
+  note?: string | null;
+  /**
+   * Which ballot styles include this race. Leave EMPTY if it appears on every ballot in the county.
+   */
+  ballotStyles?: (number | BallotStyle)[] | null;
+  /**
+   * Candidates (or "For" / "Against" for an amendment), in ballot order. No need to add "No candidate nominated" or write-in lines.
+   */
+  choices?:
+    | {
+        name: string;
+        /**
+         * Leave blank for nonpartisan races.
+         */
+        party?: ('DEM' | 'REP' | 'LBN' | 'MTN' | 'CST') | null;
+        /**
+         * e.g. "Charleston, Kanawha Co."
+         */
+        hometown?: string | null;
+        /**
+         * Pick one of our candidates to show a "View profile" link on the ballot.
+         */
+        candidate?: (number | null) | Candidate;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Automatic record of who changed what, and when. Written by the system — nothing here is entered by hand.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1443,6 +1554,14 @@ export interface PayloadLockedDocument {
         value: number | TreasuryReport;
       } | null)
     | ({
+        relationTo: 'ballot-styles';
+        value: number | BallotStyle;
+      } | null)
+    | ({
+        relationTo: 'ballot-races';
+        value: number | BallotRace;
+      } | null)
+    | ({
         relationTo: 'activity-log';
         value: number | ActivityLog;
       } | null)
@@ -1536,6 +1655,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaGrid?: T | MediaGridBlockSelect<T>;
         form?: T | FormBlockSelect<T>;
         numberedList?: T | NumberedListBlockSelect<T>;
+        sampleBallot?: T | SampleBallotBlockSelect<T>;
       };
   meta?:
     | T
@@ -1654,6 +1774,18 @@ export interface NumberedListBlockSelect<T extends boolean = true> {
         anchorId?: T;
         id?: T;
       };
+  anchorId?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SampleBallotBlock_select".
+ */
+export interface SampleBallotBlockSelect<T extends boolean = true> {
+  heading?: T;
+  intro?: T;
+  precinctLookupUrl?: T;
   anchorId?: T;
   id?: T;
   blockName?: T;
@@ -2006,6 +2138,42 @@ export interface TreasuryReportsSelect<T extends boolean = true> {
   period?: T;
   notes?: T;
   file?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ballot-styles_select".
+ */
+export interface BallotStylesSelect<T extends boolean = true> {
+  name?: T;
+  precincts?: T;
+  officialBallotUrl?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ballot-races_select".
+ */
+export interface BallotRacesSelect<T extends boolean = true> {
+  office?: T;
+  subtitle?: T;
+  ticket?: T;
+  voteFor?: T;
+  order?: T;
+  note?: T;
+  ballotStyles?: T;
+  choices?:
+    | T
+    | {
+        name?: T;
+        party?: T;
+        hometown?: T;
+        candidate?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

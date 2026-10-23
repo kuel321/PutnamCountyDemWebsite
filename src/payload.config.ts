@@ -6,6 +6,8 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { ActivityLog } from './collections/ActivityLog'
+import { BallotRaces } from './collections/BallotRaces'
+import { BallotStyles } from './collections/BallotStyles'
 import { Candidates } from './collections/Candidates'
 import { Categories } from './collections/Categories'
 import { ClubMembers } from './collections/ClubMembers'
@@ -116,6 +118,8 @@ export default buildConfig({
     ClubMembers,
     PresidentMessages,
     TreasuryReports,
+    BallotStyles,
+    BallotRaces,
     ActivityLog,
   ]),
   cors: [getServerSideURL()].filter(Boolean),

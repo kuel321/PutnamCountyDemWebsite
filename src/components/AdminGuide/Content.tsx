@@ -119,6 +119,7 @@ const toc = [
   ['seo', 'SEO Settings'],
   ['faq', 'Troubleshooting / FAQ'],
   ['treasury', 'Treasury Reports'],
+  ['sample-ballot', 'Sample Ballot'],
   ['help', 'Getting Help'],
 ] as const
 
@@ -1027,9 +1028,47 @@ export function AdminGuideContent() {
             </p>
           </section>
 
-          {/* 18. Help */}
+          {/* 18. Sample Ballot */}
+          <section id="sample-ballot" style={sectionStyle}>
+            <h2 style={h2Style}>18. Sample Ballot</h2>
+            <p style={pStyle}>
+              The Sample Ballot page lets visitors type their precinct number and see exactly what
+              will be on their ballot, with our Democratic candidates highlighted. Everything on it
+              is edited under the <strong>Sample Ballot</strong> group in the sidebar:
+            </p>
+            <ul style={ulStyle}>
+              <li>
+                <strong>Ballot Styles</strong> — the county prints a different ballot for each group
+                of precincts. Each entry lists its precinct numbers (separated by commas) and a link
+                to the County Clerk&apos;s official PDF.
+              </li>
+              <li>
+                <strong>Ballot Races</strong> — every race and amendment. Each has an Office, an
+                optional Subtitle (e.g. &ldquo;20th Delegate District&rdquo;), which ticket it
+                belongs to, how many choices a voter may pick, and its list of candidates (name,
+                party, hometown). Pick one of our candidates in a choice&apos;s{' '}
+                <strong>Link to Candidate Profile</strong> field to add a &ldquo;View profile&rdquo;
+                link.
+              </li>
+              <li>
+                A race&apos;s <strong>Appears On</strong> field controls which precincts see it.
+                Leave it <em>empty</em> for races on every ballot in the county (like U.S. Senate);
+                pick specific Ballot Styles for district and town races.
+              </li>
+              <li>
+                <strong>Order</strong> controls the sequence races appear in — lower numbers first.
+              </li>
+            </ul>
+            <p style={pStyle}>
+              To put the ballot on a page, add the <strong>Sample Ballot</strong> block. A link
+              like <code style={codeStyle}>/sample-ballot?precinct=23</code> opens straight to
+              precinct 23&apos;s ballot — handy for sharing.
+            </p>
+          </section>
+
+          {/* 19. Help */}
           <section id="help" style={sectionStyle}>
-            <h2 style={h2Style}>18. Getting Help</h2>
+            <h2 style={h2Style}>19. Getting Help</h2>
             <p style={pStyle}>
               For anything not covered here, or if something looks broken rather than just
               unfamiliar, reach out to Luke (site developer) rather than guessing — some things

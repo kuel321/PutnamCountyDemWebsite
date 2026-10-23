@@ -7,6 +7,7 @@ import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 import { NumberedList } from '@/blocks/NumberedList/config'
+import { SampleBallot } from '@/blocks/SampleBallot/config'
 import { Content } from '@/blocks/Content/config'
 import { MeetingInfo } from '@/blocks/MeetingInfo/config'
 import { Candidates } from '@/blocks/Candidates/config'
@@ -82,6 +83,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 MediaGrid,
                 FormBlock,
                 NumberedList,
+                SampleBallot,
               ],
               label: false,
             },
