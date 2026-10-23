@@ -238,7 +238,7 @@ export function SampleBallotView({
                       <li
                         key={choice.id}
                         className={`flex flex-wrap items-center gap-x-3 gap-y-1 px-5 py-3 ${
-                          isDem ? 'border-l-4 border-brand-navy bg-brand-navy/5' : ''
+                          isDem ? 'border-b-2 border-b-brand-navy bg-brand-navy/5' : ''
                         }`}
                       >
                         <span
