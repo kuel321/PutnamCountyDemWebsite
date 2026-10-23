@@ -241,10 +241,19 @@ export function SampleBallotView({
                           isDem ? 'border-b-2 border-b-brand-navy bg-brand-navy/5' : ''
                         }`}
                       >
-                        <span
-                          aria-hidden="true"
-                          className="h-4 w-6 shrink-0 rounded-full border-2 border-gray-400"
-                        />
+                        {isDem ? (
+                          <span
+                            aria-label="Selected"
+                            className="flex h-4 w-6 shrink-0 items-center justify-center rounded-full border-2 border-brand-navy bg-brand-navy text-[10px] font-bold leading-none text-white"
+                          >
+                            ✕
+                          </span>
+                        ) : (
+                          <span
+                            aria-hidden="true"
+                            className="h-4 w-6 shrink-0 rounded-full border-2 border-gray-400"
+                          />
+                        )}
                         <div className="min-w-0 flex-1">
                           <p className={`font-semibold ${isDem ? 'text-brand-navy' : 'text-gray-900'}`}>
                             {choice.name}
