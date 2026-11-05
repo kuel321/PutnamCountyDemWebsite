@@ -28,6 +28,7 @@ import { CandidatePages } from './globals/CandidatePages'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { keepRequiredColumnsNullable } from './utilities/keepRequiredColumnsNullable'
 import { withActivityLogging, withGlobalActivityLogging } from './hooks/activityLog'
 
 const filename = fileURLToPath(import.meta.url)
@@ -91,6 +92,9 @@ export default buildConfig({
     client: {
       url: process.env.DATABASE_URL || '',
     },
+    // Some required columns are intentionally nullable in the db; without this,
+    // dev push mode tries (and fails) to rebuild those tables on every start.
+    beforeSchemaInit: [keepRequiredColumnsNullable],
   }),
   email: nodemailerAdapter({
     defaultFromAddress: process.env.GMAIL_USER || '',

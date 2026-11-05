@@ -8,6 +8,18 @@ Everything below was verified against this project directly (not just copied fro
 
 **`npm run dev` never generates migration files.** It runs Payload's SQLite adapter in "push" mode: every time the dev server starts, it diffs your current collection config against the live dev database and applies the difference directly — no file is written, nothing is committed. This is the default and the officially recommended way to iterate locally. Keep using it exactly as before; nothing about local day-to-day dev changes.
 
+### Required-but-nullable columns (`keepRequiredColumnsNullable`)
+
+Payload marks every `required: true` field `NOT NULL` in its schema, but some columns in this db are deliberately nullable — hand-written migrations left them that way so Payload's validation (not the db) enforces "required" (see the autosave note under "Known issue" below). Until 2026-11-04, push saw those as a mismatch on every start and tried to rebuild each table, and drizzle-kit emits every `CREATE INDEX` twice during a rebuild, so the dev server crashed with `index ... already exists`.
+
+`src/utilities/keepRequiredColumnsNullable.ts` fixes that: it's a `beforeSchemaInit` hook on the SQLite adapter that marks the listed columns nullable in Payload's schema before push or `migrate:create` ever compare it to the db. So:
+
+- **If you write a migration that leaves a required column nullable on purpose, add it to `NULLABLE_REQUIRED_COLUMNS` in that file** (real SQL table/column names). Otherwise push will start rebuilding that table again.
+- If a listed column is removed or renamed, the dev server logs a warning naming it — take it out of the list.
+- If `npm run dev` ever crashes with `index ... already exists` again, don't drop indexes by hand. It means the db and Payload's schema disagree on something new; find out what (compare `sqlite3 <db> ".schema <table>"` with the config) and either add it to the list or fix it with a migration.
+
+The same date also fixed the one other long-standing mismatch: `20261104_120000_locked_docs_rels_cascade` rebuilt `payload_locked_documents_rels` so all its foreign keys cascade (five columns added by earlier migrations didn't).
+
 **Migrations are a separate, explicit system**, used only for getting a schema change onto another database (production) predictably:
 
 - `payload migrate:create <name>` — generates a migration file under `src/migrations/` (plus a `.json` schema snapshot) representing the diff between your current config and the last migration's snapshot
@@ -99,7 +111,9 @@ This happened once, historically, to adopt the baseline migration onto productio
 
 The practical effect: running `migrate:create` today diffs your current schema against a snapshot that's over a week and 16 migrations stale. It doesn't know about any of those intervening changes, so it can ask confusing, unrelated questions (e.g. "is `minutes_submissions.file_id` a new column or a rename?" when neither your current change nor that migration have anything to do with each other), and if forced through with a wrong guess on an ambiguous rename, it can silently generate a migration that drops real data.
 
-**Until this is fixed, don't trust `migrate:create`'s interactive prompts blindly.** If it asks about a field you didn't touch, stop — that's this staleness, not a real ambiguity in your change. For an additive-only change (new field, new block, new collection) it's safe to write the migration file by hand instead: copy the exact `CREATE TABLE`/`ALTER TABLE ... ADD` SQL that push mode already generated in your local dev db's schema (`sqlite3 your.db ".schema table_name"`), following the style of any existing migration file. This is exactly what `20260918_150000_form_block_and_media_grid_credit` does — read it as a template.
+**Until this is fixed, don't trust `migrate:create`'s interactive prompts blindly.** If it asks about a field you didn't touch, stop — that's this staleness, not a real ambiguity in your change. For an additive-only change (new field, new block, new collection) it's safe to write the migration file by hand instead: copy the exact `CREATE TABLE`/`ALTER TABLE ... ADD` SQL that push mode already generated in your local dev db's schema (`sqlite3 your.db ".schema table_name"`), following the style of any existing migration file. This is exactly what `20260918_150000_form_block_and_media_grid_credit` does — read it as a template. If you hand-write a required upload/relationship column as nullable (as autosave on draft collections needs), also add it to `NULLABLE_REQUIRED_COLUMNS` — see "Required-but-nullable columns" above.
+
+When adding a new collection, remember the per-collection column on `payload_locked_documents_rels` needs Payload's exact foreign key — copy it from push's schema rather than writing `ADD ... REFERENCES x(id)`, which has no `ON DELETE cascade` (that's what `20261104_120000_locked_docs_rels_cascade` had to fix).
 
 **The real fix** is to regenerate a fresh snapshot so future `migrate:create` runs have an accurate baseline again. That should happen the next time there's a quiet moment (not bundled into an unrelated feature deploy): run `migrate:create` once purely to produce a current snapshot, confirm the generated migration is a genuine no-op against production's actual schema (it should be, since production is fully caught up — see `migrate:status`), and commit both files. From then on, always commit the `.json` snapshot alongside every migration `.ts` file — that's step 5 of the normal workflow above; it was just being skipped.
 

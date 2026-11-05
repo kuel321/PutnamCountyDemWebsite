@@ -26,6 +26,7 @@ import * as migration_20260923_140000_treasury_reports from './20260923_140000_t
 import * as migration_20261009_200000_numbered_list_block_and_anchor_ids from './20261009_200000_numbered_list_block_and_anchor_ids';
 import * as migration_20261010_000000_collection_and_item_anchor_ids from './20261010_000000_collection_and_item_anchor_ids';
 import * as migration_20261023_120000_sample_ballot from './20261023_120000_sample_ballot';
+import * as migration_20261104_120000_locked_docs_rels_cascade from './20261104_120000_locked_docs_rels_cascade';
 
 export const migrations = [
   {
@@ -167,5 +168,10 @@ export const migrations = [
     up: migration_20261023_120000_sample_ballot.up,
     down: migration_20261023_120000_sample_ballot.down,
     name: '20261023_120000_sample_ballot'
+  },
+  {
+    up: migration_20261104_120000_locked_docs_rels_cascade.up,
+    down: migration_20261104_120000_locked_docs_rels_cascade.down,
+    name: '20261104_120000_locked_docs_rels_cascade'
   },
 ];

@@ -39,13 +39,17 @@ scp luke@chasingachance.com:/opt/services/clients/putnamcountydemocratclubofwv/P
 
 Then restart the local dev server so it reopens the file instead of holding a stale connection.
 
-**Expect one specific error on first restart after a sync**, every time: local push-mode tries to recreate an index that the freshly-synced db already has (`payload_locked_documents_rels_order_idx`) and 500s on it — seen on `/admin`, `/members/login`, or whatever route gets hit first. It's harmless (indexes carry no data) and always the same fix:
+For a consistent copy while the site is live, snapshot with SQLite's own backup command on the VM and `scp` the snapshot instead of the live file:
 
 ```bash
-sqlite3 putnam-county-dem-club-prod.db "DROP INDEX IF EXISTS payload_locked_documents_rels_order_idx;"
+ssh luke@chasingachance.com 'cd /opt/services/clients/putnamcountydemocratclubofwv/PutnamCountyDemWebsite && sqlite3 putnam-county-dem-club-live.db ".backup /tmp/putnam-live-snapshot.db"'
+scp luke@chasingachance.com:/tmp/putnam-live-snapshot.db ./putnam-county-dem-club-prod.db
+ssh luke@chasingachance.com 'rm -f /tmp/putnam-live-snapshot.db'
 ```
 
-Then just reload — no restart needed. This has recurred on every single sync so far; if a *different* index starts showing the same "already exists" error, drop that one the same way.
+**There's no longer an "index already exists" error after a sync** (fixed 2026-11-04). It used to happen every time because push mode saw the synced db as different from Payload's schema, tried to rebuild tables, and crashed on drizzle-kit's duplicate `CREATE INDEX` statements. See "Required-but-nullable columns" in `DATABASE_MIGRATIONS.md` for what fixed it. If it ever comes back, don't drop indexes by hand — that section explains how to find the real mismatch.
+
+Exception: until `20261104_120000_locked_docs_rels_cascade` is deployed to the VM, a fresh sync won't have it applied yet. In that case, apply it to the synced copy before starting dev: `npx payload migrate` (works because a freshly synced db has no push-mode `dev` row).
 
 ### Media files
 
